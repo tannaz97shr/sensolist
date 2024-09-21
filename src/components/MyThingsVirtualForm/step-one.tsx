@@ -1,15 +1,14 @@
+import { getThingSensors, getThingsImages } from "@/ApiCall/things";
+import { IFile, ISelectOption } from "@/types/general";
 import Image from "next/image";
-import Input from "../UI/Input";
-import { useForm } from "react-hook-form";
-import { IFile, ISelectOption, IThingSensor } from "@/types/general";
-import MultiSelect from "../UI/MultiSelect";
-import ImagePicker from "../DashboardCreateForm/ImagePicker";
-import { getDashboardImages } from "@/ApiCall/dashboards";
-import Loading from "../UI/Loading";
-import { FormControls, FormStepProps, VirtualFormState } from ".";
 import { useEffect, useState } from "react";
-import { getThingSensors } from "@/ApiCall/things";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { FormControls, FormStepProps, VirtualFormState } from ".";
+import ImagePicker from "../DashboardCreateForm/ImagePicker";
+import Input from "../UI/Input";
+import Loading from "../UI/Loading";
+import MultiSelect from "../UI/MultiSelect";
 
 export function FormStepOne(props: FormStepProps) {
   const {
@@ -36,13 +35,13 @@ export function FormStepOne(props: FormStepProps) {
             sensors.map((sensor) => ({
               title: sensor.character,
               value: JSON.stringify(sensor),
-            })),
+            }))
           );
           setSelectedCharactristic(
             props.state.characteristics.map((sensor) => ({
               title: sensor.character,
               value: JSON.stringify(sensor),
-            })),
+            }))
           );
         }
       } finally {
@@ -54,7 +53,7 @@ export function FormStepOne(props: FormStepProps) {
   useEffect(() => {
     setValue(
       "characteristics",
-      selectedCharactristic.map((item) => JSON.parse(item.value)),
+      selectedCharactristic.map((item) => JSON.parse(item.value))
     );
   }, [selectedCharactristic, setValue]);
 
@@ -84,7 +83,7 @@ export function FormStepOne(props: FormStepProps) {
   const [selectedImage, setSelectedImage] = useState(
     props.state.image?.split("/").at(-1) ??
       props.state.image ??
-      images[0].fileId,
+      images[0].fileId
   );
   const [selectImages, setSelectImages] = useState<IFile[]>();
   const [isLoading, setLoading] = useState(false);
@@ -92,7 +91,7 @@ export function FormStepOne(props: FormStepProps) {
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
-      const res = await getDashboardImages();
+      const res = await getThingsImages();
       setLoading(false);
       setSelectImages(res.files?.length ? res.files : []);
     };
@@ -139,7 +138,9 @@ export function FormStepOne(props: FormStepProps) {
                     setSelectedImage(img.fileId);
                   }}
                   className={`relative w-[57px] h-[57px] cursor-pointer 
-              bg-neutral-2 rounded-md ${selectedImage === img.fileId && "border-2 border-secondary-main"}`}
+              bg-neutral-2 rounded-md ${
+                selectedImage === img.fileId && "border-2 border-secondary-main"
+              }`}
                   key={img.fileId}
                 >
                   <Image alt="image" fill src={img.url} />

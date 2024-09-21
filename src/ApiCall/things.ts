@@ -1,5 +1,6 @@
 import { authOptions } from "@/lib/configs/auth/authOptions";
 import {
+  IFilesResponse,
   IHomeThingsResponse,
   IThingResponse,
   IThingSensor,
@@ -19,7 +20,7 @@ export const getAllThings = async (): Promise<IThingsResponse> => {
       };
       const res = await fetch(
         "https://sensolist-backend.vercel.app/api/v3/things/all/All",
-        { headers },
+        { headers }
       );
       const data = await res.json();
       return data;
@@ -48,7 +49,7 @@ export const getAllThingsServerSide = async (): Promise<IThingsResponse> => {
       };
       const res = await fetch(
         "https://sensolist-backend.vercel.app/api/v3/things/all/All",
-        { headers },
+        { headers }
       );
       const data = await res.json();
       return data;
@@ -76,7 +77,7 @@ export const getThing = async (id: string): Promise<IThingResponse> => {
       };
       const res = await fetch(
         `https://sensolist-backend.vercel.app/api/v3/things/detail/${id}`,
-        { headers },
+        { headers }
       );
       const data = await res.json();
       return data;
@@ -104,7 +105,7 @@ export const getLastTenThings = async (): Promise<IHomeThingsResponse> => {
       };
       const res = await fetch(
         "https://sensolist-backend.vercel.app/api/v3/things/last",
-        { headers },
+        { headers }
       );
       const data = await res.json();
       return data;
@@ -132,7 +133,7 @@ export const getThingSensors = async (): Promise<IThingSensorsResponse> => {
       };
       const res = await fetch(
         "https://sensolist-backend.vercel.app/api/v3/things/virtual/sensors",
-        { headers },
+        { headers }
       );
       const data = await res.json();
       return data;
@@ -154,7 +155,7 @@ export const createThingViaForm = async (
   name: string,
   description: string,
   imageId: string,
-  sensors: IThingSensor[],
+  sensors: IThingSensor[]
 ): Promise<IThingResponse> => {
   try {
     const session = await getSession();
@@ -172,11 +173,39 @@ export const createThingViaForm = async (
           "Content-Type": "application/json",
           Authorization: `Bearer ${session?.accessToken}`,
         },
-      },
+      }
     );
     const data = await res.json();
     return data;
   } catch (e) {
     return { statusCode: 400, message: "Post applets failed" };
+  }
+};
+
+export const getThingsImages = async (): Promise<IFilesResponse> => {
+  try {
+    const session = await getSession();
+    if (session?.accessToken) {
+      const headers = {
+        Authorization: `Bearer ${session.accessToken}`,
+        "Content-type": "application/json",
+      };
+      const res = await fetch(
+        "https://sensolist-backend.vercel.app/api/v3/files/static/list/Thing",
+        { headers }
+      );
+      const data = await res.json();
+      return data;
+    } else {
+      return {
+        statusCode: 400,
+        message: "Not Authenticated",
+      };
+    }
+  } catch (e) {
+    return {
+      statusCode: 400,
+      message: "Fetch images failed",
+    };
   }
 };

@@ -1,10 +1,12 @@
-import MyThingCreateVirtual from "@/components/old_MyThingsVirtualForm";
+"use client";
+
+import MyThingsCreateVirtualForm from "@/components/MyThingsVirtualForm";
 
 export default function Page() {
   return (
     <div>
       <div className="flex flex-col max-w-[30rem] mx-auto">
-        <MyThingCreateVirtual />
+        <MyThingsCreateVirtualForm onClose={() => {}} />
       </div>
     </div>
   );
