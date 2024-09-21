@@ -1,0 +1,333 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: white;
+  min-height: 100vh;
+}
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.bg-gradient-opacity {
+  background: linear-gradient(
+    109deg,
+    rgba(201, 201, 201, 0.4) 1.57%,
+    rgba(196, 196, 196, 0.05) 100%
+  );
+}
+
+/* phone number input */
+
+.react-tel-input {
+  background: linear-gradient(
+    109deg,
+    rgba(201, 201, 201, 0.4) 1.57%,
+    rgba(196, 196, 196, 0.05) 100%
+  ) !important;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.react-tel-input.simple {
+  background: transparent !important;
+}
+.react-tel-input .form-control {
+  background-color: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px !important;
+}
+.react-tel-input .flag-dropdown {
+  background: none !important;
+  border: none !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.7) !important;
+}
+.simple .flag-dropdown {
+  border-right: 1px solid #9b9b9b !important;
+}
+
+.react-tel-input .flag-dropdown.open .selected-flag {
+  background: none !important;
+}
+.react-tel-input .selected-flag:hover,
+.react-tel-input .selected-flag:focus {
+  background: none !important;
+}
+.react-tel-input .country-list {
+  border-radius: 12px !important;
+  max-height: 280px !important;
+  background-color: #000911 !important;
+}
+.react-tel-input.simple .country-list {
+  max-height: 180px !important;
+}
+.react-tel-input .country-list .search {
+  background-color: #000911 !important;
+  border-bottom: 1px solid #334759 !important;
+}
+
+.react-tel-input .country-list .country {
+  color: #9b9b9b;
+  padding: 8px 16px !important;
+  border-bottom: 1px solid #334759;
+}
+.react-tel-input .country-list .country .dial-code {
+  color: #9b9b9b !important;
+}
+.react-tel-input .country-list .country.highlight,
+.react-tel-input .country-list .country:hover {
+  background-color: #dcdcdc !important;
+  color: #6b6b6b !important;
+  border-bottom: 1px solid #f5f5f5;
+}
+.react-tel-input .country-list .country.highlight .dial-code,
+.react-tel-input .country-list .country:hover .dial-code {
+  color: #6b6b6b !important;
+}
+.react-tel-input .selected-flag .arrow.up {
+  border-bottom: 4px solid #fff !important;
+}
+
+.react-tel-input .country-list .search::after {
+  content: "";
+  width: 24px;
+  height: 24px;
+  background-image: url("/assets/search-normal.svg");
+  top: 10px;
+  display: flex;
+  position: absolute;
+}
+
+.react-tel-input .country-list .search-box {
+  margin-left: 30px !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+/* custom checkbox */
+
+.checkbox-container {
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 8px;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* verification inputs */
+
+.vi__character {
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid #fff;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:where(.vi__character) {
+  flex-grow: 0 !important;
+  flex-basis: auto !important;
+  width: 80px !important;
+}
+:where(.vi__character--selected) {
+  outline: none !important;
+  border: 4px solid !important;
+}
+
+.vi__character:focus-visible {
+  outline: none;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* shadow */
+
+.shadow-300 {
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-right-300 {
+  box-shadow: 4px 0px 8px 0px rgba(0, 0, 0, 0.3);
+}
+
+.dark .shadow-white-150 {
+  box-shadow: 0px 0px 7px 0px rgba(255, 255, 255, 0.3);
+}
+
+.dark .shadow-right-white-150 {
+  box-shadow: 4px 0px 7px 0px rgba(255, 255, 255, 0.3);
+}
+.shadow-orange:hover {
+  box-shadow: 0px 0px 8px 0px #e67f3a;
+}
+@media not all and (max-width: 768px) {
+  .shadow-md-300 {
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .shadow-md-right-300 {
+    box-shadow: 4px 0px 8px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .shadow-md-white-150 {
+    box-shadow: 0px 0px 7px 0px rgba(255, 255, 255, 0.3);
+  }
+
+  .dark .shadow-md-right-white-150 {
+    box-shadow: 2px 0px 8px 0px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.menu-animation:hover {
+  -webkit-transition: background-color 1000ms linear;
+  -ms-transition: background-color 1000ms linear;
+  transition: background-color 1000ms linear;
+}
+
+/* verification */
+
+.profile .vi__character {
+  border: 1px solid black;
+  color: black;
+}
+
+.dark .profile .vi__character {
+  border: 1px solid white;
+  color: white;
+}
+/* material table */
+
+.dark .MuiBox-root {
+  background-color: #001426;
+}
+
+.dark .MuiTableCell-root {
+  background-color: #001426;
+  border-bottom: 1px solid #505050;
+  color: #d1d1d1;
+}
+
+.dark .css-74uxa4 {
+  background-color: transparent;
+}
+
+.dark .MuiMenu-list {
+  background-color: #001426;
+}
+
+.dark .MuiPaper-root {
+  background-color: #001426;
+}
+
+.dark .MuiButtonBase-root:hover .MuiBox-root {
+  background-color: transparent;
+}
+
+.MuiSwitch-thumb {
+  background-color: rgba(230, 127, 58, 1) !important;
+}
+
+.MuiSwitch-track {
+  background-color: rgba(230, 127, 58, 0.8) !important;
+}
+
+.MuiInputBase-input:focus {
+  outline: none !important;
+  --tw-ring-shadow: none;
+}
+.MuiCollapse-root:focus-visible {
+  outline: none;
+}
+
+.MuiCollapse-root div:focus-visible {
+  outline: none;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border: 1px solid #cacaca !important;
+}
+
+.css-1icfy0x-MuiButtonBase-root-MuiButton-root {
+  background-color: #e67f3a !important;
+  color: white !important;
+}
+
+.css-hna4oi-MuiButtonBase-root-MuiButton-root {
+  color: white !important;
+}
+
+.css-wsew38 {
+  width: 100%;
+  overflow: auto;
+}
+
+.recharts-wrapper {
+  padding: 0.75rem;
+}
+
+/* // datepicker */
+.react-datetime-picker__wrapper {
+  border-radius: 8px !important;
+  padding: 0.5rem !important;
+}

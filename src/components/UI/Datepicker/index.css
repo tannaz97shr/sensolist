@@ -1,0 +1,36 @@
+/* Targeting react-datetime-picker elements for dark mode */
+.dark-mode .react-datetime-picker {
+  background-color: #1a1a1a; /* Dark background */
+  color: #fff; /* Light text */
+  border-color: #444; /* Adjust border color */
+}
+
+/* Calendar tile styling */
+.dark-mode .react-datetime-picker__calendar {
+  background-color: #1a1a1a; /* Dark background for calendar */
+  color: #fff; /* Text color */
+  border: 1px solid #444; /* Border for the calendar */
+}
+
+/* Styling the individual days in the calendar */
+.dark-mode .react-datetime-picker__calendar__month-view__days__day {
+  background-color: #1a1a1a; /* Dark background for calendar days */
+  color: #fff; /* Text color for regular days */
+}
+
+/* Style for the active day (current selected date) */
+.dark-mode .react-datetime-picker__calendar__tile--active {
+  background-color: #007bff; /* Active tile background */
+  color: #fff; /* Active day text color */
+}
+
+/* Styling for days of the neighboring month */
+.dark-mode
+  .react-datetime-picker__calendar__month-view__days__day--neighboringMonth {
+  color: #777; /* Lighter color for neighboring month days */
+}
+
+/* Styling weekend days */
+.dark-mode .react-datetime-picker__calendar__month-view__days__day--weekend {
+  color: #ff7f7f; /* Color for weekends */
+}

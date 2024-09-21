@@ -1,0 +1,138 @@
+import { getWidgetData } from "@/ApiCall/widgets";
+import { IWidgetData } from "@/types/general";
+import { useEffect, useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Label,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+
+interface BarChartProps {
+  senderId?: string;
+  name: string;
+  start: string;
+  end: string;
+  xLabel: string;
+  yLabel: string;
+  min: number;
+  max: number;
+  title: string;
+  charactristics: string[];
+}
+
+export default function CustomBarChart({
+  senderId,
+  name,
+  start,
+  end,
+  charactristics,
+  xLabel,
+  yLabel,
+  min,
+  max,
+}: BarChartProps) {
+  const colors = [
+    "#FF5733", // Vivid Red
+    "#33FF57", // Vivid Green
+    "#3357FF", // Vivid Blue
+    "#F1C40F", // Bright Yellow
+    "#9B59B6", // Vibrant Purple
+    "#E67E22", // Rich Orange
+    "#1ABC9C", // Teal
+    "#34495E", // Dark Blue-Grey
+    "#E74C3C", // Soft Red
+    "#2ECC71", // Bright Green
+  ];
+  const [widgetData, setWidgetData] = useState<IWidgetData>();
+  const [seconds, setSeconds] = useState<number>(10);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (seconds === 10) {
+      const getData = async () => {
+        if (senderId) {
+          setLoading(true);
+          const response = await getWidgetData(
+            senderId,
+            charactristics,
+            start,
+            end
+          );
+          setLoading(false);
+          setWidgetData(response);
+        }
+      };
+      getData();
+    } else if (seconds <= 0) {
+      setSeconds(10);
+      return;
+    }
+
+    const interval = setInterval(() => setSeconds(seconds - 1), 1000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [senderId, seconds]);
+  console.log("dataa", widgetData);
+
+  const convertToChartData = (data: IWidgetData) => {
+    const keys = Object.keys(data);
+    const maxLength = 20;
+
+    const chartData = Array.from({ length: maxLength }, (_, i) => {
+      const entry: Record<string, number | string> = {
+        name: `Data Point ${i + 1}`,
+      };
+
+      keys.forEach((key) => {
+        if (i < data[key].data.length) {
+          entry[key] = data[key].data[i].payload;
+        } else {
+          entry[key] = 0;
+        }
+      });
+
+      return entry;
+    });
+
+    return chartData;
+  };
+  // Convert the input data
+  const chartData = widgetData ? convertToChartData(widgetData) : [];
+
+  console.log("chart data", chartData);
+
+  return (
+    <ResponsiveContainer width="100%" height={300}>
+      <BarChart data={chartData}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis tick={{ fontSize: 10 }} dataKey="name">
+          <Label position={"insideBottom"} offset={0}>
+            {xLabel}
+          </Label>
+        </XAxis>
+        <YAxis
+          interval={20}
+          tick={{ fontSize: 10 }}
+          type="number"
+          domain={[(_dataMin: number) => min, (_dataMax: number) => max]}
+          allowDataOverflow={true}
+        >
+          <Label>{yLabel}</Label>
+        </YAxis>
+        <Tooltip />
+        <Legend />
+        {widgetData &&
+          Object.keys(widgetData).map((key, i) => (
+            <Bar key={key} dataKey={key} fill={colors[i]} />
+          ))}
+      </BarChart>
+    </ResponsiveContainer>
+  );
+}
