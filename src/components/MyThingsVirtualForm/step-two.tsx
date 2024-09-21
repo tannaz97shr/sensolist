@@ -1,8 +1,8 @@
-import { useForm } from "react-hook-form";
-import { FormControls, FormStepProps, VirtualFormState } from ".";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useState } from "react";
-import { CharacteristicOptions } from "./characteristics-options";
+import { useForm } from "react-hook-form";
+import { FormControls, FormStepProps, VirtualFormState } from ".";
+import FormCharacteristicsDropdown from "./FormCharacteristicsDropdown";
 
 export function FormStepTwo(props: FormStepProps) {
   const {
@@ -20,6 +20,7 @@ export function FormStepTwo(props: FormStepProps) {
   }
 
   const [valueType, setValueType] = useState("1");
+  console.log("value type", valueType);
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col">
       <RadioGroup value={valueType} onChange={(e, v) => setValueType(v)}>
@@ -47,21 +48,26 @@ export function FormStepTwo(props: FormStepProps) {
         />
         <div className="flex flex-col gap-4">
           {props.state.characteristics.map((characteristic) => (
-            <CharacteristicOptions
+            <FormCharacteristicsDropdown
               key={characteristic.character}
-              sensor={characteristic}
-              setSensorData={(sensor) =>
-                props.setFormState((prev) => {
-                  const characteristics = [...prev.characteristics];
-                  const index = characteristics.findIndex(
-                    (item) => item.character === sensor.character,
-                  );
-                  characteristics[index] = sensor;
-
-                  return { ...prev, characteristics };
-                })
-              }
+              title={characteristic.character}
+              disable={valueType === "1"}
             />
+            // <CharacteristicOptions
+            //   key={characteristic.character}
+            //   sensor={characteristic}
+            //   setSensorData={(sensor) =>
+            //     props.setFormState((prev) => {
+            //       const characteristics = [...prev.characteristics];
+            //       const index = characteristics.findIndex(
+            //         (item) => item.character === sensor.character,
+            //       );
+            //       characteristics[index] = sensor;
+
+            //       return { ...prev, characteristics };
+            //     })
+            //   }
+            // />
           ))}
         </div>
         <FormControlLabel
