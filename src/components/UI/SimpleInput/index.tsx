@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { UseFormRegister } from "react-hook-form";
 import FormError from "../FormError";
 
 interface SimpleInputProps {
-  value: string;
+  // value: string;
   onChange: (val: string) => void;
   className?: string;
   placeholder?: string;
@@ -16,7 +15,7 @@ interface SimpleInputProps {
 }
 
 export default function SimpleInput({
-  value,
+  // value,
   onChange,
   className,
   placeholder,
@@ -25,15 +24,15 @@ export default function SimpleInput({
   required,
   error,
 }: SimpleInputProps) {
-  const [inputValue, setInputValue] = useState(value);
-  useEffect(() => {
-    setInputValue(value);
-  }, [value]);
+  // const [inputValue, setInputValue] = useState(value);
+  // useEffect(() => {
+  //   setInputValue(value);
+  // }, [value]);
   return (
     <div className={`relative ${className}`}>
       <input
         {...register(name, {
-          value: inputValue === "" ? undefined : inputValue,
+          // value: inputValue === "" ? undefined : inputValue,
           required: required,
           onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
             onChange(e.target.value);
