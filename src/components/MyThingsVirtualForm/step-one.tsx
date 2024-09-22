@@ -104,7 +104,7 @@ export function FormStepOne(props: FormStepProps) {
     props.setFormState({
       ...data,
       characteristics: data.characteristics.map((char) => {
-        return { ...char, active: true };
+        return { ...char, active: true, dataModels: [] };
       }),
     });
     props.nextStep?.();
