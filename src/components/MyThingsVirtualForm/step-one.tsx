@@ -99,7 +99,14 @@ export function FormStepOne(props: FormStepProps) {
   }, []);
 
   async function onSubmit(data: VirtualFormState) {
-    props.setFormState(data);
+    console.log("step one", data);
+    // props.setFormState(data);
+    props.setFormState({
+      ...data,
+      characteristics: data.characteristics.map((char) => {
+        return { ...char, active: true };
+      }),
+    });
     props.nextStep?.();
   }
 
