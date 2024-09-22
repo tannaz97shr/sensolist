@@ -49,6 +49,7 @@ export function FormStepTwo(props: FormStepProps) {
         <div className="flex flex-col gap-4">
           {props.state.characteristics.map((characteristic) => (
             <FormCharacteristicsDropdown
+              register={register}
               key={characteristic.character}
               title={characteristic.character}
               disable={valueType === "1"}
