@@ -10,7 +10,7 @@ export function FormStepper({ steps, current }: FormStepperProps) {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="text-sm">
+      <div className="text-sm dark:text-white">
         Step {current + 1}/{steps.length}:{" "}
         <span className="text-xs text-neutral-5">
           {currentStep.description}

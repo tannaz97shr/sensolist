@@ -1,11 +1,11 @@
 "use client";
 
+import { createThingViaForm } from "@/ApiCall/things";
+import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { FormControls, FormStepProps, VirtualFormState } from ".";
 import { CharacteristicToggle } from "./characteristics-toggle";
-import { createThingViaForm } from "@/ApiCall/things";
-import { useDispatch } from "react-redux";
-import { createAlert } from "@/lib/features/notification/notificatioSlice";
 
 export function FormStepThree(props: FormStepProps) {
   const { handleSubmit } = useForm<VirtualFormState>({
@@ -14,11 +14,13 @@ export function FormStepThree(props: FormStepProps) {
   const dispatch = useDispatch();
 
   async function onSubmit(data: VirtualFormState) {
+    console.log("three data", data);
+    console.log("three state", props.state);
     const result = await createThingViaForm(
       data.name,
       "Virtual Thing",
       props.state.image ?? "",
-      props.state.characteristics,
+      props.state.characteristics
     );
     if (result.statusCode > 299) {
       dispatch(
@@ -27,7 +29,7 @@ export function FormStepThree(props: FormStepProps) {
             result.message ??
             "Something went wrong while creating virtual thing",
           type: "error",
-        }),
+        })
       );
       return;
     } else {
@@ -38,7 +40,7 @@ export function FormStepThree(props: FormStepProps) {
               result.message ??
               "Something went wrong while creating virtual thing",
             type: "success",
-          }),
+          })
         );
       }
     }
@@ -58,7 +60,7 @@ export function FormStepThree(props: FormStepProps) {
             props.setFormState((prev) => {
               const characteristics = [...prev.characteristics];
               const index = characteristics.findIndex(
-                (item) => item.character === sensor.character,
+                (item) => item.character === sensor.character
               );
               characteristics[index] = sensor;
 

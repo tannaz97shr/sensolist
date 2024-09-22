@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
+import MyThingsCreateVirtualForm from "../MyThingsVirtualForm";
 import Button from "../UI/Button";
 import Modal from "../UI/Modal";
-import MyThingsCreateVirtualForm from "../MyThingsVirtualForm";
 
 interface MythingsCrateVirtualButtonProps {
   className?: string;
@@ -13,7 +13,11 @@ export default function MyThingsCreateVirtualButton({
   const [isOpen, setOpen] = useState(false);
   return (
     <>
-      <Button className={className} onClick={() => setOpen(true)}>
+      <Button
+        href="/myThings/createVirtual"
+        className={className}
+        onClick={() => setOpen(true)}
+      >
         Create Virtual
       </Button>
       <Modal open={isOpen} onClose={() => setOpen(false)}>

@@ -1,11 +1,12 @@
 "use client";
-import { Dispatch, SetStateAction, useState } from "react";
-import { FormStepper } from "./stepper";
-import { FormStepOne } from "./step-one";
-import Button from "../UI/Button";
-import { FormStepTwo } from "./step-two";
-import { FormStepThree } from "./step-three";
 import { IThingSensor } from "@/types/general";
+import { ArrowLeft } from "iconsax-react";
+import { Dispatch, SetStateAction, useState } from "react";
+import Button from "../UI/Button";
+import { FormStepOne } from "./step-one";
+import { FormStepThree } from "./step-three";
+import { FormStepTwo } from "./step-two";
+import { FormStepper } from "./stepper";
 
 const formSteps = [
   { description: " Choose a name and an image for your new virtual thing." },
@@ -39,7 +40,7 @@ export default function MyThingsCreateVirtualForm({
   const [currentStep, setCurrentStep] = useState(0);
   return (
     <div className="flex flex-col gap-10 h-full">
-      <div className="font-bold text-lg text-center md:text-left capitalize">
+      <div className="font-bold text-lg text-center md:text-left capitalize dark:text-white">
         create virtual
       </div>
       <FormStepper steps={formSteps} current={currentStep} />
@@ -108,7 +109,7 @@ export function FormControls(props: FormControlsProps) {
     <div className="flex justify-between mt-auto pb-10">
       <Button
         variant="text"
-        className="text-neutral-6 px-6"
+        className="text-neutral-6 lg:px-6"
         type="button"
         onClick={props.onClose}
       >
@@ -119,9 +120,10 @@ export function FormControls(props: FormControlsProps) {
           <Button
             onClick={props.prevStep}
             className="px-6 text-neutral-6"
-            variant="text"
+            variant="secondary"
             type="button"
           >
+            <ArrowLeft className=" size-5 mr-2" />
             Go Back
           </Button>
         )}
