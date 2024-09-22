@@ -8,7 +8,7 @@ export interface CharacteristicOptionsProps {
 }
 export function CharacteristicToggle(props: CharacteristicOptionsProps) {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between dark:text-white">
       {props.sensor.character}
       <ToggleSwitch
         checked={!!props.sensor?.active}
