@@ -35,13 +35,12 @@ export default function FormCharacteristicsDropdown({
     },
     {
       title: "Value",
-      value: "value",
+      value: "mean",
       type: "number",
     },
     {
       title: "Coefficient of Variation(CV)",
-      value: "coefficient",
-      type: "number",
+      value: "distribution",
     },
   ];
   return (
