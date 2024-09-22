@@ -15,6 +15,7 @@ export function FormStepTwo(props: FormStepProps) {
   console.log(props.state);
 
   function onSubmit(data: VirtualFormState) {
+    console.log("step two data", data);
     props.setFormState(data);
     props.nextStep?.();
   }
@@ -49,8 +50,9 @@ export function FormStepTwo(props: FormStepProps) {
           label="Manual"
         />
         <div className="flex flex-col gap-4 w-full">
-          {props.state.characteristics.map((characteristic) => (
+          {props.state.characteristics.map((characteristic, i) => (
             <FormCharacteristicsDropdown
+              characterIndex={i}
               register={register}
               key={characteristic.character}
               title={characteristic.character}

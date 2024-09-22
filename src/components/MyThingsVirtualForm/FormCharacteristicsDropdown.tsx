@@ -8,12 +8,14 @@ interface FormCharacteristicsDropdown {
   title: string;
   disable?: boolean;
   register: UseFormRegister<any>;
+  characterIndex: number;
 }
 
 export default function FormCharacteristicsDropdown({
   title,
   disable,
   register,
+  characterIndex,
 }: FormCharacteristicsDropdown) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [indexRows, setIndexRows] = useState<number[]>([1]);
@@ -39,6 +41,7 @@ export default function FormCharacteristicsDropdown({
     {
       title: "Coefficient of Variation(CV)",
       value: "coefficient",
+      type: "number",
     },
   ];
   return (
@@ -77,12 +80,13 @@ export default function FormCharacteristicsDropdown({
             <div className="w-6"></div>
           </div>
           {/* rows: inputs */}
-          {indexRows.map((row) => (
+          {indexRows.map((row, i) => (
             <div className="flex w-full gap-4 mt-6 items-center" key={row}>
               {columnsArray.map((col) => (
                 <div key={col.value} className="flex-1 min-w-24">
                   <SimpleInput
-                    name={`${col.value}${row}`}
+                    required
+                    name={`characteristics.${characterIndex}.dataModels.${i}.${col.value}`}
                     register={register}
                     type={col.type}
                   />
