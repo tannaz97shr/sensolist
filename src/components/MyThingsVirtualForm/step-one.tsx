@@ -126,9 +126,8 @@ export function FormStepOne(props: FormStepProps) {
         selectedValues={selectedCharactristic || []}
         setSelectedValues={setSelectedCharactristic}
       />
-
       <div>
-        <div className="mt-6">Choose an image:</div>
+        <div className="mt-6 dark:text-white">Choose an image:</div>
         {selectImages && (
           <div className="relative flex flex-wrap gap-4 mt-3">
             {selectImages.map((img) => {

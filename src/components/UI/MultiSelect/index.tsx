@@ -27,7 +27,7 @@ export default function MultiSelect({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <div className={`relative ${className}`}>
-      <span className=" text-sm mb-4">{label}</span>
+      <span className=" text-sm mb-4 dark:text-white">{label}</span>
       <button
         onClick={(event: React.MouseEvent<HTMLElement>) => {
           setIsOpen(true);
@@ -37,7 +37,10 @@ export default function MultiSelect({
         w-full py-2 pl-4 pr-10 min-h-[45px] mt-2 flex-wrap"
       >
         {selectedValues.map((val, i) => (
-          <div key={val.value} className=" whitespace-nowrap">
+          <div
+            key={val.value}
+            className=" whitespace-nowrap dark:text-neutral-2"
+          >
             {i !== selectedValues.length && i !== 0 && (
               <span className="mx-2">-</span>
             )}
@@ -45,7 +48,7 @@ export default function MultiSelect({
           </div>
         ))}
         <ArrowDown2
-          className={` absolute size-4 right-2 transition-all duration-500 ${
+          className={` absolute size-4 right-2 transition-all duration-500 dark:text-neutral-2 ${
             isOpen && "rotate-180"
           }`}
         />

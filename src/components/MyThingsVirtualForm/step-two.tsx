@@ -25,6 +25,7 @@ export function FormStepTwo(props: FormStepProps) {
     <form onSubmit={handleSubmit(onSubmit)} className="flex-1 flex flex-col">
       <RadioGroup value={valueType} onChange={(e, v) => setValueType(v)}>
         <FormControlLabel
+          className=" dark:text-white"
           control={
             <Radio
               className="aria-checked:!text-secondary-main !text-neutral-6 aria-disabled:!text-neutral-7"
@@ -36,6 +37,7 @@ export function FormStepTwo(props: FormStepProps) {
           label="Default data"
         />
         <FormControlLabel
+          className=" dark:text-white"
           control={
             <Radio
               className="aria-checked:!text-secondary-main !text-neutral-6 aria-disabled:!text-neutral-7"
@@ -46,7 +48,7 @@ export function FormStepTwo(props: FormStepProps) {
           }
           label="Manual"
         />
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
           {props.state.characteristics.map((characteristic) => (
             <FormCharacteristicsDropdown
               register={register}
@@ -54,21 +56,6 @@ export function FormStepTwo(props: FormStepProps) {
               title={characteristic.character}
               disable={valueType === "1"}
             />
-            // <CharacteristicOptions
-            //   key={characteristic.character}
-            //   sensor={characteristic}
-            //   setSensorData={(sensor) =>
-            //     props.setFormState((prev) => {
-            //       const characteristics = [...prev.characteristics];
-            //       const index = characteristics.findIndex(
-            //         (item) => item.character === sensor.character,
-            //       );
-            //       characteristics[index] = sensor;
-
-            //       return { ...prev, characteristics };
-            //     })
-            //   }
-            // />
           ))}
         </div>
         <FormControlLabel
