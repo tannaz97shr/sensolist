@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import DeleteDialog from "../UI/Dialog/DeleteDialog";
 import { PinIcon, PinnedIcon } from "../UI/Icons";
 import Loading from "../UI/Loading";
 
@@ -24,6 +25,7 @@ export default function DashboardCard({
 }: DashboardCardProps) {
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
   const [pinLoading, setPinLoading] = useState<boolean>(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
   const dispatch = useDispatch();
 
   const pinHandler = async () => {
@@ -126,12 +128,24 @@ export default function DashboardCard({
             <button onClick={editHandler}>
               <Edit2 className=" text-neutral-5 size-4" />
             </button>
-            <button onClick={removeHandler}>
+            <button
+              onClick={() => {
+                setDeleteDialogOpen(true);
+              }}
+            >
               <Trash className=" text-neutral-5 size-4" />
             </button>
           </div>
         </div>
       </div>
+      <DeleteDialog
+        open={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false);
+        }}
+        onDelete={removeHandler}
+        description={`Do you want to delete the dashboard named ${dashboard.name}?`}
+      />
     </>
   );
 }
