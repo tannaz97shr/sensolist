@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "fill" | "stroke" | "text" | "secondary";
+  variant?: "fill" | "stroke" | "text" | "secondary" | "delete";
   className?: string;
   children: React.ReactNode;
   href?: string;
@@ -27,6 +27,8 @@ export default function Button({
             ? ""
             : variant === "secondary"
             ? " border-2 border-neutral-6 text-neutral-6"
+            : variant === "delete"
+            ? " text-white bg-error shadow-orange"
             : " text-white bg-secondary-main shadow-orange"
         } ${className}`}
       >
@@ -43,6 +45,8 @@ export default function Button({
           ? ""
           : variant === "secondary"
           ? " border-2 border-neutral-6 text-neutral-6"
+          : variant === "delete"
+          ? " text-white bg-error shadow-orange"
           : " text-white bg-secondary-main shadow-orange"
       } ${className}`}
       disabled={loading}
