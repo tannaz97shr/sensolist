@@ -452,6 +452,12 @@ export interface IWidgetConfig extends IWidgetFormData {
   widgetName?: string;
   senderId?: string;
   fields?: IWidgetFields[];
+  position: {
+    x: number;
+    y: number;
+    width: number | string;
+    height: number | string;
+  };
 }
 
 // files

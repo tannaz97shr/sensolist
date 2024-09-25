@@ -3,6 +3,7 @@
 import { IWidgetConfig } from "@/types/general";
 import { Edit, Trash } from "iconsax-react";
 import { useDispatch } from "react-redux";
+import { Rnd } from "react-rnd";
 
 interface WidgetCardContainerProps {
   children: React.ReactNode;
@@ -23,7 +24,17 @@ export default function WidgetCardContainer({
 }: WidgetCardContainerProps) {
   const dispatch = useDispatch();
   return (
-    <div className="overflow-auto w-[400px] bg-black-opacity-100 dark:bg-white-opacity-50 rounded-lg p-4 flex flex-col">
+    <Rnd
+      default={{
+        x: widget.position.x,
+        y: widget.position.y,
+        width: widget.position.width,
+        height: widget.position.height,
+      }}
+      disableDragging={!editMode}
+      enableResizing={editMode ? true : false}
+      className="overflow-auto w-full bg-black-opacity-100 dark:bg-white-opacity-50 rounded-lg p-4 flex flex-col"
+    >
       {editMode && (
         <div className="w-full flex items-center justify-end">
           <button onClick={onEditSelect} className="mr-2">
@@ -35,6 +46,6 @@ export default function WidgetCardContainer({
         </div>
       )}
       {children}
-    </div>
+    </Rnd>
   );
 }

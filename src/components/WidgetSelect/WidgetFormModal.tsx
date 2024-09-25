@@ -186,6 +186,13 @@ export default function WidgetFormModal({
                 thingName: selectedThing.name,
                 senderId: selectedThing.senderId,
                 fields: fields,
+                // inja bayad positione akharin widget mohasebe beshe
+                position: {
+                  x: 0,
+                  y: 0,
+                  width: 320,
+                  height: 280,
+                },
               },
               index: editIndex,
             })
@@ -207,6 +214,13 @@ export default function WidgetFormModal({
                         thingName: selectedThing.name,
                         senderId: selectedThing.senderId,
                         fields: fields,
+                        // inja bayad positione akharin widget mohasebe beshe
+                        position: {
+                          x: 0,
+                          y: 0,
+                          width: 320,
+                          height: 280,
+                        },
                       }
                     : wdg
                 )
@@ -241,6 +255,13 @@ export default function WidgetFormModal({
               thingName: selectedThing.name,
               senderId: selectedThing.senderId,
               fields: fields,
+              // inja bayad positione akharin widget mohasebe beshe
+              position: {
+                x: 0,
+                y: 0,
+                width: 320,
+                height: 280,
+              },
             },
           })
         );
