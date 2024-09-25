@@ -18,6 +18,7 @@ interface DashboardWidgetSelectProps {
   onClose: () => void;
   dashboardId: string;
   refreshData: () => Promise<void>;
+  lastPositionY: number;
 }
 
 export default function DashboardWidgetSelect({
@@ -25,6 +26,7 @@ export default function DashboardWidgetSelect({
   onClose,
   dashboardId,
   refreshData,
+  lastPositionY,
 }: DashboardWidgetSelectProps) {
   const [widgetGroups, setWidgetGroupss] = useState<IWidget[]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -139,6 +141,7 @@ export default function DashboardWidgetSelect({
         widgetId={widgetModalOpen?.widgetId || ""}
         widgetName={widgetModalOpen?.widgetName || ""}
         fields={widgetModalOpen?.fields}
+        lastY={lastPositionY}
       />
       <WidgetFormModal
         open={!!widgetEdit}
@@ -151,6 +154,7 @@ export default function DashboardWidgetSelect({
         widgetId={widgetEdit?.widget.widget || ""}
         widgetName={widgetEdit?.widget.widgetName || ""}
         fields={widgetEdit?.widget.fields}
+        widgetPosition={widgetEdit?.widget.position}
         draft={widgetEdit?.draft}
         editIndex={widgetEdit?.index}
         refreshData={refreshData}

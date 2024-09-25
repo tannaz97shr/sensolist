@@ -12,6 +12,7 @@ import {
   IWidgetConfig,
   IWidgetFields,
   IWidgetFormData,
+  IWidgetPosition,
 } from "@/types/general";
 import { useEffect, useState } from "react";
 import "react-calendar/dist/Calendar.css";
@@ -39,6 +40,8 @@ interface WidgetFormModalProps {
   draft?: boolean;
   editIndex?: number;
   refreshData?: () => Promise<void>;
+  lastY?: number;
+  widgetPosition?: IWidgetPosition;
 }
 
 export default function WidgetFormModal({
@@ -53,6 +56,8 @@ export default function WidgetFormModal({
   draft,
   editIndex,
   refreshData,
+  widgetPosition,
+  lastY,
 }: WidgetFormModalProps) {
   const [selectedEnums, setSelectedEnums] = useState<
     { group: string; fieldName: string; selectedEnum: ISelectOption }[]
@@ -186,12 +191,11 @@ export default function WidgetFormModal({
                 thingName: selectedThing.name,
                 senderId: selectedThing.senderId,
                 fields: fields,
-                // inja bayad positione akharin widget mohasebe beshe
-                position: {
+                position: widgetPosition || {
                   x: 0,
-                  y: 0,
+                  y: lastY ? lastY + 16 : 0,
                   width: 320,
-                  height: 280,
+                  height: 400,
                 },
               },
               index: editIndex,
@@ -214,12 +218,11 @@ export default function WidgetFormModal({
                         thingName: selectedThing.name,
                         senderId: selectedThing.senderId,
                         fields: fields,
-                        // inja bayad positione akharin widget mohasebe beshe
-                        position: {
+                        position: widgetPosition || {
                           x: 0,
-                          y: 0,
+                          y: lastY ? lastY + 16 : 0,
                           width: 320,
-                          height: 280,
+                          height: 400,
                         },
                       }
                     : wdg
@@ -258,9 +261,9 @@ export default function WidgetFormModal({
               // inja bayad positione akharin widget mohasebe beshe
               position: {
                 x: 0,
-                y: 0,
+                y: lastY ? lastY + 16 : 0,
                 width: 320,
-                height: 280,
+                height: 400,
               },
             },
           })

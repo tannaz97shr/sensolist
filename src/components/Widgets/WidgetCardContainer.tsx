@@ -1,6 +1,6 @@
 "use client";
 
-import { IWidgetConfig } from "@/types/general";
+import { IWidgetConfig, IWidgetPosition } from "@/types/general";
 import { Edit, Trash } from "iconsax-react";
 import { useDispatch } from "react-redux";
 import { Rnd } from "react-rnd";
@@ -12,6 +12,7 @@ interface WidgetCardContainerProps {
   dashboardId: string;
   onEditSelect: () => void;
   onDelete: () => void;
+  positionChange: (pos: IWidgetPosition) => void;
 }
 
 export default function WidgetCardContainer({
@@ -21,15 +22,33 @@ export default function WidgetCardContainer({
   widget,
   dashboardId,
   onEditSelect,
+  positionChange,
 }: WidgetCardContainerProps) {
   const dispatch = useDispatch();
   return (
     <Rnd
+      style={{ position: "static" }}
       default={{
         x: widget.position.x,
         y: widget.position.y,
         width: widget.position.width,
         height: widget.position.height,
+      }}
+      onDragStop={(_e, d) => {
+        positionChange({
+          x: d.x,
+          y: d.y,
+          height: widget.position.height,
+          width: widget.position.width,
+        });
+      }}
+      onResizeStop={(_e, _direction, ref, _delta, position) => {
+        positionChange({
+          x: position.x,
+          y: position.y,
+          height: ref.style.height,
+          width: ref.style.width,
+        });
       }}
       disableDragging={!editMode}
       enableResizing={editMode ? true : false}

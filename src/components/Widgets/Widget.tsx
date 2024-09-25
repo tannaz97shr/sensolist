@@ -1,7 +1,7 @@
 "use client";
 
 import { addWidgetEdit } from "@/lib/features/dashboard/dashboardSlice";
-import { IWidgetConfig } from "@/types/general";
+import { IWidgetConfig, IWidgetPosition } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import CustomBarChart from "./BarChart";
@@ -26,6 +26,7 @@ interface WidgetProps {
   saved: boolean;
   index: number;
   onDelete: () => void;
+  onPositionChange: (pos: IWidgetPosition) => void;
 }
 
 export default function Widget({
@@ -35,12 +36,14 @@ export default function Widget({
   saved,
   onDelete,
   index,
+  onPositionChange,
 }: WidgetProps) {
   const dispatch = useDispatch();
   const widgetName = widget.widgetName;
   console.log("widget", widget);
   return (
     <WidgetCardContainer
+      positionChange={onPositionChange}
       onDelete={onDelete}
       onEditSelect={() => {
         dispatch(

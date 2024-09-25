@@ -3,12 +3,13 @@
 import { getSingleDashboard } from "@/ApiCall/dashboards";
 import { storeWidgetsConfig } from "@/ApiCall/widgets";
 import {
+  editDraftWidgetPosition,
   emptyDraftWidget,
   removeDraftWidget,
 } from "@/lib/features/dashboard/dashboardSlice";
 import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import { RootState } from "@/lib/store";
-import { IDashboardDetails } from "@/types/general";
+import { IDashboardDetails, IWidgetPosition } from "@/types/general";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +30,7 @@ export default function DashboardWidgets({
   const [selectedDashboard, setSelectedDashboard] =
     useState<IDashboardDetails>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasChanged, setHasChanged] = useState<boolean>(false);
 
   const getData = async () => {
     setLoading(true);
@@ -44,10 +46,11 @@ export default function DashboardWidgets({
   const dispatch = useDispatch();
 
   const { draftWidgets } = useSelector(
-    (state: RootState) => state.dashboardSlice,
+    (state: RootState) => state.dashboardSlice
   );
 
   const onSave = async () => {
+    console.log("on save", selectedDashboard, draftWidgets);
     // dispatch(saveDraftWidgets({ dashboardId: selectedDashboard.id }));
     const res = selectedDashboard?.widgets.length
       ? await storeWidgetsConfig(dashboardId, [
@@ -64,11 +67,21 @@ export default function DashboardWidgets({
         createAlert({
           message: res.message || "widget save error",
           type: "error",
-        }),
+        })
       );
     }
     setEditMode(false);
   };
+
+  const allWidgets = selectedDashboard?.widgets
+    ? [...selectedDashboard?.widgets, ...draftWidgets]
+    : [...draftWidgets];
+
+  const allWidgetsSortedByY = allWidgets.sort(
+    (a, b) => a.position.y - b.position.y
+  );
+
+  console.log("allWidgetsSortedByY", allWidgetsSortedByY);
 
   //deleting saved widgets
   const onDeleteSaved = async (index: number) => {
@@ -90,7 +103,7 @@ export default function DashboardWidgets({
         createAlert({
           message: res.message || "widget delete error",
           type: "error",
-        }),
+        })
       );
     }
     setEditMode(false);
@@ -109,11 +122,17 @@ export default function DashboardWidgets({
           setIsSelectOpen(false);
         }}
         isOpen={isSelectOpen}
+        lastPositionY={
+          allWidgetsSortedByY[allWidgetsSortedByY.length - 1]?.position.y +
+          Number(
+            allWidgetsSortedByY[allWidgetsSortedByY.length - 1]?.position.height
+          )
+        }
       />
       <WidgetsHeader
         dashboardName={selectedDashboard?.name}
         dashboardDescription={selectedDashboard?.description}
-        hasMadeChange={!!draftWidgets.length}
+        hasMadeChange={!!draftWidgets.length || hasChanged}
         editMode={editMode}
         goToEditMode={() => {
           setEditMode(true);
@@ -133,12 +152,23 @@ export default function DashboardWidgets({
       <div className=" m-auto w-full flex-1 p-4">
         {(selectedDashboard?.widgets?.length || 0) +
         (draftWidgets.length || 0) ? (
-          <div className="w-full flex flex-wrap gap-4">
+          <div className="w-full flex flex-wrap gap-4 overflow-auto">
             {selectedDashboard?.widgets &&
               selectedDashboard?.widgets.map((wdg, i) => (
                 <Widget
                   onDelete={async () => {
                     await onDeleteSaved(i);
+                  }}
+                  onPositionChange={(pos: IWidgetPosition) => {
+                    setHasChanged(true);
+                    setSelectedDashboard({
+                      ...selectedDashboard,
+                      widgets: selectedDashboard.widgets.map((widget) =>
+                        widget.widget === wdg.widget
+                          ? { ...widget, position: pos }
+                          : widget
+                      ),
+                    });
                   }}
                   saved={true}
                   dashboardId={selectedDashboard.id}
@@ -159,6 +189,15 @@ export default function DashboardWidgets({
                 key={wdg.title}
                 widget={wdg}
                 index={i}
+                onPositionChange={(pos: IWidgetPosition) => {
+                  setHasChanged(true);
+                  dispatch(
+                    editDraftWidgetPosition({
+                      widget: wdg.widget,
+                      position: pos,
+                    })
+                  );
+                }}
               />
             ))}
             {/* {selectedDashboard?.widgets &&
