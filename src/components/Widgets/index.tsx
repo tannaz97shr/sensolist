@@ -149,10 +149,10 @@ export default function DashboardWidgets({
           setIsSelectOpen(true);
         }}
       />
-      <div className=" m-auto w-full flex-1 p-4">
+      <div className=" m-auto w-full flex-1 p-4 flex">
         {(selectedDashboard?.widgets?.length || 0) +
         (draftWidgets.length || 0) ? (
-          <div className="w-full flex flex-wrap gap-4 overflow-auto">
+          <div className="w-full flex flex-wrap gap-4 overflow-auto flex-1">
             {selectedDashboard?.widgets &&
               selectedDashboard?.widgets.map((wdg, i) => (
                 <Widget

@@ -13,6 +13,7 @@ import IndoorPressureCard from "./IndoorPressureCard";
 import IndoorTemprature from "./IndoorTemprature";
 import CustomLineChart from "./LineChart";
 import NoiseLevel from "./NoiseLevel";
+import OpenStreetMap from "./OpenStreetMap";
 import OutdoorCo2 from "./OutdoorCo2";
 import OutdoorPm25 from "./OutdoorPm25";
 import OutdoorTemprature from "./OutdoorTemprature";
@@ -134,6 +135,8 @@ export default function Widget({
           name={widgetName || ""}
           senderId={widget.senderId}
         />
+      ) : widgetName === "OpenStreet Map" ? (
+        <OpenStreetMap name={widgetName || ""} senderId={widget.senderId} />
       ) : (
         <>
           <div className=" capitalize text-sm mb-2 dark:text-white">
