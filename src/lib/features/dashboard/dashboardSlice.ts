@@ -1,4 +1,4 @@
-import { IWidgetConfig } from "@/types/general";
+import { IWidgetConfig, IWidgetPosition } from "@/types/general";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface DashboardState {
@@ -55,6 +55,16 @@ export const dashboardSlice = createSlice({
         (drft, i) => i !== action.payload.index
       );
     },
+    editDraftWidgetPosition: (
+      state,
+      action: PayloadAction<{ widget: string; position: IWidgetPosition }>
+    ) => {
+      state.draftWidgets = state.draftWidgets.map((wdg) =>
+        wdg.widget === action.payload.widget
+          ? { ...wdg, position: action.payload.position }
+          : wdg
+      );
+    },
   },
 });
 
@@ -65,5 +75,6 @@ export const {
   addWidgetEdit,
   emptyWidgetEdit,
   editDraftWidget,
+  editDraftWidgetPosition,
 } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

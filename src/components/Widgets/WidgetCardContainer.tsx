@@ -1,8 +1,9 @@
 "use client";
 
-import { IWidgetConfig } from "@/types/general";
+import { IWidgetConfig, IWidgetPosition } from "@/types/general";
 import { Edit, Trash } from "iconsax-react";
 import { useDispatch } from "react-redux";
+import { Rnd } from "react-rnd";
 
 interface WidgetCardContainerProps {
   children: React.ReactNode;
@@ -11,6 +12,8 @@ interface WidgetCardContainerProps {
   dashboardId: string;
   onEditSelect: () => void;
   onDelete: () => void;
+  positionChange: (pos: IWidgetPosition) => void;
+  defaultPosition: IWidgetPosition;
 }
 
 export default function WidgetCardContainer({
@@ -20,10 +23,47 @@ export default function WidgetCardContainer({
   widget,
   dashboardId,
   onEditSelect,
+  positionChange,
+  defaultPosition,
 }: WidgetCardContainerProps) {
   const dispatch = useDispatch();
   return (
-    <div className="overflow-auto w-[400px] bg-black-opacity-100 dark:bg-white-opacity-50 rounded-lg p-4 flex flex-col">
+    <Rnd
+      style={{ position: "static" }}
+      default={
+        widget.position
+          ? {
+              x: widget.position.x,
+              y: widget.position.y,
+              width: widget.position.width,
+              height: widget.position.height,
+            }
+          : defaultPosition
+      }
+      onDragStop={(_e, d) => {
+        positionChange({
+          x: d.x,
+          y: d.y,
+          height: widget.position
+            ? widget.position.height
+            : defaultPosition.height,
+          width: widget.position
+            ? widget.position.width
+            : defaultPosition.width,
+        });
+      }}
+      onResizeStop={(_e, _direction, ref, _delta, position) => {
+        positionChange({
+          x: position.x,
+          y: position.y,
+          height: ref.style.height.slice(0, ref.style.height.length - 2),
+          width: ref.style.width.slice(0, ref.style.height.length - 2),
+        });
+      }}
+      disableDragging={!editMode}
+      enableResizing={editMode}
+      className="overflow-auto w-full bg-black-opacity-100 dark:bg-white-opacity-50 rounded-lg p-4 flex flex-col"
+    >
       {editMode && (
         <div className="w-full flex items-center justify-end">
           <button onClick={onEditSelect} className="mr-2">
@@ -35,6 +75,6 @@ export default function WidgetCardContainer({
         </div>
       )}
       {children}
-    </div>
+    </Rnd>
   );
 }

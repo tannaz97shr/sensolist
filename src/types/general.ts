@@ -381,7 +381,7 @@ export interface IDashboardDetailsResponse extends IResponse {
 export interface IRuleResponse {}
 
 export interface IWidgetPayload {
-  payload: string;
+  payload: number;
 }
 
 export interface IWidgetData {
@@ -452,6 +452,14 @@ export interface IWidgetConfig extends IWidgetFormData {
   widgetName?: string;
   senderId?: string;
   fields?: IWidgetFields[];
+  position?: IWidgetPosition;
+}
+
+export interface IWidgetPosition {
+  x: number;
+  y: number;
+  width: number | string;
+  height: number | string;
 }
 
 // files

@@ -1,10 +1,11 @@
 "use client";
 
 import { addWidgetEdit } from "@/lib/features/dashboard/dashboardSlice";
-import { IWidgetConfig } from "@/types/general";
+import { IWidgetConfig, IWidgetPosition } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import CustomBarChart from "./BarChart";
+import GoogleMap from "./GoogleMap";
 import HumidityCard from "./HumidityCard";
 import IndoorCo2 from "./IndoorCo2";
 import IndoorHumidityCard from "./IndoorHumidityCard";
@@ -13,6 +14,7 @@ import IndoorPressureCard from "./IndoorPressureCard";
 import IndoorTemprature from "./IndoorTemprature";
 import CustomLineChart from "./LineChart";
 import NoiseLevel from "./NoiseLevel";
+import OpenStreetMap from "./OpenStreetMap";
 import OutdoorCo2 from "./OutdoorCo2";
 import OutdoorPm25 from "./OutdoorPm25";
 import OutdoorTemprature from "./OutdoorTemprature";
@@ -26,6 +28,8 @@ interface WidgetProps {
   saved: boolean;
   index: number;
   onDelete: () => void;
+  onPositionChange: (pos: IWidgetPosition) => void;
+  defaultPosition: IWidgetPosition;
 }
 
 export default function Widget({
@@ -35,12 +39,16 @@ export default function Widget({
   saved,
   onDelete,
   index,
+  onPositionChange,
+  defaultPosition,
 }: WidgetProps) {
   const dispatch = useDispatch();
   const widgetName = widget.widgetName;
   console.log("widget", widget);
   return (
     <WidgetCardContainer
+      defaultPosition={defaultPosition}
+      positionChange={onPositionChange}
       onDelete={onDelete}
       onEditSelect={() => {
         dispatch(
@@ -131,6 +139,10 @@ export default function Widget({
           name={widgetName || ""}
           senderId={widget.senderId}
         />
+      ) : widgetName === "OpenStreet Map" ? (
+        <OpenStreetMap name={widgetName || ""} senderId={widget.senderId} />
+      ) : widgetName === "Google Map" ? (
+        <GoogleMap name={widgetName || ""} senderId={widget.senderId} />
       ) : (
         <>
           <div className=" capitalize text-sm mb-2 dark:text-white">

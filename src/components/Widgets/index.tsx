@@ -3,12 +3,13 @@
 import { getSingleDashboard } from "@/ApiCall/dashboards";
 import { storeWidgetsConfig } from "@/ApiCall/widgets";
 import {
+  editDraftWidgetPosition,
   emptyDraftWidget,
   removeDraftWidget,
 } from "@/lib/features/dashboard/dashboardSlice";
 import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import { RootState } from "@/lib/store";
-import { IDashboardDetails } from "@/types/general";
+import { IDashboardDetails, IWidgetPosition } from "@/types/general";
 import { Add } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +30,7 @@ export default function DashboardWidgets({
   const [selectedDashboard, setSelectedDashboard] =
     useState<IDashboardDetails>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasChanged, setHasChanged] = useState<boolean>(false);
 
   const getData = async () => {
     setLoading(true);
@@ -44,10 +46,11 @@ export default function DashboardWidgets({
   const dispatch = useDispatch();
 
   const { draftWidgets } = useSelector(
-    (state: RootState) => state.dashboardSlice,
+    (state: RootState) => state.dashboardSlice
   );
 
   const onSave = async () => {
+    console.log("on save", selectedDashboard, draftWidgets);
     // dispatch(saveDraftWidgets({ dashboardId: selectedDashboard.id }));
     const res = selectedDashboard?.widgets.length
       ? await storeWidgetsConfig(dashboardId, [
@@ -64,11 +67,22 @@ export default function DashboardWidgets({
         createAlert({
           message: res.message || "widget save error",
           type: "error",
-        }),
+        })
       );
     }
     setEditMode(false);
   };
+
+  const allWidgets = selectedDashboard?.widgets
+    ? [...selectedDashboard?.widgets, ...draftWidgets]
+    : [...draftWidgets];
+
+  const currentPositionsY: number[] = [];
+  allWidgets.forEach((wdg) => {
+    if (wdg.position) {
+      currentPositionsY.push(wdg.position.y + Number(wdg.position.height));
+    }
+  });
 
   //deleting saved widgets
   const onDeleteSaved = async (index: number) => {
@@ -90,7 +104,7 @@ export default function DashboardWidgets({
         createAlert({
           message: res.message || "widget delete error",
           type: "error",
-        }),
+        })
       );
     }
     setEditMode(false);
@@ -109,11 +123,12 @@ export default function DashboardWidgets({
           setIsSelectOpen(false);
         }}
         isOpen={isSelectOpen}
+        lastPositionY={Math.max(...currentPositionsY) + 16}
       />
       <WidgetsHeader
         dashboardName={selectedDashboard?.name}
         dashboardDescription={selectedDashboard?.description}
-        hasMadeChange={!!draftWidgets.length}
+        hasMadeChange={!!draftWidgets.length || hasChanged}
         editMode={editMode}
         goToEditMode={() => {
           setEditMode(true);
@@ -130,48 +145,91 @@ export default function DashboardWidgets({
           setIsSelectOpen(true);
         }}
       />
-      <div className=" m-auto w-full flex-1 p-4">
+      <div className=" m-auto w-full flex-1 p-4 flex">
         {(selectedDashboard?.widgets?.length || 0) +
         (draftWidgets.length || 0) ? (
-          <div className="w-full flex flex-wrap gap-4">
+          <div className="w-full flex flex-wrap gap-4 overflow-auto flex-1">
             {selectedDashboard?.widgets &&
-              selectedDashboard?.widgets.map((wdg, i) => (
+              selectedDashboard?.widgets.map((wdg, i) => {
+                let position: IWidgetPosition;
+                if (wdg.position) {
+                  position = wdg.position;
+                } else {
+                  position = {
+                    x: 0,
+                    y: Math.max(...currentPositionsY) + 16,
+                    width: 320,
+                    height: 400,
+                  };
+                  currentPositionsY.push(
+                    Math.max(...currentPositionsY) + 16 + 400
+                  );
+                }
+                return (
+                  <Widget
+                    defaultPosition={position}
+                    onDelete={async () => {
+                      await onDeleteSaved(i);
+                    }}
+                    onPositionChange={(pos: IWidgetPosition) => {
+                      setHasChanged(true);
+                      setSelectedDashboard({
+                        ...selectedDashboard,
+                        widgets: selectedDashboard.widgets.map((widget) =>
+                          widget.widget === wdg.widget
+                            ? { ...widget, position: pos }
+                            : widget
+                        ),
+                      });
+                    }}
+                    saved={true}
+                    dashboardId={selectedDashboard.id}
+                    editMode={editMode}
+                    key={wdg.title}
+                    widget={wdg}
+                    index={i}
+                  />
+                );
+              })}
+            {draftWidgets?.map((wdg, i) => {
+              let position: IWidgetPosition;
+              if (wdg.position) {
+                position = wdg.position;
+              } else {
+                position = {
+                  x: 0,
+                  y: Math.max(...currentPositionsY) + 16,
+                  width: 320,
+                  height: 400,
+                };
+                currentPositionsY.push(
+                  Math.max(...currentPositionsY) + 16 + 400
+                );
+              }
+              return (
                 <Widget
-                  onDelete={async () => {
-                    await onDeleteSaved(i);
+                  defaultPosition={position}
+                  onDelete={() => {
+                    dispatch(removeDraftWidget({ index: i }));
                   }}
-                  saved={true}
-                  dashboardId={selectedDashboard.id}
+                  saved={false}
+                  dashboardId={dashboardId}
                   editMode={editMode}
                   key={wdg.title}
                   widget={wdg}
                   index={i}
+                  onPositionChange={(pos: IWidgetPosition) => {
+                    setHasChanged(true);
+                    dispatch(
+                      editDraftWidgetPosition({
+                        widget: wdg.widget,
+                        position: pos,
+                      })
+                    );
+                  }}
                 />
-              ))}
-            {draftWidgets?.map((wdg, i) => (
-              <Widget
-                onDelete={() => {
-                  dispatch(removeDraftWidget({ index: i }));
-                }}
-                saved={false}
-                dashboardId={dashboardId}
-                editMode={editMode}
-                key={wdg.title}
-                widget={wdg}
-                index={i}
-              />
-            ))}
-            {/* {selectedDashboard?.widgets &&
-              selectedDashboard?.widgets.map((wdg, i) => (
-                <Widget
-                  saved={true}
-                  dashboardId={selectedDashboard.id}
-                  editMode={editMode}
-                  key={wdg.title}
-                  widget={wdg}
-                  index={i}
-                />
-              ))} */}
+              );
+            })}
           </div>
         ) : (
           editMode && (
