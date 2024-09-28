@@ -56,8 +56,8 @@ export default function WidgetCardContainer({
         positionChange({
           x: position.x,
           y: position.y,
-          height: ref.style.height,
-          width: ref.style.width,
+          height: ref.style.height.slice(0, ref.style.height.length - 2),
+          width: ref.style.width.slice(0, ref.style.height.length - 2),
         });
       }}
       disableDragging={!editMode}

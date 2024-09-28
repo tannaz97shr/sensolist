@@ -114,8 +114,6 @@ export default function DashboardWidgets({
     setEditMode(false);
   };
 
-  // console.log("lasty with pos", lastYArray);
-
   return (
     <div className="flex flex-col h-full flex-1 relative md:pl-5 overflow-hidden">
       <DashboardWidgetSelect
@@ -125,7 +123,7 @@ export default function DashboardWidgets({
           setIsSelectOpen(false);
         }}
         isOpen={isSelectOpen}
-        lastPositionY={currentPositionsY[currentPositionsY.length - 1] + 16}
+        lastPositionY={Math.max(...currentPositionsY) + 16}
       />
       <WidgetsHeader
         dashboardName={selectedDashboard?.name}
@@ -159,12 +157,12 @@ export default function DashboardWidgets({
                 } else {
                   position = {
                     x: 0,
-                    y: currentPositionsY[currentPositionsY.length - 1] + 16,
+                    y: Math.max(...currentPositionsY) + 16,
                     width: 320,
                     height: 400,
                   };
                   currentPositionsY.push(
-                    currentPositionsY[currentPositionsY.length - 1] + 16 + 400
+                    Math.max(...currentPositionsY) + 16 + 400
                   );
                 }
                 return (
@@ -200,12 +198,12 @@ export default function DashboardWidgets({
               } else {
                 position = {
                   x: 0,
-                  y: currentPositionsY[currentPositionsY.length - 1] + 16,
+                  y: Math.max(...currentPositionsY) + 16,
                   width: 320,
                   height: 400,
                 };
                 currentPositionsY.push(
-                  currentPositionsY[currentPositionsY.length - 1] + 16 + 400
+                  Math.max(...currentPositionsY) + 16 + 400
                 );
               }
               return (
