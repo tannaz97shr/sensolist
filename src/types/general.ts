@@ -381,7 +381,7 @@ export interface IDashboardDetailsResponse extends IResponse {
 export interface IRuleResponse {}
 
 export interface IWidgetPayload {
-  payload: string;
+  payload: number;
 }
 
 export interface IWidgetData {
