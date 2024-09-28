@@ -5,6 +5,7 @@ import { IWidgetConfig, IWidgetPosition } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import CustomBarChart from "./BarChart";
+import GoogleMap from "./GoogleMap";
 import HumidityCard from "./HumidityCard";
 import IndoorCo2 from "./IndoorCo2";
 import IndoorHumidityCard from "./IndoorHumidityCard";
@@ -28,6 +29,7 @@ interface WidgetProps {
   index: number;
   onDelete: () => void;
   onPositionChange: (pos: IWidgetPosition) => void;
+  defaultPosition: IWidgetPosition;
 }
 
 export default function Widget({
@@ -38,12 +40,14 @@ export default function Widget({
   onDelete,
   index,
   onPositionChange,
+  defaultPosition,
 }: WidgetProps) {
   const dispatch = useDispatch();
   const widgetName = widget.widgetName;
   console.log("widget", widget);
   return (
     <WidgetCardContainer
+      defaultPosition={defaultPosition}
       positionChange={onPositionChange}
       onDelete={onDelete}
       onEditSelect={() => {
@@ -137,6 +141,8 @@ export default function Widget({
         />
       ) : widgetName === "OpenStreet Map" ? (
         <OpenStreetMap name={widgetName || ""} senderId={widget.senderId} />
+      ) : widgetName === "Google Map" ? (
+        <GoogleMap name={widgetName || ""} senderId={widget.senderId} />
       ) : (
         <>
           <div className=" capitalize text-sm mb-2 dark:text-white">

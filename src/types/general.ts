@@ -452,7 +452,7 @@ export interface IWidgetConfig extends IWidgetFormData {
   widgetName?: string;
   senderId?: string;
   fields?: IWidgetFields[];
-  position: IWidgetPosition;
+  position?: IWidgetPosition;
 }
 
 export interface IWidgetPosition {
