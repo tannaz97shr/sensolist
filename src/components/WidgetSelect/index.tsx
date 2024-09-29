@@ -158,6 +158,7 @@ export default function DashboardWidgetSelect({
         draft={widgetEdit?.draft}
         editIndex={widgetEdit?.index}
         refreshData={refreshData}
+        lastY={lastPositionY}
       />
     </>
   );
