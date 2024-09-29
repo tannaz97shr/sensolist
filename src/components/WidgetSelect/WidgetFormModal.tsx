@@ -59,6 +59,7 @@ export default function WidgetFormModal({
   widgetPosition,
   lastY,
 }: WidgetFormModalProps) {
+  const isMultiThing = widgetName === "Entities table";
   const [selectedEnums, setSelectedEnums] = useState<
     { group: string; fieldName: string; selectedEnum: ISelectOption }[]
   >([]);
@@ -115,9 +116,22 @@ export default function WidgetFormModal({
       : []
   );
 
+  const [selectedThingList, setSelectedThingList] = useState<ISelectOption[]>(
+    editValues?.thingList
+      ? editValues.thingList.map((thing: any) => {
+          return {
+            value: thing,
+            title: thing,
+          };
+        })
+      : []
+  );
+
   const [characteristicsError, setcharacteristicsError] = useState<
     string | null
   >(null);
+
+  const [thingListError, setThingListError] = useState<string | null>(null);
 
   useEffect(() => {
     setSelectedcharacteristics(
@@ -131,6 +145,7 @@ export default function WidgetFormModal({
         : []
     );
     setcharacteristicsError(null);
+    setThingListError(null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
@@ -173,8 +188,15 @@ export default function WidgetFormModal({
 
   const onSubmit: SubmitHandler<IWidgetFormData> = async (data) => {
     console.log("on submit");
-    if (!selectedcharacteristics.length) {
-      setcharacteristicsError("Select at least one charactristic");
+    if (!selectedcharacteristics.length || !selectedThingList.length) {
+      setcharacteristicsError(
+        selectedcharacteristics.length
+          ? null
+          : "Select at least one charactristic"
+      );
+      setThingListError(
+        selectedThingList.length ? null : "Select at least one thing"
+      );
     } else {
       if (editValues) {
         if (draft && editIndex !== undefined) {
@@ -186,6 +208,7 @@ export default function WidgetFormModal({
                 characteristics: selectedcharacteristics.map(
                   (char) => char.value
                 ),
+                thingList: selectedThingList.map((thing) => thing.value),
                 widget: widgetId,
                 widgetName: widgetName,
                 thingName: selectedThing.name,
@@ -212,6 +235,9 @@ export default function WidgetFormModal({
                         ...data,
                         characteristics: selectedcharacteristics.map(
                           (char) => char.value
+                        ),
+                        thingList: selectedThingList.map(
+                          (thing) => thing.value
                         ),
                         widget: widgetId,
                         widgetName: widgetName,
@@ -253,6 +279,7 @@ export default function WidgetFormModal({
               characteristics: selectedcharacteristics.map(
                 (char) => char.value
               ),
+              thingList: selectedThingList.map((thing) => thing.value),
               widget: widgetId,
               widgetName: widgetName,
               thingName: selectedThing.name,
@@ -295,7 +322,7 @@ export default function WidgetFormModal({
           name="title"
           className="mt-6"
         />
-        {selectedThingOption && (
+        {!isMultiThing && selectedThingOption && (
           <SelectInput
             options={thingsList}
             selectedValue={selectedThingOption}
@@ -308,6 +335,16 @@ export default function WidgetFormModal({
             className="mt-6"
           />
         )}
+        {isMultiThing && selectedThingOption && (
+          <MultiSelect
+            options={thingsList}
+            selectedValues={selectedThingList}
+            setSelectedValues={setSelectedThingList}
+            label="Things"
+            className="mt-6"
+            error={thingListError || undefined}
+          />
+        )}
         {charactristicList && (
           <MultiSelect
             options={charactristicList}
@@ -318,7 +355,6 @@ export default function WidgetFormModal({
             error={characteristicsError || undefined}
           />
         )}
-
         {groupInputs.length
           ? groupInputs.map((input) => (
               <>

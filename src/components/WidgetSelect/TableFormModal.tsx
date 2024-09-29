@@ -196,7 +196,6 @@ export default function TableFormModal({
             />
           )}
           <div className="mt-6">Columns:</div>
-
           {fields.map((item, i) => (
             <div
               key={i}
@@ -242,7 +241,6 @@ export default function TableFormModal({
               </button>
             </div>
           ))}
-
           <Button
             variant="secondary"
             className="px-3 h-[40px] mt-4 text-xs"

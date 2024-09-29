@@ -1,39 +1,40 @@
-import { IWidgetTableData } from "@/types/general";
-import { Table } from "flowbite-react";
+import { useEffect, useState } from "react";
 
 interface EntityTableProps {
-  data?: IWidgetTableData;
+  senderIdList?: string;
+  name: string;
 }
 
-export default function EntityTable({ data }: EntityTableProps) {
-  if (!data) {
-    return;
-  }
+export default function EntityTable({ senderIdList, name }: EntityTableProps) {
+  const [widgetData, setWidgetData] = useState<any>();
+  const [seconds, setSeconds] = useState<number>(10);
+  const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    if (seconds === 10) {
+      const getData = async () => {
+        if (senderIdList?.length) {
+          setLoading(true);
+          // const response = await getWidgetData(senderId, [
+          //   "Longitude",
+          //   "Latitude",
+          // ]);
+          setLoading(false);
+          // setWidgetData({
+          //   lng: response.Longitude?.data[0].payload,
+          //   lat: response.Latitude?.data[0].payload,
+          // });
+        }
+      };
+      getData();
+    } else if (seconds <= 0) {
+      setSeconds(10);
+      return;
+    }
 
-  return (
-    <Table className=" w-full">
-      <Table.Head>
-        {data.columns.map((col) => (
-          <Table.HeadCell key={col.key}>{col.name}</Table.HeadCell>
-        ))}
-      </Table.Head>
-      <Table.Body className="divide-y">
-        <Table.Row>
-          {data.columns.map((col) => (
-            <Table.Cell key={col.key}>test {col.name}</Table.Cell>
-          ))}
-        </Table.Row>
-        <Table.Row>
-          {data.columns.map((col) => (
-            <Table.Cell key={col.key}>test {col.name}</Table.Cell>
-          ))}
-        </Table.Row>
-        <Table.Row>
-          {data.columns.map((col) => (
-            <Table.Cell key={col.key}>test {col.name}</Table.Cell>
-          ))}
-        </Table.Row>
-      </Table.Body>
-    </Table>
-  );
+    const interval = setInterval(() => setSeconds(seconds - 1), 1000);
+
+    return () => clearInterval(interval);
+  }, [senderIdList, seconds]);
+
+  return <></>;
 }
