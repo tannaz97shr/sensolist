@@ -84,6 +84,8 @@ export default function DashboardWidgets({
     }
   });
 
+  console.log("currentPositionsY", currentPositionsY);
+
   //deleting saved widgets
   const onDeleteSaved = async (index: number) => {
     // dispatch(saveDraftWidgets({ dashboardId: selectedDashboard.id }));
