@@ -84,6 +84,8 @@ export default function DashboardWidgets({
     }
   });
 
+  console.log("currentPositionsY", currentPositionsY, allWidgets);
+
   //deleting saved widgets
   const onDeleteSaved = async (index: number) => {
     // dispatch(saveDraftWidgets({ dashboardId: selectedDashboard.id }));
@@ -115,7 +117,7 @@ export default function DashboardWidgets({
   };
 
   return (
-    <div className="flex flex-col h-full flex-1 relative md:pl-5 overflow-hidden">
+    <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5 bg-with-dots">
       <DashboardWidgetSelect
         refreshData={getData}
         dashboardId={dashboardId}
@@ -123,7 +125,9 @@ export default function DashboardWidgets({
           setIsSelectOpen(false);
         }}
         isOpen={isSelectOpen}
-        lastPositionY={Math.max(...currentPositionsY) + 16}
+        lastPositionY={
+          currentPositionsY.length ? Math.max(...currentPositionsY) + 16 : 0
+        }
       />
       <WidgetsHeader
         dashboardName={selectedDashboard?.name}
@@ -145,7 +149,7 @@ export default function DashboardWidgets({
           setIsSelectOpen(true);
         }}
       />
-      <div className=" m-auto w-full flex-1 p-4 flex">
+      <div className=" m-auto w-full flex-1 flex">
         {(selectedDashboard?.widgets?.length || 0) +
         (draftWidgets.length || 0) ? (
           <div className="w-full flex flex-wrap gap-4 overflow-auto flex-1">
