@@ -188,14 +188,17 @@ export default function WidgetFormModal({
 
   const onSubmit: SubmitHandler<IWidgetFormData> = async (data) => {
     console.log("on submit");
-    if (!selectedcharacteristics.length || !selectedThingList.length) {
+    if (!selectedThingList.length) {
+      setThingListError(
+        selectedThingList.length ? null : "Select at least one thing"
+      );
+    }
+
+    if (!selectedcharacteristics.length) {
       setcharacteristicsError(
         selectedcharacteristics.length
           ? null
           : "Select at least one charactristic"
-      );
-      setThingListError(
-        selectedThingList.length ? null : "Select at least one thing"
       );
     } else {
       if (editValues) {
