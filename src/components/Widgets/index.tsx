@@ -126,7 +126,11 @@ export default function DashboardWidgets({
         }}
         isOpen={isSelectOpen}
         lastPositionY={
-          currentPositionsY.length ? Math.max(...currentPositionsY) + 16 : 0
+          currentPositionsY.length
+            ? Math.max(...currentPositionsY) + 16
+            : allWidgets.length
+            ? 400
+            : 0
         }
       />
       <WidgetsHeader

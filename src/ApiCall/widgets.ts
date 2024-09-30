@@ -29,9 +29,30 @@ export const getWidgetData = async (
     });
     const data = await res.json();
     return data;
-    // } else {
-    //   return {};
-    // }
+  } catch (e) {
+    return {};
+  }
+};
+
+export const getTableWidgetData = async (
+  senderId: string[],
+  characteristics: string[]
+): Promise<IWidgetData> => {
+  try {
+    const session = await getSession();
+    const res = await fetch("https://sensolisttech.com/api/data", {
+      method: "POST",
+      body: JSON.stringify({
+        sender: senderId,
+        characteristics: characteristics,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.accessToken}`,
+      },
+    });
+    const data = await res.json();
+    return data;
   } catch (e) {
     return {};
   }

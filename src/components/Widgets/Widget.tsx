@@ -4,8 +4,8 @@ import { addWidgetEdit } from "@/lib/features/dashboard/dashboardSlice";
 import { IWidgetConfig, IWidgetPosition } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
-import AlarmTable from "./AlarmTable";
 import CustomBarChart from "./BarChart";
+import EntityTable from "./EntityTable";
 import GoogleMap from "./GoogleMap";
 import HumidityCard from "./HumidityCard";
 import IndoorCo2 from "./IndoorCo2";
@@ -144,8 +144,8 @@ export default function Widget({
         <OpenStreetMap name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Google Map" ? (
         <GoogleMap name={widgetName || ""} senderId={widget.senderId} />
-      ) : widgetName === "Alarms table" ? (
-        <AlarmTable name={widgetName || ""} senderId={widget.senderId} />
+      ) : widgetName === "Entities table" ? (
+        <EntityTable name={widgetName || ""} senderIdList={widget.thingList} />
       ) : (
         <>
           <div className=" capitalize text-sm mb-2 dark:text-white">
