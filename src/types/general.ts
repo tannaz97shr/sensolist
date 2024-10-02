@@ -371,7 +371,6 @@ export interface IDashboardDetails {
   name: string;
   description: string;
   widgets: IWidgetConfig[];
-  layout?: Layout[];
 }
 
 export interface IDashboardDetailsResponse extends IResponse {
@@ -454,6 +453,7 @@ export interface IWidgetConfig extends IWidgetFormData {
   widgetName?: string;
   senderId?: string;
   fields?: IWidgetFields[];
+  layout?: Layout;
 }
 
 // files

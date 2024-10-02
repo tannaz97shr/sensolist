@@ -90,18 +90,25 @@ export const getWidgetGroups = async (): Promise<IWidgetGroupResponse> => {
 export const storeWidgetsConfig = async (
   dashboardId: string,
   widgetsConfig: IWidgetConfig[],
-  currentLayout: Layout[]
+  layout: Layout[]
 ): Promise<IResponse> => {
   try {
     const session = await getSession();
+    const widgetsWithLayout = widgetsConfig.map((wdg) => {
+      const filteredLayout = layout.filter((lay) => lay.i === wdg.widget);
+      if (filteredLayout.length) {
+        return { ...wdg, layout: filteredLayout[0] };
+      } else {
+        return wdg;
+      }
+    });
     const res = await fetch(
       "https://sensolist-backend.vercel.app/api/v3/widget/config/store",
       {
         method: "POST",
         body: JSON.stringify({
           dashboardId: dashboardId,
-          layout: currentLayout,
-          widgetsConfig: widgetsConfig.map((wdg) => {
+          widgetsConfig: widgetsWithLayout.map((wdg) => {
             let temp = { ...wdg };
             delete temp.widgetName;
             return temp;

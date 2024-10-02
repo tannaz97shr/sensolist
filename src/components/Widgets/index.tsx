@@ -39,7 +39,9 @@ export default function DashboardWidgets({
   const [loading, setLoading] = useState<boolean>(false);
   const [hasChanged, setHasChanged] = useState<boolean>(false);
   const [currentLayout, setCurrentLayout] = useState<Layout[]>(
-    selectedDashboard?.layout || []
+    selectedDashboard?.widgets
+      .map((wdg) => wdg.layout)
+      .filter((lay) => lay !== undefined) || []
   );
 
   const getData = async () => {
@@ -91,7 +93,7 @@ export default function DashboardWidgets({
       ? await storeWidgetsConfig(
           dashboardId,
           [
-            ...selectedDashboard?.widgets.filter((wdg, i) => i !== index),
+            ...selectedDashboard?.widgets.filter((_wdg, i) => i !== index),
             ...draftWidgets,
           ],
           currentLayout
@@ -162,14 +164,17 @@ export default function DashboardWidgets({
           >
             {selectedDashboard?.widgets &&
               selectedDashboard?.widgets.map((wdg, i) => {
-                const filteredLayout = selectedDashboard.layout?.filter(
-                  (lay) => lay.i === wdg.widget
-                );
-                const widgetLayout = filteredLayout?.length
-                  ? filteredLayout[0]
-                  : { x: 4 * i, y: 0, w: 4, h: 16 };
+                // const filteredLayout = selectedDashboard.layout?.filter(
+                //   (lay) => lay.i === wdg.widget
+                // );
+                // const widgetLayout = filteredLayout?.length
+                //   ? filteredLayout[0]
+                //   : { x: 4 * i, y: 0, w: 4, h: 16 };
                 return (
-                  <div key={wdg.widget} data-grid={widgetLayout}>
+                  <div
+                    key={wdg.widget}
+                    data-grid={wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }}
+                  >
                     <Widget
                       onDelete={async () => {
                         await onDeleteSaved(i);
