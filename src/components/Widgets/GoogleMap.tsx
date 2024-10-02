@@ -48,7 +48,7 @@ export default function GoogleMap({ senderId, name }: GoogleMapProps) {
     <div>
       {widgetData && (
         <MapContainer
-          className=" w-full aspect-video bg-error overflow-hidden"
+          className=" w-full aspect-video bg-error overflow-hidden z-0"
           center={widgetData}
           zoom={13}
           scrollWheelZoom={false}

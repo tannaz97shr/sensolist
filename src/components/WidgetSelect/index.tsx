@@ -9,6 +9,7 @@ import { Close } from "@mui/icons-material";
 import { ArrowLeft } from "iconsax-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Layout } from "react-grid-layout";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../UI/Loading";
 import WidgetFormModal from "./WidgetFormModal";
@@ -18,7 +19,7 @@ interface DashboardWidgetSelectProps {
   onClose: () => void;
   dashboardId: string;
   refreshData: () => Promise<void>;
-  lastPositionY: number;
+  layout: Layout[];
 }
 
 export default function DashboardWidgetSelect({
@@ -26,7 +27,7 @@ export default function DashboardWidgetSelect({
   onClose,
   dashboardId,
   refreshData,
-  lastPositionY,
+  layout,
 }: DashboardWidgetSelectProps) {
   const [widgetGroups, setWidgetGroupss] = useState<IWidget[]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -141,7 +142,7 @@ export default function DashboardWidgetSelect({
         widgetId={widgetModalOpen?.widgetId || ""}
         widgetName={widgetModalOpen?.widgetName || ""}
         fields={widgetModalOpen?.fields}
-        lastY={lastPositionY}
+        layout={layout}
       />
       <WidgetFormModal
         open={!!widgetEdit}
@@ -154,11 +155,10 @@ export default function DashboardWidgetSelect({
         widgetId={widgetEdit?.widget.widget || ""}
         widgetName={widgetEdit?.widget.widgetName || ""}
         fields={widgetEdit?.widget.fields}
-        widgetPosition={widgetEdit?.widget.position}
         draft={widgetEdit?.draft}
         editIndex={widgetEdit?.index}
         refreshData={refreshData}
-        lastY={lastPositionY}
+        layout={layout}
       />
     </>
   );

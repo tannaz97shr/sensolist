@@ -5,6 +5,7 @@ import {
   IWidgetGroupResponse,
 } from "@/types/general";
 import { getSession } from "next-auth/react";
+import { Layout } from "react-grid-layout";
 
 export const getWidgetData = async (
   senderId: string,
@@ -88,7 +89,8 @@ export const getWidgetGroups = async (): Promise<IWidgetGroupResponse> => {
 
 export const storeWidgetsConfig = async (
   dashboardId: string,
-  widgetsConfig: IWidgetConfig[]
+  widgetsConfig: IWidgetConfig[],
+  currentLayout: Layout[]
 ): Promise<IResponse> => {
   try {
     const session = await getSession();
@@ -98,6 +100,7 @@ export const storeWidgetsConfig = async (
         method: "POST",
         body: JSON.stringify({
           dashboardId: dashboardId,
+          layout: currentLayout,
           widgetsConfig: widgetsConfig.map((wdg) => {
             let temp = { ...wdg };
             delete temp.widgetName;

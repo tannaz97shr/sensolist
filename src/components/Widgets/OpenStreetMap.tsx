@@ -47,7 +47,7 @@ export default function OpenStreetMap({ senderId, name }: OpenStreetMapProps) {
   return (
     <div>
       <MapContainer
-        className=" w-full aspect-video bg-error overflow-hidden"
+        className=" w-full aspect-video bg-error overflow-hidden z-0"
         center={widgetData}
         zoom={13}
         scrollWheelZoom={false}

@@ -1,4 +1,5 @@
 import { Node } from "@xyflow/react";
+import { Layout } from "react-grid-layout";
 import { User } from "./users";
 
 export type LoginStepsType = "details" | "verification";
@@ -370,6 +371,7 @@ export interface IDashboardDetails {
   name: string;
   description: string;
   widgets: IWidgetConfig[];
+  layout?: Layout[];
 }
 
 export interface IDashboardDetailsResponse extends IResponse {
@@ -452,14 +454,6 @@ export interface IWidgetConfig extends IWidgetFormData {
   widgetName?: string;
   senderId?: string;
   fields?: IWidgetFields[];
-  position?: IWidgetPosition;
-}
-
-export interface IWidgetPosition {
-  x: number;
-  y: number;
-  width: number | string;
-  height: number | string;
 }
 
 // files

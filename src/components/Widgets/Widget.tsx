@@ -1,7 +1,7 @@
 "use client";
 
 import { addWidgetEdit } from "@/lib/features/dashboard/dashboardSlice";
-import { IWidgetConfig, IWidgetPosition } from "@/types/general";
+import { IWidgetConfig } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import CustomBarChart from "./BarChart";
@@ -29,8 +29,6 @@ interface WidgetProps {
   saved: boolean;
   index: number;
   onDelete: () => void;
-  onPositionChange: (pos: IWidgetPosition) => void;
-  defaultPosition: IWidgetPosition;
 }
 
 export default function Widget({
@@ -40,16 +38,13 @@ export default function Widget({
   saved,
   onDelete,
   index,
-  onPositionChange,
-  defaultPosition,
 }: WidgetProps) {
   const dispatch = useDispatch();
   const widgetName = widget.widgetName;
   console.log("widget", widget);
   return (
     <WidgetCardContainer
-      defaultPosition={defaultPosition}
-      positionChange={onPositionChange}
+      index={index}
       onDelete={onDelete}
       onEditSelect={() => {
         dispatch(
@@ -64,6 +59,7 @@ export default function Widget({
       widget={widget}
       editMode={editMode}
       dashboardId={dashboardId}
+      key={widget.widget}
     >
       <div className="mb-6 dark:text-neutral-2 capitalize font-bold">
         {widget.title}
@@ -71,21 +67,6 @@ export default function Widget({
       <div className="mb-6 dark:text-neutral-2">
         Thing Name : {widget.thingName}
       </div>
-      {/* 
-      ) : widgetName === "time series" ? (
-        <>
-          <TimeSeriesChart
-            xLabel={widget.chartData?.xAxesLabel || ""}
-            title={widget.chartData?.title || ""}
-            min={(widget.chartData?.yAxesMin || 0) as number}
-            max={(widget.chartData?.yAxesMax || 0) as number}
-          />
-        </>
-      ) : widgetName === "entity table" ? (
-        <>
-          <EntityTable data={widget.tableData} />
-        </>
-      ) :  */}
       {widgetName === "Line Chart" ? (
         <CustomLineChart
           name={widgetName || ""}

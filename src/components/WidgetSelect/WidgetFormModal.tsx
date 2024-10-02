@@ -12,12 +12,12 @@ import {
   IWidgetConfig,
   IWidgetFields,
   IWidgetFormData,
-  IWidgetPosition,
 } from "@/types/general";
 import { useEffect, useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import "react-datetime-picker/dist/DateTimePicker.css";
+import { Layout } from "react-grid-layout";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "../UI/Button";
@@ -40,8 +40,7 @@ interface WidgetFormModalProps {
   draft?: boolean;
   editIndex?: number;
   refreshData?: () => Promise<void>;
-  lastY?: number;
-  widgetPosition?: IWidgetPosition;
+  layout: Layout[];
 }
 
 export default function WidgetFormModal({
@@ -56,8 +55,7 @@ export default function WidgetFormModal({
   draft,
   editIndex,
   refreshData,
-  widgetPosition,
-  lastY,
+  layout,
 }: WidgetFormModalProps) {
   const isMultiThing = widgetName === "Entities table";
   const [selectedEnums, setSelectedEnums] = useState<
@@ -217,12 +215,6 @@ export default function WidgetFormModal({
                 thingName: selectedThing.name,
                 senderId: selectedThing.senderId,
                 fields: fields,
-                position: widgetPosition || {
-                  x: 0,
-                  y: lastY ? lastY + 16 : 0,
-                  width: 320,
-                  height: 400,
-                },
               },
               index: editIndex,
             })
@@ -247,20 +239,14 @@ export default function WidgetFormModal({
                         thingName: selectedThing.name,
                         senderId: selectedThing.senderId,
                         fields: fields,
-                        position: widgetPosition || {
-                          x: 0,
-                          y: lastY ? lastY + 16 : 0,
-                          width: 320,
-                          height: 400,
-                        },
                       }
                     : wdg
                 )
               : savedWidgets;
-          console.log("on submit new widgets", newWidgets);
           const res = await storeWidgetsConfig(
             dashboardId,
-            newWidgets?.length ? newWidgets : []
+            newWidgets?.length ? newWidgets : [],
+            layout
           );
           if (res.statusCode > 199 && res.statusCode < 300) {
             if (refreshData) await refreshData();
@@ -288,13 +274,6 @@ export default function WidgetFormModal({
               thingName: selectedThing.name,
               senderId: selectedThing.senderId,
               fields: fields,
-              // inja bayad positione akharin widget mohasebe beshe
-              position: {
-                x: 0,
-                y: lastY ? lastY + 16 : 0,
-                width: 320,
-                height: 400,
-              },
             },
           })
         );
