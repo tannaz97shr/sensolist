@@ -43,6 +43,14 @@ export default function DashboardWidgets({
       .map((wdg) => wdg.layout)
       .filter((lay) => lay !== undefined) as Layout[]) || []
   );
+  const [isDraggable, setIsDraggable] = useState(editMode);
+
+  const disableDragging = () => setIsDraggable(false);
+  const enableDragging = () => setIsDraggable(true);
+
+  useEffect(() => {
+    setIsDraggable(editMode);
+  }, [editMode]);
 
   const getData = async () => {
     setLoading(true);
@@ -161,21 +169,20 @@ export default function DashboardWidgets({
             onLayoutChange={(newLayout: Layout[]) => {
               setCurrentLayout(newLayout);
             }}
-            isDraggable={editMode}
+            onDragStop={() => {}}
+            isDraggable={isDraggable}
             isResizable={editMode}
           >
             {selectedDashboard?.widgets &&
               selectedDashboard?.widgets.map((wdg, i) => {
-                // const filteredLayout = selectedDashboard.layout?.filter(
-                //   (lay) => lay.i === wdg.widget
-                // );
-                // const widgetLayout = filteredLayout?.length
-                //   ? filteredLayout[0]
-                //   : { x: 4 * i, y: 0, w: 4, h: 16 };
                 return (
                   <div
                     key={wdg.widget}
                     data-grid={wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }}
+                    onClick={(event: React.MouseEvent<HTMLElement>) => {
+                      console.log("grid click");
+                      event.stopPropagation();
+                    }}
                   >
                     <Widget
                       onDelete={async () => {
@@ -186,6 +193,8 @@ export default function DashboardWidgets({
                       editMode={editMode}
                       widget={wdg}
                       index={i}
+                      disableDragging={disableDragging}
+                      enableDragging={enableDragging}
                     />
                   </div>
                 );
@@ -206,6 +215,8 @@ export default function DashboardWidgets({
                     key={wdg.title}
                     widget={wdg}
                     index={i}
+                    disableDragging={disableDragging}
+                    enableDragging={enableDragging}
                   />
                 </div>
               );

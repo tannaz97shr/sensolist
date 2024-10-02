@@ -29,6 +29,8 @@ interface WidgetProps {
   saved: boolean;
   index: number;
   onDelete: () => void;
+  disableDragging: () => void;
+  enableDragging: () => void;
 }
 
 export default function Widget({
@@ -38,6 +40,8 @@ export default function Widget({
   saved,
   onDelete,
   index,
+  disableDragging,
+  enableDragging,
 }: WidgetProps) {
   const dispatch = useDispatch();
   const widgetName = widget.widgetName;
@@ -60,6 +64,8 @@ export default function Widget({
       editMode={editMode}
       dashboardId={dashboardId}
       key={widget.widget}
+      disableDragging={disableDragging}
+      enableDragging={enableDragging}
     >
       <div className="mb-6 dark:text-neutral-2 capitalize font-bold">
         {widget.title}
