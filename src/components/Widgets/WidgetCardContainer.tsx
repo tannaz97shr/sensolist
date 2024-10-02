@@ -35,7 +35,7 @@ export default function WidgetCardContainer({
       <FullScreen
         handle={handle}
         key={widget.widget}
-        className="overflow-auto bg-black-opacity-100 dark:bg-white-opacity-50 rounded-lg p-4 h-full"
+        className="my-full-screen-component overflow-auto bg-black-opacity-100 dark:bg-white-opacity-50 rounded-lg p-4 h-full"
       >
         {editMode && (
           <div className="w-full flex items-center justify-end">
@@ -72,7 +72,6 @@ export default function WidgetCardContainer({
         )}
         {children}
       </FullScreen>
-      {/* <FullScreen handle={handle}>{children}</FullScreen> */}
     </>
   );
 }
