@@ -39,9 +39,9 @@ export default function DashboardWidgets({
   const [loading, setLoading] = useState<boolean>(false);
   const [hasChanged, setHasChanged] = useState<boolean>(false);
   const [currentLayout, setCurrentLayout] = useState<Layout[]>(
-    selectedDashboard?.widgets
+    (selectedDashboard?.widgets
       .map((wdg) => wdg.layout)
-      .filter((lay) => lay !== undefined) || []
+      .filter((lay) => lay !== undefined) as Layout[]) || []
   );
 
   const getData = async () => {
