@@ -161,6 +161,8 @@ export default function DashboardWidgets({
             onLayoutChange={(newLayout: Layout[]) => {
               setCurrentLayout(newLayout);
             }}
+            isDraggable={editMode}
+            isResizable={editMode}
           >
             {selectedDashboard?.widgets &&
               selectedDashboard?.widgets.map((wdg, i) => {
