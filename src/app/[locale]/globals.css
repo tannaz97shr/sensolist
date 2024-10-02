@@ -345,9 +345,9 @@ body {
 
 /* full screen */
 
-.my-full-screen-component {
+.fullscreen-enabled.my-full-screen-component {
   background-color: white;
 }
-.dark .my-full-screen-component {
+.dark .fullscreen-enabled.my-full-screen-component {
   background-color: black;
 }
