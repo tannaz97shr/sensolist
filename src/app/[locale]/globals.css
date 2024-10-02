@@ -342,3 +342,12 @@ body {
   background-size: 32px 32px;
   background-position: -19px -19px;
 }
+
+/* full screen */
+
+.my-full-screen-component {
+  background-color: white;
+}
+.dark .my-full-screen-component {
+  background-color: black;
+}
