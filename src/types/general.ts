@@ -394,6 +394,17 @@ export interface IWidgetData {
   // noise?: { data: IWidgetPayload[] };
 }
 
+export interface IWidgetEntityTableResponse {
+  statusCode?: number;
+  table: IWidgetEntityTableData[];
+}
+
+export interface IWidgetEntityTableData {
+  _id: string;
+  senderId: string;
+  data: { [key: string]: string | null };
+}
+
 export interface _ISubWidget {
   name: string;
   image: string;

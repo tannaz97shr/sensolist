@@ -209,7 +209,15 @@ export default function WidgetFormModal({
                 characteristics: selectedcharacteristics.map(
                   (char) => char.value
                 ),
-                thingList: selectedThingList.map((thing) => thing.value),
+                // thingList: selectedThingList.map((thing) => thing.value),
+                thingList: things
+                  .map(
+                    (thing) =>
+                      selectedThingList.filter(
+                        (selected) => selected.value === thing.id
+                      ).length && thing.senderId
+                  )
+                  .filter((sId) => sId !== 0),
                 widget: widgetId,
                 widgetName: widgetName,
                 thingName: selectedThing.name,
@@ -231,9 +239,17 @@ export default function WidgetFormModal({
                         characteristics: selectedcharacteristics.map(
                           (char) => char.value
                         ),
-                        thingList: selectedThingList.map(
-                          (thing) => thing.value
-                        ),
+                        // thingList: selectedThingList.map(
+                        //   (thing) => thing.value
+                        // ),
+                        thingList: things
+                          .map(
+                            (thing) =>
+                              selectedThingList.filter(
+                                (selected) => selected.value === thing.id
+                              ).length && thing.senderId
+                          )
+                          .filter((sId) => sId !== 0),
                         widget: widgetId,
                         widgetName: widgetName,
                         thingName: selectedThing.name,
@@ -268,7 +284,15 @@ export default function WidgetFormModal({
               characteristics: selectedcharacteristics.map(
                 (char) => char.value
               ),
-              thingList: selectedThingList.map((thing) => thing.value),
+              // thingList: selectedThingList.map((thing) => thing.value),
+              thingList: things
+                .map(
+                  (thing) =>
+                    selectedThingList.filter(
+                      (selected) => selected.value === thing.id
+                    ).length && thing.senderId
+                )
+                .filter((sId) => sId !== 0),
               widget: widgetId,
               widgetName: widgetName,
               thingName: selectedThing.name,

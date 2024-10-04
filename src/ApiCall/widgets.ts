@@ -2,6 +2,7 @@ import {
   IResponse,
   IWidgetConfig,
   IWidgetData,
+  IWidgetEntityTableResponse,
   IWidgetGroupResponse,
 } from "@/types/general";
 import { getSession } from "next-auth/react";
@@ -38,24 +39,32 @@ export const getWidgetData = async (
 export const getTableWidgetData = async (
   senderId: string[],
   characteristics: string[]
-): Promise<IWidgetData> => {
+): Promise<IWidgetEntityTableResponse> => {
   try {
     const session = await getSession();
-    const res = await fetch("https://sensolisttech.com/api/data", {
-      method: "POST",
-      body: JSON.stringify({
-        sender: senderId,
-        characteristics: characteristics,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${session?.accessToken}`,
-      },
-    });
+    const res = await fetch(
+      `https://mqtt.sensolisttech.com/api/mqtt-data/data/table?${senderId.map(
+        (sId) => `sendersId=${sId}&`
+      )}${characteristics.map(
+        (char, i) =>
+          `characteristics=${char}${
+            i !== characteristics.length - 1 ? "&" : ""
+          }`
+      )}`.replace(/,/g, ""),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
     const data = await res.json();
     return data;
   } catch (e) {
-    return {};
+    return {
+      table: [],
+    };
   }
 };
 

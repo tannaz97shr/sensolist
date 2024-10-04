@@ -132,7 +132,11 @@ export default function Widget({
       ) : widgetName === "Google Map" ? (
         <GoogleMap name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Entities table" ? (
-        <EntityTable name={widgetName || ""} senderIdList={widget.thingList} />
+        <EntityTable
+          characteristics={widget.characteristics}
+          name={widgetName || ""}
+          senderIdList={widget.thingList}
+        />
       ) : (
         <>
           <div className=" capitalize text-sm mb-2 dark:text-white">

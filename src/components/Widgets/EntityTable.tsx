@@ -1,28 +1,46 @@
-import { useEffect, useState } from "react";
+import { getTableWidgetData } from "@/ApiCall/widgets";
+import { RootState } from "@/lib/store";
+import { IWidgetEntityTableData } from "@/types/general";
+import {
+  MRT_ColumnDef,
+  MRT_Table,
+  useMaterialReactTable,
+} from "material-react-table";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import Spinner from "../UI/Spinner";
 
 interface EntityTableProps {
-  senderIdList?: string;
+  senderIdList?: string[];
   name: string;
+  characteristics: string[];
 }
 
-export default function EntityTable({ senderIdList, name }: EntityTableProps) {
-  const [widgetData, setWidgetData] = useState<any>();
+export default function EntityTable({
+  senderIdList,
+  name,
+  characteristics,
+}: EntityTableProps) {
+  const [widgetData, setWidgetData] = useState<IWidgetEntityTableData[]>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
+  const {
+    things,
+    loading: thingsLoading,
+    error,
+  } = useSelector((state: RootState) => state.thingsSlice);
+
   useEffect(() => {
     if (seconds === 10) {
       const getData = async () => {
         if (senderIdList?.length) {
           setLoading(true);
-          // const response = await getWidgetData(senderId, [
-          //   "Longitude",
-          //   "Latitude",
-          // ]);
+          const response = await getTableWidgetData(
+            senderIdList,
+            characteristics
+          );
           setLoading(false);
-          // setWidgetData({
-          //   lng: response.Longitude?.data[0].payload,
-          //   lat: response.Latitude?.data[0].payload,
-          // });
+          setWidgetData(response.table);
         }
       };
       getData();
@@ -34,7 +52,80 @@ export default function EntityTable({ senderIdList, name }: EntityTableProps) {
     const interval = setInterval(() => setSeconds(seconds - 1), 1000);
 
     return () => clearInterval(interval);
-  }, [senderIdList, seconds]);
+  }, [senderIdList, seconds, characteristics]);
 
-  return <></>;
+  const columns = useMemo<MRT_ColumnDef<any>[]>(() => {
+    const colData: { accessorKey: string; header: string; size: number }[] = [
+      {
+        accessorKey: "thingName",
+        header: "Thing Name",
+        size: 100,
+      },
+    ];
+    widgetData?.forEach((wdgData) => {
+      for (let item in wdgData.data) {
+        if (!colData.filter((clData) => clData.accessorKey === item).length)
+          colData.push({
+            accessorKey: item,
+            header: item,
+            size: 100,
+          });
+      }
+    });
+    return colData;
+  }, [widgetData]);
+
+  const data = useMemo<{ [key: string]: string | null }[]>(() => {
+    return widgetData?.length
+      ? widgetData?.map((wdgData) => {
+          const filteredThings = things.filter(
+            (th) => th.senderId === wdgData.senderId
+          );
+          return {
+            ...wdgData.data,
+            thingName: filteredThings.length ? filteredThings[0].name : "",
+          };
+        })
+      : [];
+  }, [things, widgetData]);
+
+  const table = useMaterialReactTable({
+    columns,
+    data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
+    // enableKeyboardShortcuts: false,
+    enableColumnActions: false,
+    enableColumnFilters: false,
+    enablePagination: false,
+    enableSorting: false,
+    mrtTheme: (theme) => ({
+      baseBackgroundColor: theme.palette.background.default, //change default background color
+    }),
+    muiTableBodyRowProps: { hover: false },
+    muiTableProps: {
+      sx: {
+        border: "1px solid rgba(81, 81, 81, .5)",
+        caption: {
+          captionSide: "top",
+        },
+      },
+    },
+    muiTableHeadCellProps: {
+      sx: {
+        border: "1px solid rgba(81, 81, 81, .5)",
+        fontStyle: "italic",
+        fontWeight: "normal",
+      },
+    },
+    muiTableBodyCellProps: {
+      sx: {
+        border: "1px solid rgba(81, 81, 81, .5)",
+      },
+    },
+  });
+
+  return widgetData ? (
+    <MRT_Table table={table} />
+  ) : (
+    <Spinner className="mx-auto mt-20" />
+  );
 }
