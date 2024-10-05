@@ -20,6 +20,7 @@ import OutdoorCo2 from "./OutdoorCo2";
 import OutdoorPm25 from "./OutdoorPm25";
 import OutdoorTemprature from "./OutdoorTemprature";
 import PressureCard from "./PressureCard";
+import ProgressBar from "./ProgressBar";
 import WidgetCardContainer from "./WidgetCardContainer";
 
 interface WidgetProps {
@@ -136,6 +137,13 @@ export default function Widget({
           characteristics={widget.characteristics}
           name={widgetName || ""}
           senderIdList={widget.thingList}
+        />
+      ) : widgetName === "Progress bar" ? (
+        <ProgressBar
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
         />
       ) : (
         <>

@@ -1,4 +1,5 @@
 import {
+  _IWidgetData,
   IResponse,
   IWidgetConfig,
   IWidgetData,
@@ -8,12 +9,12 @@ import {
 import { getSession } from "next-auth/react";
 import { Layout } from "react-grid-layout";
 
-export const getWidgetData = async (
+export const _getWidgetData = async (
   senderId: string,
   characteristics: string[],
   start?: string,
   end?: string
-): Promise<IWidgetData> => {
+): Promise<_IWidgetData> => {
   try {
     const session = await getSession();
     const res = await fetch("https://sensolisttech.com/api/data", {
@@ -33,6 +34,35 @@ export const getWidgetData = async (
     return data;
   } catch (e) {
     return {};
+  }
+};
+
+export const getWidgetData = async (
+  senderId: string,
+  characteristics: string[],
+  limit: number,
+  page: number,
+  start?: string,
+  end?: string
+): Promise<IWidgetData> => {
+  try {
+    const session = await getSession();
+    const res = await fetch(
+      `https://mqtt.sensolisttech.com/api/mqtt-data/data/last?senderId=${senderId}&${characteristics.map(
+        (char) => `characteristics=${char}&`
+      )}limit=${limit}&page=${page}`.replace(/,/g, ""),
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.accessToken}`,
+        },
+      }
+    );
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    return { statusCode: 400 };
   }
 };
 

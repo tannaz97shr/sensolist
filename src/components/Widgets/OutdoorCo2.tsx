@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetPayload } from "@/types/general";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export default function OutdoorCo2({ senderId, name }: OutdoorCo2Props) {
         if (senderId) {
           setLoading(true);
           setLoading(false);
-          const response = await getWidgetData(senderId, ["co2"]);
+          const response = await _getWidgetData(senderId, ["co2"]);
           setWidgetData(response.co2?.data || []);
         }
       };

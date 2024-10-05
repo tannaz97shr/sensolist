@@ -1,5 +1,5 @@
-import { getWidgetData } from "@/ApiCall/widgets";
-import { IWidgetData } from "@/types/general";
+import { _getWidgetData } from "@/ApiCall/widgets";
+import { _IWidgetData } from "@/types/general";
 import { useEffect, useState } from "react";
 import {
   CartesianGrid,
@@ -46,7 +46,7 @@ export default function CustomLineChart({
     "#E74C3C", // Soft Red
     "#2ECC71", // Bright Green
   ];
-  const [widgetData, setWidgetData] = useState<IWidgetData>();
+  const [widgetData, setWidgetData] = useState<_IWidgetData>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -55,7 +55,7 @@ export default function CustomLineChart({
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(
+          const response = await _getWidgetData(
             senderId,
             charactristics,
             start,
@@ -78,7 +78,7 @@ export default function CustomLineChart({
   }, [senderId, seconds]);
   console.log("dataa", widgetData);
 
-  const convertToChartData = (data: IWidgetData) => {
+  const convertToChartData = (data: _IWidgetData) => {
     const keys = Object.keys(data);
     const maxLength = 20;
 

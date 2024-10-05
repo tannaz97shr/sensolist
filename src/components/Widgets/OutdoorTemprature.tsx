@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetPayload } from "@/types/general";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ export default function OutdoorTemprature({
         if (senderId) {
           setLoading(true);
           setLoading(false);
-          const response = await getWidgetData(senderId, ["temperature"]);
+          const response = await _getWidgetData(senderId, ["temperature"]);
           console.log("outdoor temperature res", response);
           setWidgetData(response.temperature?.data || []);
         }

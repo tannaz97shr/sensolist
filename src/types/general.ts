@@ -385,13 +385,23 @@ export interface IWidgetPayload {
   payload: number;
 }
 
-export interface IWidgetData {
+export interface _IWidgetData {
   [key: string]: { data: IWidgetPayload[] };
-  // humidity?: { data: IWidgetPayload[] };
-  // pm25?: { data: IWidgetPayload[] };
-  // pressure?: { data: IWidgetPayload[] };
-  // temperature?: { data: IWidgetPayload[] };
-  // noise?: { data: IWidgetPayload[] };
+}
+
+export interface IWidgetData extends IResponse {
+  page?: number;
+  pageCount?: number;
+  senderId?: string;
+  charactersData?: ICharatersData[];
+}
+
+export interface ICharatersData {
+  character: string;
+  data: {
+    payload: string;
+    receivedTime: string;
+  }[];
 }
 
 export interface IWidgetEntityTableResponse {

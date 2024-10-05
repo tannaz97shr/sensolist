@@ -1,4 +1,4 @@
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import L from "leaflet";
 import { useEffect, useState } from "react";
 
@@ -18,7 +18,7 @@ export default function AlaramTable({ senderId, name }: AlarmTableProps) {
         if (senderId) {
           setLoading(true);
           setLoading(false);
-          const response = await getWidgetData(senderId, [
+          const response = await _getWidgetData(senderId, [
             "Longitude",
             "Latitude",
           ]);

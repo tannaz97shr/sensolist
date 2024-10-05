@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetPayload } from "@/types/general";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ export default function IndoorCo2({ senderId, name }: IndoorCo2Props) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(senderId, ["co2"]);
+          const response = await _getWidgetData(senderId, ["co2"]);
           setLoading(false);
           setWidgetData(response.co2?.data || []);
         }

@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export default function OpenStreetMap({ senderId, name }: OpenStreetMapProps) {
         if (senderId) {
           setLoading(true);
           setLoading(false);
-          const response = await getWidgetData(senderId, [
+          const response = await _getWidgetData(senderId, [
             "Longitude",
             "Latitude",
           ]);

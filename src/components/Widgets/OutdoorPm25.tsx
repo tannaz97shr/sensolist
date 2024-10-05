@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetPayload } from "@/types/general";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export default function OutdoorPm25({ senderId, name }: OutdoorPm25Props) {
         if (senderId) {
           setLoading(true);
           setLoading(false);
-          const response = await getWidgetData(senderId, ["pm2.5"]);
+          const response = await _getWidgetData(senderId, ["pm2.5"]);
           setWidgetData(response.pm25?.data || []);
         }
       };
