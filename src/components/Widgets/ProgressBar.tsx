@@ -52,7 +52,6 @@ export default function ProgressBar({
   }, [senderId, seconds, characteristics]);
 
   useEffect(() => {
-    console.log("wdg data", widgetData);
     if (widgetData) {
       setPercent(
         ((Number(widgetData.data[0].payload) - Number(range.minimum)) /
@@ -62,7 +61,6 @@ export default function ProgressBar({
     }
   }, [range.maximum, range.minimum, widgetData]);
 
-  console.log("loading", percent);
   return (
     <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 h-40 mt-10 rounded-xl p-6">
       {!widgetData ? (
