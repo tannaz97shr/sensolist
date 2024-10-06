@@ -39,7 +39,6 @@ export default function CustomBarChart({
         if (senderId) {
           setLoading(true);
           const response = await getWidgetData(senderId, charactristics, 20, 1);
-          console.log("bar response", response);
           setLoading(false);
           setWidgetData(response);
         }
@@ -86,8 +85,6 @@ export default function CustomBarChart({
 
   const convertedData = transformData(widgetData);
 
-  console.log(" bar response", convertedData);
-
   const option: EChartsOption = {
     legend: {},
     tooltip: {},
@@ -95,7 +92,10 @@ export default function CustomBarChart({
       source: convertedData,
     },
     xAxis: { type: "category" },
-    yAxis: {},
+    yAxis: {
+      min,
+      max,
+    },
     series: widgetData?.charactersData?.map((_item) => {
       return { type: "bar" };
     }),

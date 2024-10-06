@@ -25,7 +25,6 @@ export default function WidgetGuage({
         endAngle: -20,
         min: min,
         max: max,
-        splitNumber: Math.floor((max - min) / 10),
         itemStyle: {
           color: "#FFAB91",
         },

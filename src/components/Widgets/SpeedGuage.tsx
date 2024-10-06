@@ -31,7 +31,7 @@ export default function SpeedGuage({
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(senderId, characteristics, 1, 1);
+          const response = await getWidgetData(senderId, ["speed"], 1, 1);
           setWidgetData(
             response.charactersData?.length ? response.charactersData[0] : null
           );
@@ -58,7 +58,7 @@ export default function SpeedGuage({
           <WidgetGuage
             min={Number(range.minimum)}
             max={Number(range.maximum)}
-            value={Number(widgetData.data[0].payload)}
+            value={Number(widgetData.data[0]?.payload || 0)}
             unit={widgetData.unit}
             character={widgetData.character}
           />
