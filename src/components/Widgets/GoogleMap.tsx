@@ -5,6 +5,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import Spinner from "../UI/Spinner";
+import RecenterMap from "../WidgetMapHelper";
 
 interface GoogleMapProps {
   senderId?: string;
@@ -45,21 +47,26 @@ export default function GoogleMap({ senderId, name }: GoogleMapProps) {
   }, [senderId, seconds]);
 
   return (
-    <div>
-      {widgetData && (
-        <MapContainer
-          className=" w-full aspect-video bg-error overflow-hidden z-0"
-          center={widgetData}
-          zoom={13}
-          scrollWheelZoom={false}
-        >
-          <TileLayer
-            attribution="Google Maps"
-            url="https://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"
-          />
+    <div className="w-full aspect-video ">
+      {loading ? (
+        <Spinner />
+      ) : (
+        widgetData && (
+          <MapContainer
+            className=" w-full aspect-video overflow-hidden z-0"
+            center={widgetData}
+            zoom={13}
+            scrollWheelZoom={false}
+          >
+            <TileLayer
+              attribution="Google Maps"
+              url="https://www.google.cn/maps/vt?lyrs=m@189&gl=cn&x={x}&y={y}&z={z}"
+            />
 
-          <Marker position={widgetData} icon={loctionIcon}></Marker>
-        </MapContainer>
+            <Marker position={widgetData} icon={loctionIcon}></Marker>
+            <RecenterMap lat={widgetData.lat} lng={widgetData.lng} />
+          </MapContainer>
+        )
       )}
     </div>
   );
