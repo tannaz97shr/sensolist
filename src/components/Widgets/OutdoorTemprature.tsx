@@ -35,7 +35,6 @@ export default function OutdoorTemprature({
         if (senderId) {
           setLoading(true);
           const response = await getWidgetData(senderId, characteristics, 1, 1);
-          console.log("outdoor response", response);
           setWidgetData(
             response.charactersData?.length
               ? response.charactersData.filter(
