@@ -398,6 +398,7 @@ export interface IWidgetData extends IResponse {
 
 export interface ICharatersData {
   character: string;
+  unit: string;
   data: {
     payload: string;
     receivedTime: string;

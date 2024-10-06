@@ -55,7 +55,8 @@ export default function ValueCard({
             {widgetData.character}
           </div>
           <div className=" mt-6 text-xl w-fit mx-auto">
-            {widgetData.data.length && widgetData.data[0].payload}
+            {widgetData.data.length && widgetData.data[0].payload}{" "}
+            {widgetData.unit}
           </div>
         </div>
       )}

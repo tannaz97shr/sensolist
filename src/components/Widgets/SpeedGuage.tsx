@@ -4,6 +4,7 @@ import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
+import WidgetGuage from "../WidgetGuage";
 
 interface SpeedGuageProps {
   senderId?: string;
@@ -49,11 +50,19 @@ export default function SpeedGuage({
   }, [senderId, seconds, characteristics]);
 
   return (
-    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 h-40 mt-10 rounded-xl p-6">
+    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-40 mt-10 rounded-xl p-6">
       {!widgetData ? (
         <Spinner className="mx-auto mt-10" />
       ) : (
-        <div>guage here</div>
+        <div>
+          <WidgetGuage
+            min={Number(range.minimum)}
+            max={Number(range.maximum)}
+            value={Number(widgetData.data[0].payload)}
+            unit={widgetData.unit}
+            character={widgetData.character}
+          />
+        </div>
       )}
     </div>
   );
