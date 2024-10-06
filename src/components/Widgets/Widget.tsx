@@ -4,6 +4,7 @@ import { addWidgetEdit } from "@/lib/features/dashboard/dashboardSlice";
 import { IWidgetConfig } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
+import AirQualityHumidity from "./AirQualityHumidity";
 import CustomBarChart from "./BarChart";
 import EntityTable from "./EntityTable";
 import GoogleMap from "./GoogleMap";
@@ -155,6 +156,13 @@ export default function Widget({
         />
       ) : widgetName === "Speed gauge" ? (
         <SpeedGuage
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
+      ) : widgetName === "Humidity Card" ? (
+        <AirQualityHumidity
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
