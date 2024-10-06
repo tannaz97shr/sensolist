@@ -21,6 +21,7 @@ import OutdoorPm25 from "./OutdoorPm25";
 import OutdoorTemprature from "./OutdoorTemprature";
 import PressureCard from "./PressureCard";
 import ProgressBar from "./ProgressBar";
+import SpeedGuage from "./SpeedGuage";
 import ValueCard from "./ValueCard";
 import WidgetCardContainer from "./WidgetCardContainer";
 
@@ -151,6 +152,13 @@ export default function Widget({
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
+        />
+      ) : widgetName === "Speed gauge" ? (
+        <SpeedGuage
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
         />
       ) : (
         <>

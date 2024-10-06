@@ -3,11 +3,9 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import { useEffect, useState } from "react";
-
-import { Progress } from "flowbite-react";
 import Spinner from "../UI/Spinner";
 
-interface ProgressBarProps {
+interface SpeedGuageProps {
   senderId?: string;
   name: string;
   characteristics: string[];
@@ -17,14 +15,13 @@ interface ProgressBarProps {
   };
 }
 
-export default function ProgressBar({
+export default function SpeedGuage({
   senderId,
   name,
   characteristics,
   range,
-}: ProgressBarProps) {
+}: SpeedGuageProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
-  const [percent, setPercent] = useState<number>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -51,33 +48,12 @@ export default function ProgressBar({
     return () => clearInterval(interval);
   }, [senderId, seconds, characteristics]);
 
-  useEffect(() => {
-    if (widgetData) {
-      setPercent(
-        ((Number(widgetData.data[0].payload) - Number(range.minimum)) /
-          (Number(range.maximum) - Number(range.minimum))) *
-          100
-      );
-    }
-  }, [range.maximum, range.minimum, widgetData]);
-
   return (
     <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 h-40 mt-10 rounded-xl p-6">
       {!widgetData ? (
         <Spinner className="mx-auto mt-10" />
       ) : (
-        percent &&
-        (percent > 100 || percent < 0 ? (
-          <div>out of range</div>
-        ) : (
-          <>
-            <div className="mt-10 flex justify-between dark:text-white">
-              <span>{range.minimum}</span>
-              <span>{range.maximum}</span>
-            </div>
-            <Progress progress={percent} size={"lg"} color="dark" />
-          </>
-        ))
+        <div>guage here</div>
       )}
     </div>
   );
