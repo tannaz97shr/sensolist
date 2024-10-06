@@ -106,7 +106,12 @@ export default function Widget({
       ) : widgetName === "Indoor Temprature Card" ? (
         <IndoorTemprature name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Outdoor Temprature Card" ? (
-        <OutdoorTemprature name={widgetName || ""} senderId={widget.senderId} />
+        <OutdoorTemprature
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Noise Level Card" ? (
         <NoiseLevel name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Indoor CO2 Card" ? (

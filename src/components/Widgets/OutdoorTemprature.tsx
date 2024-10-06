@@ -1,33 +1,49 @@
 "use client";
 
-import { _getWidgetData } from "@/ApiCall/widgets";
-import { IWidgetPayload } from "@/types/general";
-import Image from "next/image";
+import { getWidgetData } from "@/ApiCall/widgets";
+import { ICharatersData } from "@/types/general";
+import { EChartsOption } from "echarts";
+import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
-import Spinner from "../UI/Spinner";
 
 interface OutdoorTempratureProps {
   senderId?: string;
   name: string;
+  characteristics: string[];
+  range: {
+    minimum: string;
+    maximum: string;
+  };
 }
 
 export default function OutdoorTemprature({
   senderId,
   name,
+  characteristics,
+  range,
 }: OutdoorTempratureProps) {
-  const [widgetData, setWidgetData] = useState<IWidgetPayload[]>();
+  const [widgetData, setWidgetData] = useState<ICharatersData | null>();
+  const [percent, setPercent] = useState<number>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
+
+  console.log("outdoor range", range);
 
   useEffect(() => {
     if (seconds === 10) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
+          const response = await getWidgetData(senderId, characteristics, 1, 1);
+          console.log("outdoor response", response);
+          setWidgetData(
+            response.charactersData?.length
+              ? response.charactersData.filter(
+                  (char) => char.character === "temperature"
+                )[0]
+              : null
+          );
           setLoading(false);
-          const response = await _getWidgetData(senderId, ["temperature"]);
-          console.log("outdoor temperature res", response);
-          setWidgetData(response.temperature?.data || []);
         }
       };
       getData();
@@ -39,43 +55,94 @@ export default function OutdoorTemprature({
     const interval = setInterval(() => setSeconds(seconds - 1), 1000);
 
     return () => clearInterval(interval);
-  }, [senderId, seconds]);
+  }, [senderId, seconds, characteristics]);
+
+  useEffect(() => {
+    if (widgetData) {
+      setPercent(
+        ((Number(widgetData.data[0].payload) - Number(range.minimum)) /
+          (Number(range.maximum) - Number(range.minimum))) *
+          100
+      );
+    }
+  }, [range?.maximum, range?.minimum, widgetData]);
+
+  const gaugeData = [
+    {
+      value: Number(percent?.toFixed(2)),
+      name: "Temperature",
+      title: {
+        offsetCenter: ["0%", "20%"],
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ["0%", "0%"],
+      },
+    },
+  ];
+
+  const option: EChartsOption = {
+    series: [
+      {
+        type: "gauge",
+        startAngle: 90,
+        endAngle: -270,
+        pointer: {
+          show: false,
+        },
+        progress: {
+          show: true,
+          overlap: false,
+          roundCap: true,
+          clip: false,
+          itemStyle: {
+            borderWidth: 1,
+            borderColor: "#464646",
+          },
+        },
+        axisLine: {
+          lineStyle: {
+            width: 40,
+          },
+        },
+        splitLine: {
+          show: false,
+          distance: 0,
+          length: 10,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLabel: {
+          show: false,
+          distance: 50,
+        },
+        data: gaugeData,
+        title: {
+          fontSize: 14,
+        },
+        detail: {
+          width: 50,
+          height: 14,
+          fontSize: 14,
+          color: "inherit",
+          borderColor: "inherit",
+          borderRadius: 20,
+          borderWidth: 1,
+          formatter: "{value}%",
+        },
+      },
+    ],
+  };
+
   return (
-    <div className=" aspect-square flex flex-col">
-      <div className=" text-lg capitalize mx-auto dark:text-white">{name}</div>
-      <div className="flex w-fit mx-auto mt-10">
-        <Image
-          className="dark:hidden"
-          alt="temp"
-          width={56}
-          height={56}
-          src={"/assets/icons/temperature.svg"}
-        />
-        <Image
-          className="hidden dark:flex"
-          alt="temp"
-          width={56}
-          height={56}
-          src={"/assets/icons/temperature-dark.svg"}
-        />
-        <div className="flex flex-col">
-          <div className="text-lg font-bold dark:text-neutral-2">
-            Temperature
-          </div>
-          <div className=" text-neutral-7 dark:text-neutral-6">
-            Last Update {seconds} seconds ago
-          </div>
-        </div>
-      </div>
-      {loading ? (
-        <Spinner className="mx-auto mt-20" />
-      ) : (
-        <div className="text-4xl mt-20 mx-auto text-primary-tint-1 dark:text-primary-tint-3">
-          {widgetData?.length
-            ? widgetData[0].payload + " °C"
-            : "There is no data."}
-        </div>
-      )}
+    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-40 mt-10 rounded-xl p-6">
+      {percent &&
+        (percent > 100 || percent < 0 ? (
+          <div>out of range</div>
+        ) : (
+          <ReactEcharts option={option} />
+        ))}
     </div>
   );
 }
