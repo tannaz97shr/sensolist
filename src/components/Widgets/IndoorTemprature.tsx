@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetPayload } from "@/types/general";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -26,7 +26,7 @@ export default function IndoorTemprature({
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(senderId, ["temperature"]);
+          const response = await _getWidgetData(senderId, ["temperature"]);
           setLoading(false);
           setWidgetData(response.temperature?.data || []);
         }

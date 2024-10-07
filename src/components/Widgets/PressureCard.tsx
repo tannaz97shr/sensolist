@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetPayload } from "@/types/general";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -21,7 +21,7 @@ export default function PressureCard({ senderId, name }: PressureCardProps) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(senderId, ["pressure"]);
+          const response = await _getWidgetData(senderId, ["pressure"]);
           setLoading(false);
           setWidgetData(response.pressure?.data || []);
         }

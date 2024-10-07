@@ -1,29 +1,47 @@
 "use client";
 
 import { getWidgetData } from "@/ApiCall/widgets";
-import { IWidgetPayload } from "@/types/general";
-import Image from "next/image";
+import { ICharatersData } from "@/types/general";
+import { EChartsOption } from "echarts";
+import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
 interface IndoorPm25Props {
   senderId?: string;
   name: string;
+  characteristics: string[];
+  range: {
+    minimum: string;
+    maximum: string;
+  };
 }
 
-export default function IndoorPm25({ senderId, name }: IndoorPm25Props) {
-  const [widgetData, setWidgetData] = useState<IWidgetPayload[]>();
+export default function IndoorPm25({
+  senderId,
+  name,
+  characteristics,
+  range,
+}: IndoorPm25Props) {
+  const [widgetData, setWidgetData] = useState<ICharatersData | null>();
+  const [percent, setPercent] = useState<number>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     if (seconds === 10) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(senderId, ["pm2.5"]);
-          console.log("indoor pm25 res", response);
+          const response = await getWidgetData(senderId, characteristics, 1, 1);
+          setWidgetData(
+            response.charactersData?.length
+              ? response.charactersData.filter(
+                  (char) => char.character === "pm2.5"
+                )[0]
+              : null
+          );
           setLoading(false);
-          setWidgetData(response.pm25?.data || []);
         }
       };
       getData();
@@ -35,33 +53,99 @@ export default function IndoorPm25({ senderId, name }: IndoorPm25Props) {
     const interval = setInterval(() => setSeconds(seconds - 1), 1000);
 
     return () => clearInterval(interval);
-  }, [senderId, seconds]);
+  }, [senderId, seconds, characteristics]);
+
+  useEffect(() => {
+    if (widgetData) {
+      setPercent(
+        ((Number(widgetData.data[0]?.payload) - Number(range.minimum)) /
+          (Number(range.maximum) - Number(range.minimum))) *
+          100
+      );
+    }
+  }, [range?.maximum, range?.minimum, widgetData]);
+
+  const gaugeData = [
+    {
+      value: Number(percent?.toFixed(2)),
+      name: "PM2.5",
+      title: {
+        offsetCenter: ["0%", "20%"],
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ["0%", "0%"],
+      },
+    },
+  ];
+
+  const option: EChartsOption = {
+    series: [
+      {
+        type: "gauge",
+        itemStyle: {
+          color: "#C6125D",
+        },
+        startAngle: 90,
+        endAngle: -270,
+        pointer: {
+          show: false,
+        },
+        progress: {
+          show: true,
+          overlap: false,
+          roundCap: true,
+          clip: false,
+          itemStyle: {
+            borderWidth: 1,
+            borderColor: "#464646",
+          },
+        },
+        axisLine: {
+          lineStyle: {
+            width: 10,
+          },
+        },
+        splitLine: {
+          show: false,
+          distance: 0,
+          length: 10,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLabel: {
+          show: false,
+          distance: 50,
+        },
+        data: gaugeData,
+        title: {
+          fontSize: 14,
+        },
+        detail: {
+          width: 50,
+          height: 14,
+          fontSize: 14,
+          color: "inherit",
+          borderColor: "inherit",
+          borderRadius: 20,
+          borderWidth: 1,
+          formatter: "{value}%",
+        },
+      },
+    ],
+  };
+
   return (
-    <div className=" aspect-square flex flex-col">
-      <div className=" text-lg capitalize mx-auto dark:text-white">{name}</div>
-      <div className="flex w-fit mx-auto mt-10">
-        <Image
-          className="mr-4"
-          alt="temp"
-          width={56}
-          height={56}
-          src={"/assets/icons/noise.svg"}
-        />
-        <div className="flex flex-col">
-          <div className="text-lg font-bold dark:text-neutral-2">PM2.5</div>
-          <div className=" text-neutral-7 dark:text-neutral-6">
-            Last Update {seconds} seconds ago
-          </div>
-        </div>
-      </div>
-      {loading ? (
-        <Spinner className="mx-auto mt-20" />
+    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-40 mt-10 rounded-xl p-6">
+      {percent ? (
+        percent > 100 || percent < 0 ? (
+          <div>out of range</div>
+        ) : (
+          <ReactEcharts option={option} />
+        )
       ) : (
-        <div className="text-4xl mt-20 mx-auto text-primary-tint-1 dark:text-primary-tint-3">
-          {widgetData?.length
-            ? widgetData[0].payload + " µg/m³"
-            : "There is no data."}
-        </div>
+        loading && <Spinner />
       )}
     </div>
   );

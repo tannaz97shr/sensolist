@@ -1,17 +1,9 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetData } from "@/types/general";
+import type { EChartsOption } from "echarts";
+import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Label,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import Spinner from "../UI/Spinner";
 
 interface BarChartProps {
   senderId?: string;
@@ -37,18 +29,6 @@ export default function CustomBarChart({
   min,
   max,
 }: BarChartProps) {
-  const colors = [
-    "#FF5733", // Vivid Red
-    "#33FF57", // Vivid Green
-    "#3357FF", // Vivid Blue
-    "#F1C40F", // Bright Yellow
-    "#9B59B6", // Vibrant Purple
-    "#E67E22", // Rich Orange
-    "#1ABC9C", // Teal
-    "#34495E", // Dark Blue-Grey
-    "#E74C3C", // Soft Red
-    "#2ECC71", // Bright Green
-  ];
   const [widgetData, setWidgetData] = useState<IWidgetData>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
@@ -58,12 +38,7 @@ export default function CustomBarChart({
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(
-            senderId,
-            charactristics,
-            start,
-            end
-          );
+          const response = await getWidgetData(senderId, charactristics, 20, 1);
           setLoading(false);
           setWidgetData(response);
         }
@@ -79,60 +54,59 @@ export default function CustomBarChart({
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
-  console.log("dataa", widgetData);
 
-  const convertToChartData = (data: IWidgetData) => {
-    const keys = Object.keys(data);
-    const maxLength = 20;
+  const transformData = (data: IWidgetData | undefined) => {
+    const characters = data?.charactersData?.map((characterObj) => ({
+      name: characterObj.character,
+      unit: characterObj.unit,
+      values: characterObj.data,
+    }));
+    const header = characters ? ["time", ...characters.map((c) => c.name)] : [];
+    const rowCount = characters ? characters[0].values.length : 0;
+    const chartData: (string | number)[][] = [header];
 
-    const chartData = Array.from({ length: maxLength }, (_, i) => {
-      const entry: Record<string, number | string> = {
-        name: `Data Point ${i + 1}`,
-      };
+    if (characters) {
+      for (let i = 0; i < rowCount; i++) {
+        const time = new Date(
+          characters[0].values[i].receivedTime
+        ).toLocaleTimeString("en-US", { hour12: false });
 
-      keys.forEach((key) => {
-        if (i < data[key].data.length) {
-          entry[key] = data[key].data[i].payload;
-        } else {
-          entry[key] = 0;
-        }
-      });
+        const row: (string | number)[] = [time];
+        characters.forEach((character) => {
+          row.push(parseFloat(character.values[i].payload)); // Convert payload to number
+        });
 
-      return entry;
-    });
+        chartData.push(row);
+      }
+    }
 
     return chartData;
   };
-  // Convert the input data
-  const chartData = widgetData ? convertToChartData(widgetData) : [];
 
-  console.log("chart data", chartData);
+  const convertedData = transformData(widgetData);
 
+  const option: EChartsOption = {
+    legend: {},
+    tooltip: {},
+    dataset: {
+      source: convertedData,
+    },
+    xAxis: { type: "category" },
+    yAxis: {
+      min,
+      max,
+    },
+    series: widgetData?.charactersData?.map((_item) => {
+      return { type: "bar" };
+    }),
+  };
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <BarChart data={chartData}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis tick={{ fontSize: 10 }} dataKey="name">
-          <Label position={"insideBottom"} offset={0}>
-            {xLabel}
-          </Label>
-        </XAxis>
-        <YAxis
-          interval={20}
-          tick={{ fontSize: 10 }}
-          type="number"
-          domain={[(_dataMin: number) => min, (_dataMax: number) => max]}
-          allowDataOverflow={true}
-        >
-          <Label>{yLabel}</Label>
-        </YAxis>
-        <Tooltip />
-        <Legend />
-        {widgetData &&
-          Object.keys(widgetData).map((key, i) => (
-            <Bar key={key} dataKey={key} fill={colors[i]} />
-          ))}
-      </BarChart>
-    </ResponsiveContainer>
+    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-40 mt-10 rounded-xl p-6">
+      {!widgetData ? (
+        <Spinner className="mx-auto mt-10" />
+      ) : (
+        <ReactEcharts option={option} />
+      )}
+    </div>
   );
 }

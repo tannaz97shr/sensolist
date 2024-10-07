@@ -1,6 +1,6 @@
 "use client";
 
-import { getWidgetData } from "@/ApiCall/widgets";
+import { _getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetPayload } from "@/types/general";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -24,7 +24,7 @@ export default function IndoorHumidityCard({
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await getWidgetData(senderId, ["humidity"]);
+          const response = await _getWidgetData(senderId, ["humidity"]);
           setLoading(false);
           setWidgetData(response.humidity?.data || []);
         }

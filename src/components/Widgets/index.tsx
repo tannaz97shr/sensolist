@@ -158,7 +158,7 @@ export default function DashboardWidgets({
           setIsSelectOpen(true);
         }}
       />
-      <div className=" m-auto w-full flex-1 flex">
+      <div className=" m-auto w-full flex-1 flex overflow-x-auto">
         {(selectedDashboard?.widgets?.length || 0) +
         (draftWidgets.length || 0) ? (
           <GridLayout
@@ -177,7 +177,7 @@ export default function DashboardWidgets({
               selectedDashboard?.widgets.map((wdg, i) => {
                 return (
                   <div
-                    key={wdg.widget}
+                    key={wdg.widget + i}
                     data-grid={wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }}
                     onClick={(event: React.MouseEvent<HTMLElement>) => {
                       console.log("grid click");

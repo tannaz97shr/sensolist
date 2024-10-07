@@ -123,7 +123,7 @@ export default function EntityTable({
     },
   });
 
-  return widgetData ? (
+  return loading ? (
     <MRT_Table table={table} />
   ) : (
     <Spinner className="mx-auto mt-20" />
