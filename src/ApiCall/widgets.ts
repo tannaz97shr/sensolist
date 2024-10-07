@@ -7,7 +7,6 @@ import {
   IWidgetGroupResponse,
 } from "@/types/general";
 import { getSession } from "next-auth/react";
-import { Layout } from "react-grid-layout";
 
 export const _getWidgetData = async (
   senderId: string,
@@ -128,26 +127,17 @@ export const getWidgetGroups = async (): Promise<IWidgetGroupResponse> => {
 
 export const storeWidgetsConfig = async (
   dashboardId: string,
-  widgetsConfig: IWidgetConfig[],
-  layout: Layout[]
+  widgetsConfig: IWidgetConfig[]
 ): Promise<IResponse> => {
   try {
     const session = await getSession();
-    const widgetsWithLayout = widgetsConfig.map((wdg) => {
-      const filteredLayout = layout.filter((lay) => lay.i === wdg.widget);
-      if (filteredLayout.length) {
-        return { ...wdg, layout: filteredLayout[0] };
-      } else {
-        return wdg;
-      }
-    });
     const res = await fetch(
       "https://sensolist-backend.vercel.app/api/v3/widget/config/store",
       {
         method: "POST",
         body: JSON.stringify({
           dashboardId: dashboardId,
-          widgetsConfig: widgetsWithLayout.map((wdg) => {
+          widgetsConfig: widgetsConfig.map((wdg) => {
             let temp = { ...wdg };
             delete temp.widgetName;
             return temp;

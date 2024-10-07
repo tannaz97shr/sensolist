@@ -81,7 +81,13 @@ export default function DashboardWidgetSelect({
                   Select Widgets Bundle
                 </div>
               )}
-              <button onClick={onClose} className="ml-auto">
+              <button
+                onClick={() => {
+                  onClose();
+                  setSelectedGroup(null);
+                }}
+                className="ml-auto"
+              >
                 <Close className=" text-white mr-4" />
               </button>
             </div>
@@ -118,7 +124,7 @@ export default function DashboardWidgetSelect({
                         setSelectedGroup(gp);
                       }}
                       key={gp.groupName}
-                      className=" bg-white dark:bg-primary-Shade-2 shadow-lg flex flex-col w-[calc(100%-8px)] md:w-[calc(33%-8px)] lg:w-[calc(25%-8px)] p-4 hover:shadow-neutral-6 cursor-pointer"
+                      className=" bg-white dark:bg-white-opacity-100 shadow flex flex-col w-[calc(100%-8px)] md:w-[calc(33%-8px)] lg:w-[calc(25%-8px)] p-4 hover:shadow-neutral-6 cursor-pointer"
                     >
                       <div className=" capitalize text-sm mb-2 dark:text-white">
                         {gp.groupName}

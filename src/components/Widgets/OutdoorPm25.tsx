@@ -137,7 +137,7 @@ export default function OutdoorPm25({
   };
 
   return (
-    <div className="flex flex-col bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-40 mt-10 rounded-xl p-6">
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
       {widgetData ? (
         percent ? (
           percent > 100 || percent < 0 ? (

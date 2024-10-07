@@ -62,10 +62,9 @@ export default function ProgressBar({
       );
     }
   }, [range.maximum, range.minimum, widgetData]);
-  console.log("percent", percent);
 
   return (
-    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-52 mt-10 rounded-xl p-6">
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
       {!widgetData ? (
         <Spinner className="mx-auto mt-10" />
       ) : percent ? (
