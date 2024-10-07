@@ -5,6 +5,7 @@ import { ICharatersData } from "@/types/general";
 import { EChartsOption } from "echarts";
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
+import Spinner from "../UI/Spinner";
 
 interface OutdoorTempratureProps {
   senderId?: string;
@@ -26,8 +27,6 @@ export default function OutdoorTemprature({
   const [percent, setPercent] = useState<number>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
-
-  console.log("outdoor range", range);
 
   useEffect(() => {
     if (seconds === 10) {
@@ -59,7 +58,7 @@ export default function OutdoorTemprature({
   useEffect(() => {
     if (widgetData) {
       setPercent(
-        ((Number(widgetData.data[0].payload) - Number(range.minimum)) /
+        ((Number(widgetData.data[0]?.payload) - Number(range.minimum)) /
           (Number(range.maximum) - Number(range.minimum))) *
           100
       );
@@ -84,6 +83,9 @@ export default function OutdoorTemprature({
     series: [
       {
         type: "gauge",
+        itemStyle: {
+          color: "#2A4FA3",
+        },
         startAngle: 90,
         endAngle: -270,
         pointer: {
@@ -101,7 +103,7 @@ export default function OutdoorTemprature({
         },
         axisLine: {
           lineStyle: {
-            width: 40,
+            width: 10,
           },
         },
         splitLine: {
@@ -136,12 +138,15 @@ export default function OutdoorTemprature({
 
   return (
     <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-40 mt-10 rounded-xl p-6">
-      {percent &&
-        (percent > 100 || percent < 0 ? (
+      {percent ? (
+        percent > 100 || percent < 0 ? (
           <div>out of range</div>
         ) : (
           <ReactEcharts option={option} />
-        ))}
+        )
+      ) : (
+        loading && <Spinner />
+      )}
     </div>
   );
 }

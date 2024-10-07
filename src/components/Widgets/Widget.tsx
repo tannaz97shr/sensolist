@@ -118,7 +118,12 @@ export default function Widget({
       ) : widgetName === "Indoor CO2 Card" ? (
         <IndoorCo2 name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Indoor PM2.5 Card" ? (
-        <IndoorPm25 name={widgetName || ""} senderId={widget.senderId} />
+        <IndoorPm25
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Outdoor Humidity Card" ? (
         <HumidityCard name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Pressure Card" ? (
@@ -126,7 +131,12 @@ export default function Widget({
       ) : widgetName === "Outdoor CO2 Card" ? (
         <OutdoorCo2 name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Outdoor PM2.5 Card" ? (
-        <OutdoorPm25 name={widgetName || ""} senderId={widget.senderId} />
+        <OutdoorPm25
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Indoor Humidity Card" ? (
         <IndoorHumidityCard
           name={widgetName || ""}

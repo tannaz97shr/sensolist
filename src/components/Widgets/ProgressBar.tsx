@@ -54,20 +54,22 @@ export default function ProgressBar({
   useEffect(() => {
     if (widgetData) {
       setPercent(
-        ((Number(widgetData.data[0].payload) - Number(range.minimum)) /
-          (Number(range.maximum) - Number(range.minimum))) *
-          100
+        widgetData.data[0]
+          ? ((Number(widgetData.data[0]?.payload) - Number(range.minimum)) /
+              (Number(range.maximum) - Number(range.minimum))) *
+              100
+          : undefined
       );
     }
   }, [range.maximum, range.minimum, widgetData]);
+  console.log("percent", percent);
 
   return (
-    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 h-40 mt-10 rounded-xl p-6">
+    <div className=" bg-neutral-2 dark:bg-primary-tint-1 border border-neutral-6 min-h-52 mt-10 rounded-xl p-6">
       {!widgetData ? (
         <Spinner className="mx-auto mt-10" />
-      ) : (
-        percent &&
-        (percent > 100 || percent < 0 ? (
+      ) : percent ? (
+        percent > 100 || percent < 0 ? (
           <div>out of range</div>
         ) : (
           <>
@@ -77,7 +79,9 @@ export default function ProgressBar({
             </div>
             <Progress progress={percent} size={"lg"} color="dark" />
           </>
-        ))
+        )
+      ) : (
+        <div>No data</div>
       )}
     </div>
   );

@@ -51,23 +51,35 @@ export default function OpenStreetMap({ senderId, name }: OpenStreetMapProps) {
     <div className="w-full aspect-video ">
       {loading ? (
         <Spinner />
-      ) : (
-        widgetData && (
-          <MapContainer
-            className=" w-full aspect-video overflow-hidden z-0"
-            center={widgetData}
-            zoom={13}
-            scrollWheelZoom={false}
-          >
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
+      ) : widgetData ? (
+        <MapContainer
+          className=" w-full aspect-video overflow-hidden z-0"
+          center={widgetData}
+          zoom={13}
+          scrollWheelZoom={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-            <Marker position={widgetData} icon={loctionIcon}></Marker>
-            <RecenterMap lat={widgetData.lat} lng={widgetData.lng} />
-          </MapContainer>
-        )
+          <Marker position={widgetData} icon={loctionIcon}></Marker>
+          <RecenterMap lat={widgetData.lat} lng={widgetData.lng} />
+        </MapContainer>
+      ) : (
+        <MapContainer
+          className=" w-full aspect-video z-0"
+          center={[0, 0]}
+          zoom={4}
+          scrollWheelZoom={false}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+
+          <RecenterMap lat={0} lng={0} />
+        </MapContainer>
       )}
     </div>
   );
