@@ -72,11 +72,11 @@ export default function Widget({
       disableDragging={disableDragging}
       enableDragging={enableDragging}
     >
-      <div className="mb-6 dark:text-neutral-2 capitalize font-bold">
+      <div className="mb-4 dark:text-neutral-2 capitalize font-bold">
         {widget.title}
       </div>
-      <div className="mb-6 dark:text-neutral-2">
-        Thing Name : {widget.thingName}
+      <div className="mb-4 dark:text-neutral-2">
+        {widget.widgetName} - {widget.thingName}
       </div>
       {widgetName === "Line Chart" ? (
         <CustomLineChart

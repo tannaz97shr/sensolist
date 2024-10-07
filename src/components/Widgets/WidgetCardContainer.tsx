@@ -35,10 +35,10 @@ export default function WidgetCardContainer({
       <FullScreen
         handle={handle}
         key={widget.widget}
-        className="my-full-screen-component overflow-auto bg-black-opacity-100 dark:bg-white-opacity-50 rounded-lg p-4 h-full"
+        className="relative my-full-screen-component overflow-auto shadow dark:shadow-neutral-7 p-4 h-full"
       >
         {editMode && (
-          <div className="w-full flex items-center justify-end">
+          <div className=" absolute w-full flex items-center justify-end right-4">
             <button
               onMouseDown={disableDragging}
               onMouseUp={enableDragging}

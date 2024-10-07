@@ -351,3 +351,8 @@ body {
 .dark .fullscreen-enabled.my-full-screen-component {
   background-color: black;
 }
+
+.dark .react-resizable-handle::after {
+  border-right: 2px solid white !important;
+  border-bottom: 2px solid white !important;
+}
