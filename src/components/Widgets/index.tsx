@@ -20,6 +20,7 @@ import "react-grid-layout/css/styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import "react-resizable/css/styles.css";
 import Button from "../UI/Button";
+import DeleteDialog from "../UI/Dialog/DeleteDialog";
 import DashboardWidgetSelect from "../WidgetSelect";
 import WidgetsHeader from "../WidgetsHeader";
 import Widget from "./Widget";
@@ -44,6 +45,9 @@ export default function DashboardWidgets({
       .filter((lay) => lay !== undefined) as Layout[]) || []
   );
   const [isDraggable, setIsDraggable] = useState(editMode);
+  const [deleteDialogIndex, setDeleteDialogIndex] = useState<number | null>(
+    null
+  );
 
   const disableDragging = () => setIsDraggable(false);
   const enableDragging = () => setIsDraggable(true);
@@ -138,71 +142,104 @@ export default function DashboardWidgets({
     dispatch(emptyDraftWidget());
     setEditMode(false);
   };
+
+  const onDelete = async (i: number) => {
+    if (selectedDashboard?.widgets) {
+      if (i < selectedDashboard?.widgets.length) {
+        await onDeleteSaved(i);
+      } else {
+        dispatch(removeDraftWidget({ index: i }));
+      }
+    } else {
+      dispatch(removeDraftWidget({ index: i }));
+    }
+  };
   return (
-    <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
-      <DashboardWidgetSelect
-        refreshData={getData}
-        dashboardId={dashboardId}
-        onClose={() => {
-          setIsSelectOpen(false);
-        }}
-        isOpen={isSelectOpen}
-        layout={currentLayout}
-      />
-      <WidgetsHeader
-        dashboardName={selectedDashboard?.name}
-        dashboardDescription={selectedDashboard?.description}
-        hasMadeChange={true}
-        editMode={editMode}
-        goToEditMode={() => {
-          setEditMode(true);
-        }}
-        onSave={async () => {
-          await onSave();
-        }}
-        onCancel={() => {
-          onCancel();
-        }}
-        isSelectOpen={isSelectOpen}
-        onWidgetAdd={() => {
-          setIsSelectOpen(true);
-        }}
-      />
-      <div className=" m-auto w-full flex-1 flex overflow-x-auto">
-        {(selectedDashboard?.widgets?.length || 0) +
-        (draftWidgets.length || 0) ? (
-          <GridLayout
-            className="layout bg-error"
-            cols={12}
-            rowHeight={20}
-            width={1200}
-            onLayoutChange={(newLayout: Layout[]) => {
-              setCurrentLayout(newLayout);
-            }}
-            onDragStop={() => {}}
-            isDraggable={isDraggable}
-            isResizable={editMode}
-          >
-            {selectedDashboard?.widgets
-              ? [...selectedDashboard?.widgets, ...draftWidgets].map(
-                  (wdg, i) => {
-                    return (
-                      <div
-                        key={i}
-                        data-grid={
-                          wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }
-                        }
-                        onClick={(event: React.MouseEvent<HTMLElement>) => {
-                          event.stopPropagation();
-                        }}
-                      >
-                        <Widget
-                          onDelete={async () => {
-                            await onDeleteSaved(i);
+    <>
+      <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
+        <DashboardWidgetSelect
+          refreshData={getData}
+          dashboardId={dashboardId}
+          onClose={() => {
+            setIsSelectOpen(false);
+          }}
+          isOpen={isSelectOpen}
+          layout={currentLayout}
+        />
+        <WidgetsHeader
+          dashboardName={selectedDashboard?.name}
+          dashboardDescription={selectedDashboard?.description}
+          hasMadeChange={true}
+          editMode={editMode}
+          goToEditMode={() => {
+            setEditMode(true);
+          }}
+          onSave={async () => {
+            await onSave();
+          }}
+          onCancel={() => {
+            onCancel();
+          }}
+          isSelectOpen={isSelectOpen}
+          onWidgetAdd={() => {
+            setIsSelectOpen(true);
+          }}
+        />
+        <div className=" m-auto w-full flex-1 flex overflow-x-auto">
+          {(selectedDashboard?.widgets?.length || 0) +
+          (draftWidgets.length || 0) ? (
+            <GridLayout
+              className="layout bg-error"
+              cols={12}
+              rowHeight={20}
+              width={1200}
+              onLayoutChange={(newLayout: Layout[]) => {
+                setCurrentLayout(newLayout);
+              }}
+              onDragStop={() => {}}
+              isDraggable={isDraggable}
+              isResizable={editMode}
+            >
+              {selectedDashboard?.widgets
+                ? [...selectedDashboard?.widgets, ...draftWidgets].map(
+                    (wdg, i) => {
+                      return (
+                        <div
+                          key={i}
+                          data-grid={
+                            wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }
+                          }
+                          onClick={(event: React.MouseEvent<HTMLElement>) => {
+                            event.stopPropagation();
                           }}
-                          saved={true}
-                          dashboardId={selectedDashboard.id}
+                        >
+                          <Widget
+                            onDelete={() => {
+                              setDeleteDialogIndex(i);
+                            }}
+                            saved={true}
+                            dashboardId={selectedDashboard.id}
+                            editMode={editMode}
+                            widget={wdg}
+                            index={i}
+                            disableDragging={disableDragging}
+                            enableDragging={enableDragging}
+                          />
+                        </div>
+                      );
+                    }
+                  )
+                : draftWidgets?.map((wdg, i) => {
+                    return (
+                      <div key={i} data-grid={{ x: 4 * i, y: 0, w: 4, h: 16 }}>
+                        <Widget
+                          onDelete={() => {
+                            setDeleteDialogIndex(i);
+                          }}
+                          saved={false}
+                          dashboardId={dashboardId}
                           editMode={editMode}
+                          key={wdg.title}
                           widget={wdg}
                           index={i}
                           disableDragging={disableDragging}
@@ -210,63 +247,35 @@ export default function DashboardWidgets({
                         />
                       </div>
                     );
-                  }
-                )
-              : draftWidgets?.map((wdg, i) => {
-                  return (
-                    <div key={i} data-grid={{ x: 4 * i, y: 0, w: 4, h: 16 }}>
-                      <Widget
-                        onDelete={() => {
-                          dispatch(removeDraftWidget({ index: i }));
-                        }}
-                        saved={false}
-                        dashboardId={dashboardId}
-                        editMode={editMode}
-                        key={wdg.title}
-                        widget={wdg}
-                        index={i}
-                        disableDragging={disableDragging}
-                        enableDragging={enableDragging}
-                      />
-                    </div>
-                  );
-                })}
-            {/* {draftWidgets?.map((wdg, i) => {
-              return (
-                <div
-                  key={wdg.widget}
-                  data-grid={{ x: 4 * i, y: 0, w: 4, h: 16 }}
-                >
-                  <Widget
-                    onDelete={() => {
-                      dispatch(removeDraftWidget({ index: i }));
-                    }}
-                    saved={false}
-                    dashboardId={dashboardId}
-                    editMode={editMode}
-                    key={wdg.title}
-                    widget={wdg}
-                    index={i}
-                    disableDragging={disableDragging}
-                    enableDragging={enableDragging}
-                  />
-                </div>
-              );
-            })} */}
-          </GridLayout>
-        ) : (
-          editMode && (
-            <Button
-              onClick={() => {
-                setIsSelectOpen(true);
-              }}
-              className="px-4 m-auto mt-32"
-            >
-              <Add className="mr-2" /> Add widget
-            </Button>
-          )
-        )}
+                  })}
+            </GridLayout>
+          ) : (
+            editMode && (
+              <Button
+                onClick={() => {
+                  setIsSelectOpen(true);
+                }}
+                className="px-4 m-auto mt-32"
+              >
+                <Add className="mr-2" /> Add widget
+              </Button>
+            )
+          )}
+        </div>
       </div>
-    </div>
+      <DeleteDialog
+        open={!!(deleteDialogIndex !== null && deleteDialogIndex + 1)}
+        onClose={() => {
+          setDeleteDialogIndex(null);
+        }}
+        onDelete={async () => {
+          console.log("dialog on delete");
+          if (deleteDialogIndex !== null && deleteDialogIndex + 1)
+            await onDelete(deleteDialogIndex);
+          setDeleteDialogIndex(null);
+        }}
+        description={`Are you sure you want to delete the widget?`}
+      />
+    </>
   );
 }
