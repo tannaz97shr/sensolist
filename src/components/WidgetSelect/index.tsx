@@ -81,7 +81,13 @@ export default function DashboardWidgetSelect({
                   Select Widgets Bundle
                 </div>
               )}
-              <button onClick={onClose} className="ml-auto">
+              <button
+                onClick={() => {
+                  onClose();
+                  setSelectedGroup(null);
+                }}
+                className="ml-auto"
+              >
                 <Close className=" text-white mr-4" />
               </button>
             </div>

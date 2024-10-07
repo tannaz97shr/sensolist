@@ -139,7 +139,7 @@ export default function DashboardWidgets({
     setEditMode(false);
   };
   return (
-    <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5 bg-with-dots">
+    <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
       <DashboardWidgetSelect
         refreshData={getData}
         dashboardId={dashboardId}
