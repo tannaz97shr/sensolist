@@ -261,8 +261,7 @@ export default function WidgetFormModal({
               : savedWidgets;
           const res = await storeWidgetsConfig(
             dashboardId,
-            newWidgets?.length ? newWidgets : [],
-            layout
+            newWidgets?.length ? newWidgets : []
           );
           if (res.statusCode > 199 && res.statusCode < 300) {
             if (refreshData) await refreshData();
