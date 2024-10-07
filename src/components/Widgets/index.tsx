@@ -70,15 +70,20 @@ export default function DashboardWidgets({
   );
 
   const onSave = async () => {
-    console.log("on save", selectedDashboard, draftWidgets);
-    //  inja state layout ro ezafe konam
-    const res = selectedDashboard?.widgets.length
-      ? await storeWidgetsConfig(
-          dashboardId,
-          [...selectedDashboard?.widgets, ...draftWidgets],
-          currentLayout
-        )
-      : await storeWidgetsConfig(dashboardId, draftWidgets, currentLayout);
+    const widgetsWithLayout = selectedDashboard?.widgets
+      ? [...selectedDashboard?.widgets, ...draftWidgets].map((wdg, i) => {
+          return {
+            ...wdg,
+            layout: currentLayout.filter((cL) => cL.i === i.toString())[0],
+          };
+        })
+      : draftWidgets.map((wdg, i) => {
+          return {
+            ...wdg,
+            layout: currentLayout.filter((cL) => cL.i === i.toString())[0],
+          };
+        });
+    const res = await storeWidgetsConfig(dashboardId, widgetsWithLayout);
     if (res.statusCode < 300 && res.statusCode > 199) {
       dispatch(emptyDraftWidget());
       dispatch(createAlert({ message: "widgets saved.", type: "success" }));
@@ -96,19 +101,25 @@ export default function DashboardWidgets({
 
   //deleting saved widgets
   const onDeleteSaved = async (index: number) => {
-    // dispatch(saveDraftWidgets({ dashboardId: selectedDashboard.id }));
-    const res = selectedDashboard?.widgets.length
-      ? await storeWidgetsConfig(
-          dashboardId,
-          [
-            ...selectedDashboard?.widgets.filter((_wdg, i) => i !== index),
-            ...draftWidgets,
-          ],
-          currentLayout
-        )
-      : await storeWidgetsConfig(dashboardId, draftWidgets, currentLayout);
+    const widgetsWithLayout = selectedDashboard?.widgets
+      ? [
+          ...selectedDashboard?.widgets.filter((_wdg, i) => i !== index),
+          ...draftWidgets,
+        ].map((wdg, i) => {
+          return {
+            ...wdg,
+            layout: currentLayout.filter((cL) => cL.i === i.toString())[0],
+          };
+        })
+      : draftWidgets.map((wdg, i) => {
+          return {
+            ...wdg,
+            layout: currentLayout.filter((cL) => cL.i === i.toString())[0],
+          };
+        });
 
-    console.log("delete saved widgets", res);
+    const res = await storeWidgetsConfig(dashboardId, widgetsWithLayout);
+
     if (res.statusCode < 300 && res.statusCode > 199) {
       dispatch(emptyDraftWidget());
       dispatch(createAlert({ message: "widgets deleted.", type: "success" }));
@@ -147,7 +158,6 @@ export default function DashboardWidgets({
           setEditMode(true);
         }}
         onSave={async () => {
-          console.log("onsave");
           await onSave();
         }}
         onCancel={() => {
@@ -173,33 +183,55 @@ export default function DashboardWidgets({
             isDraggable={isDraggable}
             isResizable={editMode}
           >
-            {selectedDashboard?.widgets &&
-              selectedDashboard?.widgets.map((wdg, i) => {
-                return (
-                  <div
-                    key={wdg.widget + i}
-                    data-grid={wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }}
-                    onClick={(event: React.MouseEvent<HTMLElement>) => {
-                      console.log("grid click");
-                      event.stopPropagation();
-                    }}
-                  >
-                    <Widget
-                      onDelete={async () => {
-                        await onDeleteSaved(i);
-                      }}
-                      saved={true}
-                      dashboardId={selectedDashboard.id}
-                      editMode={editMode}
-                      widget={wdg}
-                      index={i}
-                      disableDragging={disableDragging}
-                      enableDragging={enableDragging}
-                    />
-                  </div>
-                );
-              })}
-            {draftWidgets?.map((wdg, i) => {
+            {selectedDashboard?.widgets
+              ? [...selectedDashboard?.widgets, ...draftWidgets].map(
+                  (wdg, i) => {
+                    return (
+                      <div
+                        key={i}
+                        data-grid={
+                          wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }
+                        }
+                        onClick={(event: React.MouseEvent<HTMLElement>) => {
+                          event.stopPropagation();
+                        }}
+                      >
+                        <Widget
+                          onDelete={async () => {
+                            await onDeleteSaved(i);
+                          }}
+                          saved={true}
+                          dashboardId={selectedDashboard.id}
+                          editMode={editMode}
+                          widget={wdg}
+                          index={i}
+                          disableDragging={disableDragging}
+                          enableDragging={enableDragging}
+                        />
+                      </div>
+                    );
+                  }
+                )
+              : draftWidgets?.map((wdg, i) => {
+                  return (
+                    <div key={i} data-grid={{ x: 4 * i, y: 0, w: 4, h: 16 }}>
+                      <Widget
+                        onDelete={() => {
+                          dispatch(removeDraftWidget({ index: i }));
+                        }}
+                        saved={false}
+                        dashboardId={dashboardId}
+                        editMode={editMode}
+                        key={wdg.title}
+                        widget={wdg}
+                        index={i}
+                        disableDragging={disableDragging}
+                        enableDragging={enableDragging}
+                      />
+                    </div>
+                  );
+                })}
+            {/* {draftWidgets?.map((wdg, i) => {
               return (
                 <div
                   key={wdg.widget}
@@ -220,7 +252,7 @@ export default function DashboardWidgets({
                   />
                 </div>
               );
-            })}
+            })} */}
           </GridLayout>
         ) : (
           editMode && (
