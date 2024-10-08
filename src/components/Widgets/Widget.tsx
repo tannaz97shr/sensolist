@@ -24,6 +24,7 @@ import PressureCard from "./PressureCard";
 import ProgressBar from "./ProgressBar";
 import RadialGuage from "./RadialGuage";
 import SpeedGuage from "./SpeedGuage";
+import TimeSeriesChart from "./TimeSeriesChart";
 import ValueCard from "./ValueCard";
 import WidgetCardContainer from "./WidgetCardContainer";
 
@@ -93,6 +94,19 @@ export default function Widget({
         />
       ) : widgetName === "Bar Chart" ? (
         <CustomBarChart
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          start={widget["start date"]}
+          end={widget["end date"]}
+          xLabel={widget["X Axes"].label}
+          yLabel={widget["Y Axes"].label}
+          title={widget.title}
+          min={widget["Y Axes"].min}
+          max={widget["Y Axes"].max}
+          charactristics={widget.characteristics}
+        />
+      ) : widgetName === "Time Series Chart" ? (
+        <TimeSeriesChart
           name={widgetName || ""}
           senderId={widget.senderId}
           start={widget["start date"]}
