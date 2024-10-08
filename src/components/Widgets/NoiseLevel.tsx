@@ -2,8 +2,8 @@
 
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
-import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
+import SteppedBarChart from "../SteppedBarChart";
 import Spinner from "../UI/Spinner";
 
 interface NoiseLevelProps {
@@ -55,49 +55,45 @@ export default function NoiseLevel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
   const option = {
-    tooltip: {
-      formatter: "{a} <br/>{b} : {c} dB",
+    xAxis: {
+      type: "category",
+      data: ["Noise level"],
+      show: false, // Hide the x-axis labels since you're only showing one category
+    },
+    yAxis: {
+      type: "value",
+      min: 0,
+      max: 100, // As percentage
+      show: false, // Hide the y-axis labels
     },
     series: [
       {
-        name: name,
-        type: "gauge",
-        detail: {
-          valueAnimation: true,
-          formatter: "{value} dB",
-        },
-        data: [{ value: percent, name: "Noise Level" }],
-        axisLine: {
-          lineStyle: {
-            color: [
-              [0.2, "#76c043"],
-              [0.5, "#ffeb3b"],
-              [1, "#ff5722"],
-            ],
-            width: 10,
-          },
-        },
-        axisTick: {
-          show: true,
-          splitNumber: 10,
-          length: 10,
-        },
-        splitLine: {
-          length: 15,
-          lineStyle: {
-            color: "#000",
-          },
-        },
-        title: {
-          show: true,
-          offsetCenter: [0, "60%"],
-          textStyle: {
-            fontSize: 20,
-            fontWeight: "bolder",
+        type: "bar",
+        data: [percent], // Use the noise percentage for the bar height
+        barWidth: "40%", // Adjust the bar width to match your design
+        itemStyle: {
+          color: (params: any) => {
+            if ((percent || 0) <= 30) {
+              return "#4caf50"; // Green for low noise
+            } else if ((percent || 0) <= 60) {
+              return "#ffeb3b"; // Yellow for medium noise
+            } else {
+              return "#f44336"; // Red for high noise
+            }
           },
         },
       },
     ],
+    grid: {
+      left: "10%",
+      right: "10%",
+      bottom: "10%",
+      top: "10%",
+      containLabel: true,
+    },
+    tooltip: {
+      show: false, // Disable tooltips since the percentage is directly displayed
+    },
   };
 
   useEffect(() => {
@@ -109,23 +105,26 @@ export default function NoiseLevel({
       );
     }
   }, [range?.maximum, range?.minimum, widgetData]);
+
+  console.log("noise level percent", percent);
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
-      {!widgetData ? (
-        loading && (
+      {!percent ? (
+        loading ? (
           <div className="flex h-full flex-1">
             <Spinner className="m-auto" />
           </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
         )
-      ) : percent ? (
-        <ReactEcharts
-          option={option}
-          style={{ height: "200px", width: "100%" }}
-        />
       ) : (
-        <div className="flex h-full flex-1">
-          <span className="m-auto">No Data available!</span>
-        </div>
+        <SteppedBarChart
+          percent={percent}
+          amount={Number(widgetData?.data[0].payload)}
+          unit={widgetData?.unit || ""}
+        />
       )}
       <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
         Last Update {seconds} seconds ago

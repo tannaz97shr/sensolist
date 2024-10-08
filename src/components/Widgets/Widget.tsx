@@ -171,6 +171,8 @@ export default function Widget({
         <IndoorHumidityCard
           name={widgetName || ""}
           senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
         />
       ) : widgetName === "Indoor Pressure Card" ? (
         <IndoorPressureCard
