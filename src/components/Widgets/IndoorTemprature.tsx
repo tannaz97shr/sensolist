@@ -131,7 +131,7 @@ export default function IndoorTemprature({
           borderColor: "inherit",
           borderRadius: 20,
           borderWidth: 1,
-          formatter: "{value}%",
+          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
         },
       },
     ],
