@@ -207,12 +207,7 @@ export default function Widget({
         />
       ) : (
         <>
-          {/* <div className=" capitalize text-sm mb-2 dark:text-white">
-            {widgetName || ""}
-          </div> */}
           <div className="relative bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
-            {" "}
-            {/* add widget name */}
             {widget.widgetImage && (
               <Image fill src={widget.widgetImage} alt="widget name" />
             )}
