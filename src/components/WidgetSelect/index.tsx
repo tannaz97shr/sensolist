@@ -54,6 +54,8 @@ export default function DashboardWidgetSelect({
     dispatch(fetchThings());
   }, [dispatch]);
 
+  console.log("widget modal open", widgetModalOpen);
+
   return (
     <>
       <div
@@ -100,6 +102,7 @@ export default function DashboardWidgetSelect({
                           widgetId: sub.widgetId,
                           fields: sub.fields,
                           widgetName: sub.name,
+                          widgetImage: sub.imageURL,
                         });
                         // if (selectedWidget.onSelect) {
                         //   selectedWidget.onSelect(sub);
@@ -149,6 +152,7 @@ export default function DashboardWidgetSelect({
         widgetName={widgetModalOpen?.widgetName || ""}
         fields={widgetModalOpen?.fields}
         layout={layout}
+        widgetImage={widgetModalOpen?.widgetImage}
       />
       <WidgetFormModal
         open={!!widgetEdit}
@@ -165,6 +169,7 @@ export default function DashboardWidgetSelect({
         editIndex={widgetEdit?.index}
         refreshData={refreshData}
         layout={layout}
+        widgetImage={widgetModalOpen?.widgetImage}
       />
     </>
   );

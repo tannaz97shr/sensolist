@@ -24,7 +24,6 @@ import PressureCard from "./PressureCard";
 import ProgressBar from "./ProgressBar";
 import RadialGuage from "./RadialGuage";
 import SpeedGuage from "./SpeedGuage";
-import TimeSeriesChart from "./TimeSeriesChart";
 import ValueCard from "./ValueCard";
 import WidgetCardContainer from "./WidgetCardContainer";
 
@@ -105,20 +104,21 @@ export default function Widget({
           max={widget["Y Axes"].max}
           charactristics={widget.characteristics}
         />
-      ) : widgetName === "Time Series Chart" ? (
-        <TimeSeriesChart
-          name={widgetName || ""}
-          senderId={widget.senderId}
-          start={widget["start date"]}
-          end={widget["end date"]}
-          xLabel={widget["X Axes"].label}
-          yLabel={widget["Y Axes"].label}
-          title={widget.title}
-          min={widget["Y Axes"].min}
-          max={widget["Y Axes"].max}
-          charactristics={widget.characteristics}
-        />
-      ) : widgetName === "Indoor Temprature Card" ? (
+      ) : // widgetName === "Time Series Chart" ? (
+      //   <TimeSeriesChart
+      //     name={widgetName || ""}
+      //     senderId={widget.senderId}
+      //     start={widget["start date"]}
+      //     end={widget["end date"]}
+      //     xLabel={widget["X Axes"].label}
+      //     yLabel={widget["Y Axes"].label}
+      //     title={widget.title}
+      //     min={widget["Y Axes"].min}
+      //     max={widget["Y Axes"].max}
+      //     charactristics={widget.characteristics}
+      //   />
+      // ) :
+      widgetName === "Indoor Temprature Card" ? (
         <IndoorTemprature name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Outdoor Temprature Card" ? (
         <OutdoorTemprature
@@ -207,12 +207,15 @@ export default function Widget({
         />
       ) : (
         <>
-          <div className=" capitalize text-sm mb-2 dark:text-white">
+          {/* <div className=" capitalize text-sm mb-2 dark:text-white">
             {widgetName || ""}
-          </div>
-          <div className="relative w-full aspect-square">
+          </div> */}
+          <div className="relative bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
+            {" "}
             {/* add widget name */}
-            <Image fill src={"/assets/widgets/widget.jpg"} alt="widget name" />
+            {widget.widgetImage && (
+              <Image fill src={widget.widgetImage} alt="widget name" />
+            )}
           </div>
         </>
       )}

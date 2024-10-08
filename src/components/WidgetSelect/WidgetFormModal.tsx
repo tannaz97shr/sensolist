@@ -41,6 +41,7 @@ interface WidgetFormModalProps {
   editIndex?: number;
   refreshData?: () => Promise<void>;
   layout: Layout[];
+  widgetImage?: string;
 }
 
 export default function WidgetFormModal({
@@ -56,6 +57,7 @@ export default function WidgetFormModal({
   editIndex,
   refreshData,
   layout,
+  widgetImage,
 }: WidgetFormModalProps) {
   const isMultiThing = widgetName === "Entities table";
   const [selectedEnums, setSelectedEnums] = useState<
@@ -223,6 +225,7 @@ export default function WidgetFormModal({
                 thingName: selectedThing.name,
                 senderId: selectedThing.senderId,
                 fields: fields,
+                widgetImage: widgetImage,
               },
               index: editIndex,
             })
@@ -255,6 +258,7 @@ export default function WidgetFormModal({
                         thingName: selectedThing.name,
                         senderId: selectedThing.senderId,
                         fields: fields,
+                        widgetImage: widgetImage,
                       }
                     : wdg
                 )
@@ -297,6 +301,7 @@ export default function WidgetFormModal({
               thingName: selectedThing.name,
               senderId: selectedThing.senderId,
               fields: fields,
+              widgetImage: widgetImage,
             },
           })
         );
