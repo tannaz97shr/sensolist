@@ -120,7 +120,12 @@ export default function Widget({
       //   />
       // ) :
       widgetName === "Indoor Temprature Card" ? (
-        <IndoorTemprature name={widgetName || ""} senderId={widget.senderId} />
+        <IndoorTemprature
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Outdoor Temprature Card" ? (
         <OutdoorTemprature
           name={widgetName || ""}

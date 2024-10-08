@@ -214,7 +214,7 @@ export default function DashboardWidgets({
                               ? { x: 4 * i, y: 0, w: 4, h: 18 }
                               : wdg.widgetName === "Bar Chart"
                               ? { x: 4 * i, y: 0, w: 4, h: 18 }
-                              : { x: 4 * i, y: 0, w: 4, h: 16 })
+                              : { x: 4 * i, y: 0, w: 4, h: 18 })
                           }
                           onClick={(event: React.MouseEvent<HTMLElement>) => {
                             event.stopPropagation();
