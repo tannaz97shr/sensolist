@@ -1,29 +1,46 @@
 "use client";
 
-import { _getWidgetData } from "@/ApiCall/widgets";
-import { IWidgetPayload } from "@/types/general";
-import Image from "next/image";
+import { getWidgetData } from "@/ApiCall/widgets";
+import { ICharatersData } from "@/types/general";
+import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
 interface NoiseLevelProps {
   senderId?: string;
   name: string;
+  characteristics: string[];
+  range: {
+    minimum: string;
+    maximum: string;
+  };
 }
 
-export default function NoiseLevel({ senderId, name }: NoiseLevelProps) {
-  const [widgetData, setWidgetData] = useState<IWidgetPayload[]>();
+export default function NoiseLevel({
+  senderId,
+  name,
+  characteristics,
+  range,
+}: NoiseLevelProps) {
+  const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
+  const [percent, setPercent] = useState<number>();
 
   useEffect(() => {
     if (seconds === 10) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await _getWidgetData(senderId, ["noise"]);
+          const response = await getWidgetData(senderId, characteristics, 1, 1);
           setLoading(false);
-          setWidgetData(response.noise?.data || []);
+          setWidgetData(
+            response.charactersData?.length
+              ? response.charactersData.filter(
+                  (char) => char.character === "noise"
+                )[0]
+              : null
+          );
         }
       };
       getData();
@@ -35,36 +52,84 @@ export default function NoiseLevel({ senderId, name }: NoiseLevelProps) {
     const interval = setInterval(() => setSeconds(seconds - 1), 1000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
+  const option = {
+    tooltip: {
+      formatter: "{a} <br/>{b} : {c} dB",
+    },
+    series: [
+      {
+        name: name,
+        type: "gauge",
+        detail: {
+          valueAnimation: true,
+          formatter: "{value} dB",
+        },
+        data: [{ value: percent, name: "Noise Level" }],
+        axisLine: {
+          lineStyle: {
+            color: [
+              [0.2, "#76c043"],
+              [0.5, "#ffeb3b"],
+              [1, "#ff5722"],
+            ],
+            width: 10,
+          },
+        },
+        axisTick: {
+          show: true,
+          splitNumber: 10,
+          length: 10,
+        },
+        splitLine: {
+          length: 15,
+          lineStyle: {
+            color: "#000",
+          },
+        },
+        title: {
+          show: true,
+          offsetCenter: [0, "60%"],
+          textStyle: {
+            fontSize: 20,
+            fontWeight: "bolder",
+          },
+        },
+      },
+    ],
+  };
+
+  useEffect(() => {
+    if (widgetData) {
+      setPercent(
+        ((Number(widgetData.data[0]?.payload) - Number(range.minimum)) /
+          (Number(range.maximum) - Number(range.minimum))) *
+          100
+      );
+    }
+  }, [range?.maximum, range?.minimum, widgetData]);
   return (
-    <div className=" aspect-square flex flex-col">
-      <div className=" text-lg capitalize mx-auto dark:text-white">{name}</div>
-      <div className="flex w-fit mx-auto mt-10">
-        <Image
-          className="mr-"
-          alt="temp"
-          width={56}
-          height={56}
-          src={"/assets/icons/temperature.svg"}
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+      {!widgetData ? (
+        loading && (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
+        )
+      ) : percent ? (
+        <ReactEcharts
+          option={option}
+          style={{ height: "200px", width: "100%" }}
         />
-        <div className="flex flex-col">
-          <div className="text-lg font-bold dark:text-neutral-2">
-            Noise Level
-          </div>
-          <div className=" text-neutral-7 dark:text-neutral-6">
-            Last Update {seconds} seconds ago
-          </div>
-        </div>
-      </div>
-      {loading ? (
-        <Spinner className="mx-auto mt-20" />
       ) : (
-        <div className="text-4xl mt-20 mx-auto text-primary-tint-1 dark:text-primary-tint-3">
-          {widgetData?.length
-            ? widgetData[0].payload + " dB"
-            : "There is no data."}
+        <div className="flex h-full flex-1">
+          <span className="m-auto">No Data available!</span>
         </div>
       )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
     </div>
   );
 }

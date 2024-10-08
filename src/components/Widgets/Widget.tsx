@@ -134,7 +134,12 @@ export default function Widget({
           range={widget["range of changes"]}
         />
       ) : widgetName === "Noise Level Card" ? (
-        <NoiseLevel name={widgetName || ""} senderId={widget.senderId} />
+        <NoiseLevel
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Indoor CO2 Card" ? (
         <IndoorCo2
           name={widgetName || ""}
