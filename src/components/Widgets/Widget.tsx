@@ -62,6 +62,7 @@ export default function Widget({
             widget: widget,
             draft: !saved,
             index: index,
+            characters: widget.defaultCharacters,
           })
         );
       }}

@@ -442,6 +442,7 @@ export interface ISubWidget {
   description: string;
   imageURL: string;
   fields: IWidgetFields[];
+  resourceCharacters: string[];
 }
 
 export interface IWidgetFields {
@@ -469,6 +470,7 @@ export interface IWidgetModalData {
   fields?: IWidgetFields[];
   widgetName: string;
   widgetImage: string;
+  characters: string[];
 }
 
 export interface IWidgetConfig extends IWidgetFormData {

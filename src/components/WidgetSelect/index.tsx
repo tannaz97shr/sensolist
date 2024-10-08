@@ -103,6 +103,7 @@ export default function DashboardWidgetSelect({
                           fields: sub.fields,
                           widgetName: sub.name,
                           widgetImage: sub.imageURL,
+                          characters: sub.resourceCharacters,
                         });
                         // if (selectedWidget.onSelect) {
                         //   selectedWidget.onSelect(sub);
@@ -153,6 +154,7 @@ export default function DashboardWidgetSelect({
         fields={widgetModalOpen?.fields}
         layout={layout}
         widgetImage={widgetModalOpen?.widgetImage}
+        defaultCharacters={widgetModalOpen?.characters || []}
       />
       <WidgetFormModal
         open={!!widgetEdit}
@@ -169,7 +171,7 @@ export default function DashboardWidgetSelect({
         editIndex={widgetEdit?.index}
         refreshData={refreshData}
         layout={layout}
-        widgetImage={widgetModalOpen?.widgetImage}
+        defaultCharacters={widgetEdit?.characters || []}
       />
     </>
   );

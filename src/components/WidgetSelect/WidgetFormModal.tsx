@@ -42,6 +42,7 @@ interface WidgetFormModalProps {
   refreshData?: () => Promise<void>;
   layout: Layout[];
   widgetImage?: string;
+  defaultCharacters: string[];
 }
 
 export default function WidgetFormModal({
@@ -58,6 +59,7 @@ export default function WidgetFormModal({
   refreshData,
   layout,
   widgetImage,
+  defaultCharacters,
 }: WidgetFormModalProps) {
   const isMultiThing = widgetName === "Entities table";
   const [selectedEnums, setSelectedEnums] = useState<
@@ -93,8 +95,14 @@ export default function WidgetFormModal({
     );
   }, [selectedThingOption, things]);
 
-  const charactristicList: ISelectOption[] = selectedThing?.characteristics
-    .length
+  const charactristicList: ISelectOption[] = defaultCharacters.length
+    ? defaultCharacters.map((char) => {
+        return {
+          title: char,
+          value: char,
+        };
+      })
+    : selectedThing?.characteristics.length
     ? selectedThing.characteristics.map((char) => {
         return {
           title: char,
@@ -226,6 +234,7 @@ export default function WidgetFormModal({
                 senderId: selectedThing.senderId,
                 fields: fields,
                 widgetImage: widgetImage,
+                defaultCharacters: defaultCharacters,
               },
               index: editIndex,
             })
@@ -259,6 +268,7 @@ export default function WidgetFormModal({
                         senderId: selectedThing.senderId,
                         fields: fields,
                         widgetImage: widgetImage,
+                        defaultCharacters: defaultCharacters,
                       }
                     : wdg
                 )
@@ -302,6 +312,7 @@ export default function WidgetFormModal({
               senderId: selectedThing.senderId,
               fields: fields,
               widgetImage: widgetImage,
+              defaultCharacters: defaultCharacters,
             },
           })
         );
