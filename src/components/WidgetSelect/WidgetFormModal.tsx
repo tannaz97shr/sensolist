@@ -1,4 +1,5 @@
 import { getSingleDashboard } from "@/ApiCall/dashboards";
+import { getThingsByCharacter } from "@/ApiCall/things";
 import { storeWidgetsConfig } from "@/ApiCall/widgets";
 import {
   addDraftWidget,
@@ -66,10 +67,33 @@ export default function WidgetFormModal({
     { group: string; fieldName: string; selectedEnum: ISelectOption }[]
   >([]);
 
+  const [thingsByCharacter, setThingsByCharacter] = useState<IThing[]>([]);
+  const [thingsByCharacterLoading, setThingsByCharacterLoading] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (defaultCharacters.length) {
+      const getData = async () => {
+        setThingsByCharacterLoading(true);
+        const res = await getThingsByCharacter(defaultCharacters);
+        setThingsByCharacterLoading(false);
+        setThingsByCharacter(res.list || []);
+      };
+      getData();
+    }
+  }, [defaultCharacters]);
+
   const { things, loading, error } = useSelector(
     (state: RootState) => state.thingsSlice
   );
-  const thingsList: ISelectOption[] = things.length
+  const thingsList: ISelectOption[] = defaultCharacters.length
+    ? thingsByCharacter.map((thing) => {
+        return {
+          title: thing.name.charAt(0).toUpperCase() + thing.name.slice(1),
+          value: thing.id,
+        };
+      })
+    : things.length
     ? things.map((thing) => {
         return {
           title: thing.name.charAt(0).toUpperCase() + thing.name.slice(1),
