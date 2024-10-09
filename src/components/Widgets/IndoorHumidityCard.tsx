@@ -110,6 +110,9 @@ export default function IndoorHumidityCard({
           distance: 0,
           color: "#999",
           fontSize: 14,
+          formatter: (value: number) => {
+            return Math.round(value); // This will round the value and remove decimals
+          },
         },
         anchor: {
           show: false,

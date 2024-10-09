@@ -33,7 +33,6 @@ export default function OpenStreetMap({ senderId, name }: OpenStreetMapProps) {
           );
           setLoading(false);
           if (response.charactersData) {
-            console.log("open street responseeeee", response);
             setWidgetData(
               response.charactersData?.length < 3
                 ? {
@@ -55,8 +54,6 @@ export default function OpenStreetMap({ senderId, name }: OpenStreetMapProps) {
 
     return () => clearInterval(interval);
   }, [senderId, seconds]);
-
-  console.log("wdg open street widget data", widgetData);
 
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">

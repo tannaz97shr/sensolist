@@ -54,21 +54,27 @@ export default function RadialGuage({
   }, [senderId, seconds, characteristics]);
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
-        <Spinner className="mx-auto mt-10" />
+        loading ? (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
+        )
       ) : (
-        <div>
-          <WidgetGuage
-            min={Number(range.minimum)}
-            max={Number(range.maximum)}
-            value={Number(widgetData.data[0]?.payload || 0)}
-            unit={widgetData.unit}
-            character={widgetData.character}
-          />
-        </div>
+        <WidgetGuage
+          min={Number(range.minimum)}
+          max={Number(range.maximum)}
+          value={Number(widgetData.data[0]?.payload || 0)}
+          unit={widgetData.unit}
+          character={widgetData.character}
+        />
       )}
-      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit">
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
         Last Update {seconds} seconds ago
       </div>
     </div>
