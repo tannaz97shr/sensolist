@@ -19,6 +19,7 @@ import NoiseLevel from "./NoiseLevel";
 import OpenStreetMap from "./OpenStreetMap";
 import OutdoorCo2 from "./OutdoorCo2";
 import OutdoorPm25 from "./OutdoorPm25";
+import OutdoorPressureCard from "./OutdoorPressureCard";
 import OutdoorTemprature from "./OutdoorTemprature";
 import PressureCard from "./PressureCard";
 import ProgressBar from "./ProgressBar";
@@ -155,13 +156,30 @@ export default function Widget({
           range={widget["range of changes"]}
         />
       ) : widgetName === "Outdoor Humidity Card" ? (
-        <HumidityCard name={widgetName || ""} senderId={widget.senderId} />
+        <HumidityCard
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Pressure Card" ? (
         <PressureCard name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Outdoor CO2 Card" ? (
-        <OutdoorCo2 name={widgetName || ""} senderId={widget.senderId} />
+        <OutdoorCo2
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Outdoor PM2.5 Card" ? (
         <OutdoorPm25
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
+      ) : widgetName === "Outdoor Pressure Card" ? (
+        <OutdoorPressureCard
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}

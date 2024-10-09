@@ -2,11 +2,12 @@
 
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
-import ReactEcharts, { EChartsOption } from "echarts-for-react";
+import { EChartsOption } from "echarts";
+import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
-interface IndoorHumidityCardProps {
+interface OutdoorPressureCardProps {
   senderId?: string;
   name: string;
   characteristics: string[];
@@ -16,12 +17,12 @@ interface IndoorHumidityCardProps {
   };
 }
 
-export default function IndoorHumidityCard({
+export default function OutdoorPressureCard({
   senderId,
   name,
   characteristics,
   range,
-}: IndoorHumidityCardProps) {
+}: OutdoorPressureCardProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,7 +38,7 @@ export default function IndoorHumidityCard({
           setWidgetData(
             response.charactersData?.length
               ? response.charactersData.filter(
-                  (char) => char.character === "humidity"
+                  (char) => char.character === "pressure"
                 )[0]
               : null
           );
@@ -65,82 +66,77 @@ export default function IndoorHumidityCard({
     }
   }, [range?.maximum, range?.minimum, widgetData]);
 
+  const gaugeData = [
+    {
+      value: Number(percent?.toFixed(2)),
+      name: "Pressure",
+      title: {
+        offsetCenter: ["0%", "20%"],
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ["0%", "0%"],
+      },
+    },
+  ];
+
   const option: EChartsOption = {
     series: [
       {
         type: "gauge",
-        center: ["50%", "60%"],
-        startAngle: 200,
-        endAngle: -20,
-        min: Number(range?.minimum),
-        max: Number(range?.maximum),
-        splitNumber: 12,
         itemStyle: {
-          color: "#58D9F9",
+          color: "#D69405",
         },
-        progress: {
-          show: true,
-          width: 30,
-        },
+        startAngle: 90,
+        endAngle: -270,
         pointer: {
           show: false,
         },
-        axisLine: {
-          lineStyle: {
-            width: 30,
+        progress: {
+          show: true,
+          overlap: false,
+          roundCap: true,
+          clip: false,
+          itemStyle: {
+            borderWidth: 1,
+            borderColor: "#464646",
           },
         },
-        axisTick: {
-          distance: -45,
-          splitNumber: 5,
+        axisLine: {
           lineStyle: {
-            width: 2,
-            color: "#999",
+            width: 10,
           },
         },
         splitLine: {
-          distance: -52,
-          length: 14,
-          lineStyle: {
-            width: 3,
-            color: "#999",
-          },
+          show: false,
+          distance: 0,
+          length: 10,
+        },
+        axisTick: {
+          show: false,
         },
         axisLabel: {
-          distance: 0,
-          color: "#999",
-          fontSize: 14,
-
-          formatter: (value: number) => {
-            return Math.round(value); // This will round the value and remove decimals
-          },
-        },
-        anchor: {
           show: false,
+          distance: 50,
         },
+        data: gaugeData,
         title: {
-          show: false,
+          fontSize: 14,
         },
         detail: {
-          valueAnimation: true,
-          width: "60%",
-          lineHeight: 40,
-          borderRadius: 8,
-          offsetCenter: [0, "-15%"],
-          fontSize: 30,
-          fontWeight: "bolder",
-          formatter: `${widgetData?.data[0].payload} ${widgetData?.unit}`,
+          width: 50,
+          height: 14,
+          fontSize: 14,
           color: "inherit",
+          borderColor: "inherit",
+          borderRadius: 20,
+          borderWidth: 1,
+          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
         },
-        data: [
-          {
-            value: percent,
-          },
-        ],
       },
     ],
   };
-
+  console.log("indoor pressure percent", widgetData);
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (

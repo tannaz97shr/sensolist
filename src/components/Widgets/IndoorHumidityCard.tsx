@@ -72,8 +72,8 @@ export default function IndoorHumidityCard({
         center: ["50%", "60%"],
         startAngle: 200,
         endAngle: -20,
-        min: 0,
-        max: 60,
+        min: Number(range?.minimum),
+        max: Number(range?.maximum),
         splitNumber: 12,
         itemStyle: {
           color: "#58D9F9",
