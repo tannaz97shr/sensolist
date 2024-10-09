@@ -5,6 +5,7 @@ import { IWidgetConfig } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import AirQualityHumidity from "./AirQualityHumidity";
+import AirQualityPM25 from "./AirQualityPM25";
 import CustomBarChart from "./BarChart";
 import EntityTable from "./EntityTable";
 import GoogleMap from "./GoogleMap";
@@ -242,6 +243,12 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+        />
+      ) : widgetName === "Simple PM2.5 chart card" ? (
+        <AirQualityPM25
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
         />
       ) : (
         <>
