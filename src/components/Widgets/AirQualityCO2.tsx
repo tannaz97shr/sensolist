@@ -61,7 +61,7 @@ export default function AirQualityCO2({
       ) : (
         <div className="flex flex-col flex-1 items-center justify-center">
           <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold">
-            {widgetData.data[0].payload}
+            {widgetData.data[0]?.payload}
           </span>
           <span className=" text-neutral-6 text-lg">{widgetData.unit}</span>
         </div>

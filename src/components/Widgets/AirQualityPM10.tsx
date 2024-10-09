@@ -3,17 +3,17 @@ import { ICharatersData } from "@/types/general";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
-interface AirQualityPM25Props {
+interface AirQualityPM10Props {
   senderId?: string;
   name: string;
   characteristics: string[];
 }
 
-export default function AirQualityPM25({
+export default function AirQualityPM10({
   senderId,
   name,
   characteristics,
-}: AirQualityPM25Props) {
+}: AirQualityPM10Props) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,7 +27,7 @@ export default function AirQualityPM25({
           setWidgetData(
             response.charactersData?.length
               ? response.charactersData.filter(
-                  (char) => char.character === "pm2.5"
+                  (char) => char.character === "pm10"
                 )[0]
               : null
           );
