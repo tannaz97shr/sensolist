@@ -2,6 +2,7 @@
 
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
+import ReactEcharts, { EChartsOption } from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
@@ -63,20 +64,131 @@ export default function IndoorHumidityCard({
       );
     }
   }, [range?.maximum, range?.minimum, widgetData]);
+
+  const option: EChartsOption = {
+    series: [
+      {
+        type: "gauge",
+        center: ["50%", "60%"],
+        startAngle: 200,
+        endAngle: -20,
+        min: 0,
+        max: 60,
+        splitNumber: 12,
+        itemStyle: {
+          color: "#58D9F9",
+        },
+        progress: {
+          show: true,
+          width: 30,
+        },
+        pointer: {
+          show: false,
+        },
+        axisLine: {
+          lineStyle: {
+            width: 30,
+          },
+        },
+        axisTick: {
+          distance: -45,
+          splitNumber: 5,
+          lineStyle: {
+            width: 2,
+            color: "#999",
+          },
+        },
+        splitLine: {
+          distance: -52,
+          length: 14,
+          lineStyle: {
+            width: 3,
+            color: "#999",
+          },
+        },
+        axisLabel: {
+          distance: 0,
+          color: "#999",
+          fontSize: 14,
+        },
+        anchor: {
+          show: false,
+        },
+        title: {
+          show: false,
+        },
+        detail: {
+          valueAnimation: true,
+          width: "60%",
+          lineHeight: 40,
+          borderRadius: 8,
+          offsetCenter: [0, "-15%"],
+          fontSize: 30,
+          fontWeight: "bolder",
+          formatter: `${widgetData?.data[0].payload} ${widgetData?.unit}`,
+          color: "inherit",
+        },
+        data: [
+          {
+            value: percent,
+          },
+        ],
+      },
+      // {
+      //   type: "gauge",
+      //   center: ["50%", "60%"],
+      //   startAngle: 200,
+      //   endAngle: -20,
+      //   min: 0,
+      //   max: 60,
+      //   itemStyle: {
+      //     color: "#2A4FA3",
+      //   },
+      //   progress: {
+      //     show: true,
+      //     width: 8,
+      //   },
+      //   pointer: {
+      //     show: false,
+      //   },
+      //   axisLine: {
+      //     show: false,
+      //   },
+      //   axisTick: {
+      //     show: false,
+      //   },
+      //   splitLine: {
+      //     show: false,
+      //   },
+      //   axisLabel: {
+      //     show: false,
+      //   },
+      //   detail: {
+      //     show: false,
+      //   },
+      //   data: [
+      //     {
+      //       value: 20,
+      //     },
+      //   ],
+      // },
+    ],
+  };
+
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
-        loading && (
+        loading ? (
           <div className="flex h-full flex-1">
             <Spinner className="m-auto" />
           </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
         )
-      ) : percent ? (
-        <div>guage here</div>
       ) : (
-        <div className="flex h-full flex-1">
-          <span className="m-auto">No Data available!</span>
-        </div>
+        percent && <ReactEcharts option={option} />
       )}
       <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
         Last Update {seconds} seconds ago
