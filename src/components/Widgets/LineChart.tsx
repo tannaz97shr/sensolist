@@ -1,9 +1,9 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { IWidgetData } from "@/types/general";
-import { Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 
 import ReactEcharts, { EChartsOption } from "echarts-for-react";
+import Spinner from "../UI/Spinner";
 
 interface LineChartProps {
   senderId?: string;
@@ -29,7 +29,7 @@ export default function CustomLineChart({
   max,
 }: LineChartProps) {
   const [widgetData, setWidgetData] = useState<IWidgetData>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function CustomLineChart({
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 
@@ -60,9 +60,6 @@ export default function CustomLineChart({
   );
 
   const option: EChartsOption = {
-    title: {
-      text: name,
-    },
     tooltip: {
       trigger: "axis",
     },
@@ -78,6 +75,9 @@ export default function CustomLineChart({
     xAxis: {
       type: "category",
       boundaryGap: false,
+      name: xLabel,
+      nameLocation: "center",
+      nameGap: 18,
       data: widgetData?.charactersData?.length
         ? widgetData?.charactersData[0].data.map((d) => {
             const time = new Date(d.receivedTime).toLocaleTimeString("en-US", {
@@ -89,6 +89,7 @@ export default function CustomLineChart({
     },
     yAxis: {
       type: "value",
+      name: yLabel,
       min,
       max,
     },
@@ -105,12 +106,19 @@ export default function CustomLineChart({
   };
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
-        <Spinner className="mx-auto mt-10" />
+        loading && (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
+        )
       ) : (
         <ReactEcharts option={option} />
       )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
     </div>
   );
 }

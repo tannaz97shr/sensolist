@@ -8,6 +8,7 @@ export interface DashboardState {
     dashboardId: string;
     widget: IWidgetConfig;
     draft: boolean;
+    characters: string[];
   } | null;
 }
 
@@ -26,6 +27,7 @@ export const dashboardSlice = createSlice({
         widget: IWidgetConfig;
         draft: boolean;
         index: number;
+        characters: string[];
       }>
     ) => {
       state.widgetEdit = action.payload;

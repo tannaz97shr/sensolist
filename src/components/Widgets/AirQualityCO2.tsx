@@ -1,45 +1,36 @@
-"use client";
-
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
-import WidgetGuage from "../WidgetGuage";
 
-interface RadialGuageProps {
+interface AirQualityCO2Props {
   senderId?: string;
   name: string;
   characteristics: string[];
-  range: {
-    minimum: string;
-    maximum: string;
-  };
 }
 
-export default function RadialGuage({
+export default function AirQualityCO2({
   senderId,
   name,
   characteristics,
-  range,
-}: RadialGuageProps) {
+}: AirQualityCO2Props) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
-
   useEffect(() => {
     if (seconds === 10) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
           const response = await getWidgetData(senderId, characteristics, 1, 1);
+          setLoading(false);
           setWidgetData(
             response.charactersData?.length
               ? response.charactersData.filter(
-                  (char) => char.character === "temperature"
+                  (char) => char.character === "co2"
                 )[0]
               : null
           );
-          setLoading(false);
         }
       };
       getData();
@@ -51,8 +42,10 @@ export default function RadialGuage({
     const interval = setInterval(() => setSeconds(seconds - 1), 1000);
 
     return () => clearInterval(interval);
-  }, [senderId, seconds, characteristics]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [senderId, seconds]);
 
+  console.log("air pm 25 data", widgetData);
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
@@ -66,13 +59,12 @@ export default function RadialGuage({
           </div>
         )
       ) : (
-        <WidgetGuage
-          min={Number(range.minimum)}
-          max={Number(range.maximum)}
-          value={Number(widgetData.data[0]?.payload || 0)}
-          unit={widgetData.unit}
-          character={widgetData.character}
-        />
+        <div className="flex flex-col flex-1 items-center justify-center">
+          <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold">
+            {widgetData.data[0]?.payload}
+          </span>
+          <span className=" text-neutral-6 text-lg">{widgetData.unit}</span>
+        </div>
       )}
       <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
         Last Update {seconds} seconds ago

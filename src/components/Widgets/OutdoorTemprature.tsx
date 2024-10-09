@@ -25,7 +25,7 @@ export default function OutdoorTemprature({
 }: OutdoorTempratureProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [percent, setPercent] = useState<number>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function OutdoorTemprature({
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 
@@ -137,16 +137,23 @@ export default function OutdoorTemprature({
   };
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
-      {percent ? (
-        percent > 100 || percent < 0 ? (
-          <div>out of range</div>
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+      {!widgetData ? (
+        loading ? (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
         ) : (
-          <ReactEcharts option={option} />
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
         )
       ) : (
-        loading && <Spinner />
+        percent && <ReactEcharts option={option} />
       )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
     </div>
   );
 }

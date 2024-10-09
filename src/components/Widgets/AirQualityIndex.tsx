@@ -2,12 +2,11 @@
 
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
-import { EChartsOption } from "echarts";
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
-interface IndoorTempratureProps {
+interface IndoorHumidityCardProps {
   senderId?: string;
   name: string;
   characteristics: string[];
@@ -17,16 +16,16 @@ interface IndoorTempratureProps {
   };
 }
 
-export default function IndoorTemprature({
+export default function IndoorHumidityCard({
   senderId,
   name,
   characteristics,
   range,
-}: IndoorTempratureProps) {
+}: IndoorHumidityCardProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
-  const [percent, setPercent] = useState<number>();
+  const [_percent, setPercent] = useState<number>();
 
   useEffect(() => {
     if (seconds === 10) {
@@ -38,7 +37,7 @@ export default function IndoorTemprature({
           setWidgetData(
             response.charactersData?.length
               ? response.charactersData.filter(
-                  (char) => char.character === "temperature"
+                  (char) => char.character === "aqi"
                 )[0]
               : null
           );
@@ -55,6 +54,7 @@ export default function IndoorTemprature({
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
+  const percent = 30;
 
   useEffect(() => {
     if (widgetData) {
@@ -66,91 +66,95 @@ export default function IndoorTemprature({
     }
   }, [range?.maximum, range?.minimum, widgetData]);
 
-  const gaugeData = [
-    {
-      value: Number(percent?.toFixed(2)),
-      name: "Temperature",
-      title: {
-        offsetCenter: ["0%", "20%"],
-      },
-      detail: {
-        valueAnimation: true,
-        offsetCenter: ["0%", "0%"],
-      },
-    },
-  ];
-
-  const option: EChartsOption = {
+  const option = {
     series: [
       {
         type: "gauge",
-        itemStyle: {
-          color: "#2A4FA3",
-        },
-        startAngle: 90,
-        endAngle: -270,
-        pointer: {
-          show: false,
-        },
-        progress: {
-          show: true,
-          overlap: false,
-          roundCap: true,
-          clip: false,
-          itemStyle: {
-            borderWidth: 1,
-            borderColor: "#464646",
-          },
-        },
+        startAngle: 180,
+        endAngle: 0,
+        center: ["50%", "75%"],
+        radius: "90%",
+        min: Number(range?.minimum),
+        max: Number(range?.maximum),
+        splitNumber: 8,
         axisLine: {
           lineStyle: {
-            width: 10,
+            width: 6,
+            color: [
+              [0.25, "#FF6E76"],
+              [0.5, "#FDDD60"],
+              [0.75, "#58D9F9"],
+              [1, "#7CFFB2"],
+            ],
+          },
+        },
+        pointer: {
+          icon: "path://M12.8,0.7l12,40.1H0.7L12.8,0.7z",
+          length: "12%",
+          width: 20,
+          offsetCenter: [0, "-60%"],
+          itemStyle: {
+            color: "auto",
+          },
+        },
+        axisTick: {
+          length: 12,
+          lineStyle: {
+            color: "auto",
+            width: 2,
           },
         },
         splitLine: {
-          show: false,
-          distance: 0,
-          length: 10,
-        },
-        axisTick: {
-          show: false,
+          length: 20,
+          lineStyle: {
+            color: "auto",
+            width: 5,
+          },
         },
         axisLabel: {
-          show: false,
-          distance: 50,
+          color: "#464646",
+          fontSize: 20,
+          distance: -60,
+          rotate: "tangential",
+          formatter: function (_value: any) {
+            return "";
+          },
         },
-        data: gaugeData,
         title: {
-          fontSize: 14,
+          offsetCenter: [0, "-10%"],
+          fontSize: 20,
         },
         detail: {
-          width: 50,
-          height: 14,
-          fontSize: 14,
+          fontSize: 20,
+          offsetCenter: [0, "-35%"],
+          valueAnimation: true,
+          formatter: `${widgetData?.character} ${widgetData?.unit}`,
           color: "inherit",
-          borderColor: "inherit",
-          borderRadius: 20,
-          borderWidth: 1,
-          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
         },
+        data: [
+          {
+            value: percent,
+            name: "Air Quality Index",
+          },
+        ],
       },
     ],
   };
 
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
-      {!widgetData ? (
-        loading && (
+      {false ? (
+        loading ? (
           <div className="flex h-full flex-1">
             <Spinner className="m-auto" />
           </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
         )
-      ) : percent ? (
-        <ReactEcharts option={option} />
       ) : (
-        <div className="flex h-full flex-1">
-          <span className="m-auto">No Data available!</span>
-        </div>
+        percent && <ReactEcharts option={option} />
       )}
       <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
         Last Update {seconds} seconds ago

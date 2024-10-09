@@ -1,4 +1,5 @@
 import { getSingleDashboard } from "@/ApiCall/dashboards";
+import { getThingsByCharacter } from "@/ApiCall/things";
 import { storeWidgetsConfig } from "@/ApiCall/widgets";
 import {
   addDraftWidget,
@@ -41,6 +42,8 @@ interface WidgetFormModalProps {
   editIndex?: number;
   refreshData?: () => Promise<void>;
   layout: Layout[];
+  widgetImage?: string;
+  defaultCharacters: string[];
 }
 
 export default function WidgetFormModal({
@@ -56,16 +59,41 @@ export default function WidgetFormModal({
   editIndex,
   refreshData,
   layout,
+  widgetImage,
+  defaultCharacters,
 }: WidgetFormModalProps) {
   const isMultiThing = widgetName === "Entities table";
   const [selectedEnums, setSelectedEnums] = useState<
     { group: string; fieldName: string; selectedEnum: ISelectOption }[]
   >([]);
 
+  const [thingsByCharacter, setThingsByCharacter] = useState<IThing[]>([]);
+  const [thingsByCharacterLoading, setThingsByCharacterLoading] =
+    useState<boolean>(false);
+
+  useEffect(() => {
+    if (defaultCharacters.length) {
+      const getData = async () => {
+        setThingsByCharacterLoading(true);
+        const res = await getThingsByCharacter(defaultCharacters);
+        setThingsByCharacterLoading(false);
+        setThingsByCharacter(res.list || []);
+      };
+      getData();
+    }
+  }, [defaultCharacters]);
+
   const { things, loading, error } = useSelector(
     (state: RootState) => state.thingsSlice
   );
-  const thingsList: ISelectOption[] = things.length
+  const thingsList: ISelectOption[] = defaultCharacters.length
+    ? thingsByCharacter.map((thing) => {
+        return {
+          title: thing.name.charAt(0).toUpperCase() + thing.name.slice(1),
+          value: thing.id,
+        };
+      })
+    : things.length
     ? things.map((thing) => {
         return {
           title: thing.name.charAt(0).toUpperCase() + thing.name.slice(1),
@@ -91,8 +119,14 @@ export default function WidgetFormModal({
     );
   }, [selectedThingOption, things]);
 
-  const charactristicList: ISelectOption[] = selectedThing?.characteristics
-    .length
+  const charactristicList: ISelectOption[] = defaultCharacters.length
+    ? defaultCharacters.map((char) => {
+        return {
+          title: char,
+          value: char,
+        };
+      })
+    : selectedThing?.characteristics.length
     ? selectedThing.characteristics.map((char) => {
         return {
           title: char,
@@ -223,6 +257,8 @@ export default function WidgetFormModal({
                 thingName: selectedThing.name,
                 senderId: selectedThing.senderId,
                 fields: fields,
+                widgetImage: widgetImage,
+                defaultCharacters: defaultCharacters,
               },
               index: editIndex,
             })
@@ -255,6 +291,8 @@ export default function WidgetFormModal({
                         thingName: selectedThing.name,
                         senderId: selectedThing.senderId,
                         fields: fields,
+                        widgetImage: widgetImage,
+                        defaultCharacters: defaultCharacters,
                       }
                     : wdg
                 )
@@ -297,6 +335,8 @@ export default function WidgetFormModal({
               thingName: selectedThing.name,
               senderId: selectedThing.senderId,
               fields: fields,
+              widgetImage: widgetImage,
+              defaultCharacters: defaultCharacters,
             },
           })
         );

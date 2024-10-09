@@ -148,7 +148,9 @@ export default function DashboardWidgets({
       if (i < selectedDashboard?.widgets.length) {
         await onDeleteSaved(i);
       } else {
-        dispatch(removeDraftWidget({ index: i }));
+        dispatch(
+          removeDraftWidget({ index: i - selectedDashboard?.widgets.length })
+        );
       }
     } else {
       dispatch(removeDraftWidget({ index: i }));
@@ -207,7 +209,12 @@ export default function DashboardWidgets({
                         <div
                           key={i}
                           data-grid={
-                            wdg.layout || { x: 4 * i, y: 0, w: 4, h: 16 }
+                            wdg.layout ||
+                            (wdg.widgetName === "Line Chart"
+                              ? { x: 4 * i, y: 0, w: 4, h: 18 }
+                              : wdg.widgetName === "Bar Chart"
+                              ? { x: 4 * i, y: 0, w: 4, h: 18 }
+                              : { x: 4 * i, y: 0, w: 4, h: 18 })
                           }
                           onClick={(event: React.MouseEvent<HTMLElement>) => {
                             event.stopPropagation();
@@ -231,7 +238,16 @@ export default function DashboardWidgets({
                   )
                 : draftWidgets?.map((wdg, i) => {
                     return (
-                      <div key={i} data-grid={{ x: 4 * i, y: 0, w: 4, h: 16 }}>
+                      <div
+                        key={i}
+                        data-grid={
+                          wdg.widgetName === "Line Chart"
+                            ? { x: 4 * i, y: 0, w: 4, h: 18 }
+                            : wdg.widgetName === "Bar Chart"
+                            ? { x: 4 * i, y: 0, w: 4, h: 18 }
+                            : { x: 4 * i, y: 0, w: 4, h: 16 }
+                        }
+                      >
                         <Widget
                           onDelete={() => {
                             setDeleteDialogIndex(i);
@@ -269,7 +285,6 @@ export default function DashboardWidgets({
           setDeleteDialogIndex(null);
         }}
         onDelete={async () => {
-          console.log("dialog on delete");
           if (deleteDialogIndex !== null && deleteDialogIndex + 1)
             await onDelete(deleteDialogIndex);
           setDeleteDialogIndex(null);

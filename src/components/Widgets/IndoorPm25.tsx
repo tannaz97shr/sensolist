@@ -24,9 +24,9 @@ export default function IndoorPm25({
   range,
 }: IndoorPm25Props) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
-  const [percent, setPercent] = useState<number>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
+  const [percent, setPercent] = useState<number>();
 
   useEffect(() => {
     if (seconds === 10) {
@@ -34,6 +34,7 @@ export default function IndoorPm25({
         if (senderId) {
           setLoading(true);
           const response = await getWidgetData(senderId, characteristics, 1, 1);
+          setLoading(false);
           setWidgetData(
             response.charactersData?.length
               ? response.charactersData.filter(
@@ -41,19 +42,19 @@ export default function IndoorPm25({
                 )[0]
               : null
           );
-          setLoading(false);
         }
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 
     const interval = setInterval(() => setSeconds(seconds - 1), 1000);
 
     return () => clearInterval(interval);
-  }, [senderId, seconds, characteristics]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [senderId, seconds]);
 
   useEffect(() => {
     if (widgetData) {
@@ -130,23 +131,30 @@ export default function IndoorPm25({
           borderColor: "inherit",
           borderRadius: 20,
           borderWidth: 1,
-          formatter: "{value}%",
+          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
         },
       },
     ],
   };
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
-      {percent ? (
-        percent > 100 || percent < 0 ? (
-          <div>out of range</div>
-        ) : (
-          <ReactEcharts option={option} />
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+      {!widgetData ? (
+        loading && (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
         )
+      ) : percent ? (
+        <ReactEcharts option={option} />
       ) : (
-        loading && <Spinner />
+        <div className="flex h-full flex-1">
+          <span className="m-auto">No Data available!</span>
+        </div>
       )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
     </div>
   );
 }

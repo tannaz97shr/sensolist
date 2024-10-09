@@ -209,3 +209,35 @@ export const getThingsImages = async (): Promise<IFilesResponse> => {
     };
   }
 };
+
+export const getThingsByCharacter = async (
+  characters: string[]
+): Promise<IThingsResponse> => {
+  try {
+    const session = await getSession();
+    if (session?.accessToken) {
+      const headers = {
+        Authorization: `Bearer ${session.accessToken}`,
+        "Content-type": "application/json",
+      };
+      const res = await fetch(
+        `https://sensolist-backend.vercel.app/api/v3/things/all/by-characters?${characters.map(
+          (char, i) => `${i !== 0 ? "&" : ""}characters=${char}`
+        )}`,
+        { headers }
+      );
+      const data = await res.json();
+      return data;
+    } else {
+      return {
+        statusCode: 400,
+        message: "Not Authenticated",
+      };
+    }
+  } catch (e) {
+    return {
+      statusCode: 400,
+      message: "Fetch things failed",
+    };
+  }
+};

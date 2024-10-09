@@ -4,7 +4,11 @@ import { addWidgetEdit } from "@/lib/features/dashboard/dashboardSlice";
 import { IWidgetConfig } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
+import AirQualityCO2 from "./AirQualityCO2";
 import AirQualityHumidity from "./AirQualityHumidity";
+import AirQualityIndex from "./AirQualityIndex";
+import AirQualityPM10 from "./AirQualityPM10";
+import AirQualityPM25 from "./AirQualityPM25";
 import CustomBarChart from "./BarChart";
 import EntityTable from "./EntityTable";
 import GoogleMap from "./GoogleMap";
@@ -19,6 +23,7 @@ import NoiseLevel from "./NoiseLevel";
 import OpenStreetMap from "./OpenStreetMap";
 import OutdoorCo2 from "./OutdoorCo2";
 import OutdoorPm25 from "./OutdoorPm25";
+import OutdoorPressureCard from "./OutdoorPressureCard";
 import OutdoorTemprature from "./OutdoorTemprature";
 import PressureCard from "./PressureCard";
 import ProgressBar from "./ProgressBar";
@@ -62,6 +67,7 @@ export default function Widget({
             widget: widget,
             draft: !saved,
             index: index,
+            characters: widget.defaultCharacters,
           })
         );
       }}
@@ -104,8 +110,27 @@ export default function Widget({
           max={widget["Y Axes"].max}
           charactristics={widget.characteristics}
         />
-      ) : widgetName === "Indoor Temprature Card" ? (
-        <IndoorTemprature name={widgetName || ""} senderId={widget.senderId} />
+      ) : // widgetName === "Time Series Chart" ? (
+      //   <TimeSeriesChart
+      //     name={widgetName || ""}
+      //     senderId={widget.senderId}
+      //     start={widget["start date"]}
+      //     end={widget["end date"]}
+      //     xLabel={widget["X Axes"].label}
+      //     yLabel={widget["Y Axes"].label}
+      //     title={widget.title}
+      //     min={widget["Y Axes"].min}
+      //     max={widget["Y Axes"].max}
+      //     charactristics={widget.characteristics}
+      //   />
+      // ) :
+      widgetName === "Indoor Temprature Card" ? (
+        <IndoorTemprature
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Outdoor Temprature Card" ? (
         <OutdoorTemprature
           name={widgetName || ""}
@@ -114,9 +139,19 @@ export default function Widget({
           range={widget["range of changes"]}
         />
       ) : widgetName === "Noise Level Card" ? (
-        <NoiseLevel name={widgetName || ""} senderId={widget.senderId} />
+        <NoiseLevel
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Indoor CO2 Card" ? (
-        <IndoorCo2 name={widgetName || ""} senderId={widget.senderId} />
+        <IndoorCo2
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Indoor PM2.5 Card" ? (
         <IndoorPm25
           name={widgetName || ""}
@@ -125,13 +160,30 @@ export default function Widget({
           range={widget["range of changes"]}
         />
       ) : widgetName === "Outdoor Humidity Card" ? (
-        <HumidityCard name={widgetName || ""} senderId={widget.senderId} />
+        <HumidityCard
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Pressure Card" ? (
         <PressureCard name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Outdoor CO2 Card" ? (
-        <OutdoorCo2 name={widgetName || ""} senderId={widget.senderId} />
+        <OutdoorCo2
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : widgetName === "Outdoor PM2.5 Card" ? (
         <OutdoorPm25
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
+      ) : widgetName === "Outdoor Pressure Card" ? (
+        <OutdoorPressureCard
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
@@ -141,11 +193,15 @@ export default function Widget({
         <IndoorHumidityCard
           name={widgetName || ""}
           senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
         />
       ) : widgetName === "Indoor Pressure Card" ? (
         <IndoorPressureCard
           name={widgetName || ""}
           senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
         />
       ) : widgetName === "OpenStreet Map" ? (
         <OpenStreetMap name={widgetName || ""} senderId={widget.senderId} />
@@ -191,14 +247,37 @@ export default function Widget({
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
         />
+      ) : widgetName === "Simple PM2.5 chart card" ? (
+        <AirQualityPM25
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+        />
+      ) : widgetName === "simple CO2 chart card" ? (
+        <AirQualityCO2
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+        />
+      ) : widgetName === "Simple PM10 chart card" ? (
+        <AirQualityPM10
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+        />
+      ) : widgetName === "Air quality index card" ? (
+        <AirQualityIndex
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
+        />
       ) : (
         <>
-          <div className=" capitalize text-sm mb-2 dark:text-white">
-            {widgetName || ""}
-          </div>
-          <div className="relative w-full aspect-square">
-            {/* add widget name */}
-            <Image fill src={"/assets/widgets/widget.jpg"} alt="widget name" />
+          <div className="relative bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
+            {widget.widgetImage && (
+              <Image fill src={widget.widgetImage} alt="widget name" />
+            )}
           </div>
         </>
       )}

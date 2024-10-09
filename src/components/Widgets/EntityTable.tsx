@@ -22,7 +22,7 @@ export default function EntityTable({
   characteristics,
 }: EntityTableProps) {
   const [widgetData, setWidgetData] = useState<IWidgetEntityTableData[]>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
   const {
     things,
@@ -45,7 +45,7 @@ export default function EntityTable({
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 
@@ -123,9 +123,24 @@ export default function EntityTable({
     },
   });
 
-  return loading ? (
-    <MRT_Table table={table} />
-  ) : (
-    <Spinner className="mx-auto mt-20" />
+  return (
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+      {!widgetData ? (
+        loading ? (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
+        )
+      ) : (
+        <MRT_Table table={table} />
+      )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
+    </div>
   );
 }

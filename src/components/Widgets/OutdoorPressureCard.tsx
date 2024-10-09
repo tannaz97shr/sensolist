@@ -7,7 +7,7 @@ import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
-interface IndoorTempratureProps {
+interface OutdoorPressureCardProps {
   senderId?: string;
   name: string;
   characteristics: string[];
@@ -17,12 +17,12 @@ interface IndoorTempratureProps {
   };
 }
 
-export default function IndoorTemprature({
+export default function OutdoorPressureCard({
   senderId,
   name,
   characteristics,
   range,
-}: IndoorTempratureProps) {
+}: OutdoorPressureCardProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
@@ -38,7 +38,7 @@ export default function IndoorTemprature({
           setWidgetData(
             response.charactersData?.length
               ? response.charactersData.filter(
-                  (char) => char.character === "temperature"
+                  (char) => char.character === "pressure"
                 )[0]
               : null
           );
@@ -69,7 +69,7 @@ export default function IndoorTemprature({
   const gaugeData = [
     {
       value: Number(percent?.toFixed(2)),
-      name: "Temperature",
+      name: "Pressure",
       title: {
         offsetCenter: ["0%", "20%"],
       },
@@ -85,7 +85,7 @@ export default function IndoorTemprature({
       {
         type: "gauge",
         itemStyle: {
-          color: "#2A4FA3",
+          color: "#D69405",
         },
         startAngle: 90,
         endAngle: -270,
@@ -136,21 +136,21 @@ export default function IndoorTemprature({
       },
     ],
   };
-
+  console.log("indoor pressure percent", widgetData);
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
-        loading && (
+        loading ? (
           <div className="flex h-full flex-1">
             <Spinner className="m-auto" />
           </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
         )
-      ) : percent ? (
-        <ReactEcharts option={option} />
       ) : (
-        <div className="flex h-full flex-1">
-          <span className="m-auto">No Data available!</span>
-        </div>
+        percent && <ReactEcharts option={option} />
       )}
       <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
         Last Update {seconds} seconds ago

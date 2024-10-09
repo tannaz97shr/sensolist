@@ -1,4 +1,3 @@
-import type { EChartsOption } from "echarts";
 import ReactEcharts from "echarts-for-react";
 
 interface WidgetGuageProps {
@@ -16,7 +15,7 @@ export default function WidgetGuage({
   value,
   character,
 }: WidgetGuageProps) {
-  const option: EChartsOption = {
+  const option = {
     series: [
       {
         type: "gauge",
@@ -57,9 +56,12 @@ export default function WidgetGuage({
           },
         },
         axisLabel: {
-          distance: -20,
+          distance: 0,
           color: "#999",
-          fontSize: 20,
+          fontSize: 14,
+          formatter: (value: number) => {
+            return Math.round(value); // This will round the value and remove decimals
+          },
         },
         anchor: {
           show: false,

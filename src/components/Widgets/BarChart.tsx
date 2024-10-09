@@ -30,7 +30,7 @@ export default function CustomBarChart({
   max,
 }: BarChartProps) {
   const [widgetData, setWidgetData] = useState<IWidgetData>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function CustomBarChart({
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 
@@ -91,8 +91,14 @@ export default function CustomBarChart({
     dataset: {
       source: convertedData,
     },
-    xAxis: { type: "category" },
+    xAxis: {
+      type: "category",
+      name: xLabel,
+      nameLocation: "middle",
+      nameGap: 18,
+    },
     yAxis: {
+      name: yLabel,
       min,
       max,
     },
@@ -101,12 +107,19 @@ export default function CustomBarChart({
     }),
   };
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
-        <Spinner className="mx-auto mt-10" />
+        loading && (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
+        )
       ) : (
         <ReactEcharts option={option} />
       )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
     </div>
   );
 }
