@@ -45,20 +45,30 @@ export default function ValueCard({
   }, [senderId, seconds, characteristics]);
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex">
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
-        <Spinner className="mx-auto mt-10" />
+        loading ? (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
+          </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
+        )
       ) : (
-        <div className="flec flex-col mt-auto">
-          <div className=" capitalize font-bold mx-auto text-xl text-neutral-7 dark:text-neutral-3 w-fit">
+        <div className="flex flex-col flex-1 items-center justify-center">
+          <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold capitalize">
             {widgetData.character}
-          </div>
-          <div className=" mt-6 text-xl w-fit mx-auto dark:text-white">
-            {widgetData.data.length && widgetData.data[0].payload}{" "}
-            {widgetData.unit}
-          </div>
+          </span>
+          <span className=" text-neutral-6 text-lg">
+            {widgetData.data[0]?.payload} {widgetData.unit}
+          </span>
         </div>
       )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
     </div>
   );
 }
