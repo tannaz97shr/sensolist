@@ -4,6 +4,7 @@ import { addWidgetEdit } from "@/lib/features/dashboard/dashboardSlice";
 import { IWidgetConfig } from "@/types/general";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
+import AirQualityCO2 from "./AirQualityCO2";
 import AirQualityHumidity from "./AirQualityHumidity";
 import AirQualityPM25 from "./AirQualityPM25";
 import CustomBarChart from "./BarChart";
@@ -246,6 +247,12 @@ export default function Widget({
         />
       ) : widgetName === "Simple PM2.5 chart card" ? (
         <AirQualityPM25
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+        />
+      ) : widgetName === "simple CO2 chart card" ? (
+        <AirQualityCO2
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
