@@ -178,6 +178,8 @@ export default function Widget({
         <IndoorPressureCard
           name={widgetName || ""}
           senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
         />
       ) : widgetName === "OpenStreet Map" ? (
         <OpenStreetMap name={widgetName || ""} senderId={widget.senderId} />

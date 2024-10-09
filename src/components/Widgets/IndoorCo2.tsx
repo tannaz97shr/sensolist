@@ -139,17 +139,17 @@ export default function IndoorCo2({
   return (
     <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
       {!widgetData ? (
-        loading && (
+        loading ? (
           <div className="flex h-full flex-1">
             <Spinner className="m-auto" />
           </div>
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
+          </div>
         )
-      ) : percent ? (
-        <ReactEcharts option={option} />
       ) : (
-        <div className="flex h-full flex-1">
-          <span className="m-auto">No Data available!</span>
-        </div>
+        percent && <ReactEcharts option={option} />
       )}
       <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
         Last Update {seconds} seconds ago

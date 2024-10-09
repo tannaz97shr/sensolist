@@ -1,32 +1,47 @@
 "use client";
 
-import { _getWidgetData } from "@/ApiCall/widgets";
-import { IWidgetPayload } from "@/types/general";
-import Image from "next/image";
+import { getWidgetData } from "@/ApiCall/widgets";
+import { ICharatersData } from "@/types/general";
+import { EChartsOption } from "echarts";
+import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
 interface IndoorPressureCardProps {
   senderId?: string;
   name: string;
+  characteristics: string[];
+  range: {
+    minimum: string;
+    maximum: string;
+  };
 }
 
 export default function IndoorPressureCard({
   senderId,
   name,
+  characteristics,
+  range,
 }: IndoorPressureCardProps) {
-  const [widgetData, setWidgetData] = useState<IWidgetPayload[]>();
+  const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(10);
   const [loading, setLoading] = useState<boolean>(false);
+  const [percent, setPercent] = useState<number>();
 
   useEffect(() => {
     if (seconds === 10) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
-          const response = await _getWidgetData(senderId, ["pressure"]);
+          const response = await getWidgetData(senderId, characteristics, 1, 1);
           setLoading(false);
-          setWidgetData(response.pressure?.data || []);
+          setWidgetData(
+            response.charactersData?.length
+              ? response.charactersData.filter(
+                  (char) => char.character === "pressure"
+                )[0]
+              : null
+          );
         }
       };
       getData();
@@ -38,36 +53,108 @@ export default function IndoorPressureCard({
     const interval = setInterval(() => setSeconds(seconds - 1), 1000);
 
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
+
+  useEffect(() => {
+    if (widgetData) {
+      setPercent(
+        ((Number(widgetData.data[0]?.payload) - Number(range.minimum)) /
+          (Number(range.maximum) - Number(range.minimum))) *
+          100
+      );
+    }
+  }, [range?.maximum, range?.minimum, widgetData]);
+
+  const gaugeData = [
+    {
+      value: Number(percent?.toFixed(2)),
+      name: "Pressure",
+      title: {
+        offsetCenter: ["0%", "20%"],
+      },
+      detail: {
+        valueAnimation: true,
+        offsetCenter: ["0%", "0%"],
+      },
+    },
+  ];
+
+  const option: EChartsOption = {
+    series: [
+      {
+        type: "gauge",
+        itemStyle: {
+          color: "#D69405",
+        },
+        startAngle: 90,
+        endAngle: -270,
+        pointer: {
+          show: false,
+        },
+        progress: {
+          show: true,
+          overlap: false,
+          roundCap: true,
+          clip: false,
+          itemStyle: {
+            borderWidth: 1,
+            borderColor: "#464646",
+          },
+        },
+        axisLine: {
+          lineStyle: {
+            width: 10,
+          },
+        },
+        splitLine: {
+          show: false,
+          distance: 0,
+          length: 10,
+        },
+        axisTick: {
+          show: false,
+        },
+        axisLabel: {
+          show: false,
+          distance: 50,
+        },
+        data: gaugeData,
+        title: {
+          fontSize: 14,
+        },
+        detail: {
+          width: 50,
+          height: 14,
+          fontSize: 14,
+          color: "inherit",
+          borderColor: "inherit",
+          borderRadius: 20,
+          borderWidth: 1,
+          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
+        },
+      },
+    ],
+  };
+  console.log("indoor pressure percent", widgetData);
   return (
-    <div className=" aspect-square flex flex-col">
-      <div className=" text-lg capitalize mx-auto dark:text-white">{name}</div>
-      <div className="flex w-fit mx-auto mt-10">
-        <Image
-          className="mr-4"
-          alt="temp"
-          width={56}
-          height={56}
-          src={"/assets/icons/pressure.svg"}
-        />
-        <div className="flex flex-col">
-          <div className="text-lg font-bold dark:text-neutral-2">
-            Indoor Pressure
+    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+      {!widgetData ? (
+        loading ? (
+          <div className="flex h-full flex-1">
+            <Spinner className="m-auto" />
           </div>
-          <div className=" text-neutral-7 dark:text-neutral-6">
-            Last Update {seconds} seconds ago
+        ) : (
+          <div className="flex h-full flex-1">
+            <span className="m-auto">No Data available!</span>
           </div>
-        </div>
-      </div>
-      {loading ? (
-        <Spinner className="mx-auto mt-20" />
+        )
       ) : (
-        <div className="text-4xl mt-20 mx-auto text-primary-tint-1 dark:text-primary-tint-3">
-          {widgetData?.length
-            ? widgetData[0].payload + " hPa"
-            : "There is no data."}
-        </div>
+        percent && <ReactEcharts option={option} />
       )}
+      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+        Last Update {seconds} seconds ago
+      </div>
     </div>
   );
 }
