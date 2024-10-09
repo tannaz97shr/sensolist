@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import AirQualityCO2 from "./AirQualityCO2";
 import AirQualityHumidity from "./AirQualityHumidity";
+import AirQualityIndex from "./AirQualityIndex";
 import AirQualityPM10 from "./AirQualityPM10";
 import AirQualityPM25 from "./AirQualityPM25";
 import CustomBarChart from "./BarChart";
@@ -263,6 +264,13 @@ export default function Widget({
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
+        />
+      ) : widgetName === "Air quality index card" ? (
+        <AirQualityIndex
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          characteristics={widget.characteristics}
+          range={widget["range of changes"]}
         />
       ) : (
         <>
