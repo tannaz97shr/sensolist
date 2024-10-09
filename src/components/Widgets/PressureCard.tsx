@@ -13,7 +13,7 @@ interface PressureCardProps {
 
 export default function PressureCard({ senderId, name }: PressureCardProps) {
   const [widgetData, setWidgetData] = useState<IWidgetPayload[]>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function PressureCard({ senderId, name }: PressureCardProps) {
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 

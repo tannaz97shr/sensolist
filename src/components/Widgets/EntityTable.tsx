@@ -22,7 +22,7 @@ export default function EntityTable({
   characteristics,
 }: EntityTableProps) {
   const [widgetData, setWidgetData] = useState<IWidgetEntityTableData[]>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
   const {
     things,
@@ -45,7 +45,7 @@ export default function EntityTable({
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 

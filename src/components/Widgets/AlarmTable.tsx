@@ -9,7 +9,7 @@ interface AlarmTableProps {
 
 export default function AlaramTable({ senderId, name }: AlarmTableProps) {
   const [widgetData, setWidgetData] = useState<{ lat: number; lng: number }>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
   let loctionIcon = L.icon({ iconUrl: "/assets/location.png" });
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function AlaramTable({ senderId, name }: AlarmTableProps) {
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 

@@ -25,7 +25,7 @@ export default function ProgressBar({
 }: ProgressBarProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [percent, setPercent] = useState<number>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export default function ProgressBar({
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 

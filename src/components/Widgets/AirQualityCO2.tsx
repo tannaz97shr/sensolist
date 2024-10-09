@@ -15,7 +15,7 @@ export default function AirQualityCO2({
   characteristics,
 }: AirQualityCO2Props) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
-  const [seconds, setSeconds] = useState<number>(10);
+  const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     if (seconds === 10) {
@@ -35,7 +35,7 @@ export default function AirQualityCO2({
       };
       getData();
     } else if (seconds <= 0) {
-      setSeconds(10);
+      setSeconds(60);
       return;
     }
 
