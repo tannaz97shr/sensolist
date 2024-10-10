@@ -11,9 +11,10 @@ import RecenterMap from "../WidgetMapHelper";
 interface GoogleMapProps {
   senderId?: string;
   name: string;
+  simple?: boolean;
 }
 
-export default function GoogleMap({ senderId, name }: GoogleMapProps) {
+export default function GoogleMap({ senderId, name, simple }: GoogleMapProps) {
   const [widgetData, setWidgetData] = useState<{
     lat: number;
     lng: number;
@@ -58,7 +59,13 @@ export default function GoogleMap({ senderId, name }: GoogleMapProps) {
   }, [senderId, seconds]);
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+    <div
+      className={` p-6 flex flex-col ${
+        simple
+          ? "min-h-[calc(100%-28px)] mt-6"
+          : "min-h-[calc(100%-140px)] mt-10"
+      }`}
+    >
       {!widgetData ? (
         loading ? (
           <div className="flex h-full flex-1">
@@ -85,9 +92,11 @@ export default function GoogleMap({ senderId, name }: GoogleMapProps) {
           <RecenterMap lat={widgetData.lat} lng={widgetData.lng} />
         </MapContainer>
       )}
-      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-        Last Update {seconds} seconds ago
-      </div>
+      {!simple && (
+        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+          Last Update {seconds} seconds ago
+        </div>
+      )}
     </div>
   );
 }

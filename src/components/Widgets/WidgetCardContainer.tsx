@@ -29,13 +29,17 @@ export default function WidgetCardContainer({
   enableDragging,
 }: WidgetCardContainerProps) {
   const handle = useFullScreenHandle();
-
+  console.log("widget container", widget);
   return (
     <>
       <FullScreen
         handle={handle}
         key={widget.widget}
-        className="relative my-full-screen-component overflow-auto shadow dark:shadow-neutral-7 p-4 h-full"
+        className={`relative my-full-screen-component overflow-auto shadow dark:shadow-neutral-7  h-full ${
+          widget.simpleWidget
+            ? "p-0 bg-black-opacity-50 dark:bg-white-opacity-50"
+            : "p-4"
+        }`}
       >
         {editMode && (
           <div className=" absolute w-full flex items-center justify-end right-4">

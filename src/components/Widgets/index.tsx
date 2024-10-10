@@ -210,10 +210,8 @@ export default function DashboardWidgets({
                           key={i}
                           data-grid={
                             wdg.layout ||
-                            (wdg.widgetName === "Line Chart"
-                              ? { x: 4 * i, y: 0, w: 4, h: 18 }
-                              : wdg.widgetName === "Bar Chart"
-                              ? { x: 4 * i, y: 0, w: 4, h: 18 }
+                            (wdg.simpleWidget
+                              ? { x: 4 * i, y: 0, w: 4, h: 12 }
                               : { x: 4 * i, y: 0, w: 4, h: 18 })
                           }
                           onClick={(event: React.MouseEvent<HTMLElement>) => {
