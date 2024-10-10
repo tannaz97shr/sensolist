@@ -14,6 +14,7 @@ import {
   IWidgetFields,
   IWidgetFormData,
 } from "@/types/general";
+import { ToggleSwitch } from "flowbite-react";
 import { useEffect, useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
@@ -70,6 +71,7 @@ export default function WidgetFormModal({
   const [thingsByCharacter, setThingsByCharacter] = useState<IThing[]>([]);
   const [thingsByCharacterLoading, setThingsByCharacterLoading] =
     useState<boolean>(false);
+  const [simpleWidget, setSimpleWidget] = useState<boolean>(false);
 
   useEffect(() => {
     if (defaultCharacters.length) {
@@ -351,22 +353,56 @@ export default function WidgetFormModal({
     return <Loading />;
   }
 
+  const customTheme = {
+    root: {
+      base: "group flex rounded-lg focus:outline-none",
+      active: {
+        on: "cursor-pointer",
+        off: "cursor-not-allowed opacity-50",
+      },
+      label:
+        "ms-3 mt-0.5 text-start text-sm font-medium text-gray-900 dark:text-gray-300",
+    },
+    toggle: {
+      base: "relative rounded-full border after:absolute after:rounded-full after:bg-white after:transition-all group-focus:ring-4 group-focus:ring-cyan-500/25",
+      checked: {
+        on: "after:translate-x-full after:border-white rtl:after:-translate-x-full",
+        off: "border-gray-200 bg-gray-200 dark:border-gray-600 dark:bg-gray-700",
+        color: {
+          blue: "border-secondary-main bg-secondary-main",
+        },
+      },
+    },
+  };
+
   return (
     <Modal onClose={onClose} open={open}>
       <div className=" border-b border-neutral-4 pb-3 text-neutral-7 dark:text-neutral-2">
         <span className=" capitalize font-semibold">{widgetName}</span>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          required
-          error={
-            errors.title?.type === "required" ? "This field is required" : ""
-          }
-          label="Title"
-          register={register}
-          name="title"
-          className="mt-6"
-        />
+        <div className="mt-6">
+          <ToggleSwitch
+            theme={customTheme}
+            checked={simpleWidget}
+            label="Simple Widget"
+            onChange={setSimpleWidget}
+            className="custom-switch"
+          />
+        </div>
+        {!simpleWidget && (
+          <Input
+            required
+            error={
+              errors.title?.type === "required" ? "This field is required" : ""
+            }
+            label="Title"
+            register={register}
+            name="title"
+            className="mt-6"
+          />
+        )}
+
         {!isMultiThing && selectedThingOption && (
           <SelectInput
             options={thingsList}
@@ -499,17 +535,20 @@ export default function WidgetFormModal({
               </>
             ))
           : null}
-        <Input
-          error={
-            errors.description?.type === "required"
-              ? "This field is required"
-              : ""
-          }
-          label="Description"
-          register={register}
-          name="description"
-          className="mt-6"
-        />
+        {!simpleWidget && (
+          <Input
+            error={
+              errors.description?.type === "required"
+                ? "This field is required"
+                : ""
+            }
+            label="Description"
+            register={register}
+            name="description"
+            className="mt-6"
+          />
+        )}
+
         <div className="flex items-center gap-4 mt-8">
           <Button
             onClick={(event: React.MouseEvent<HTMLElement>) => {
