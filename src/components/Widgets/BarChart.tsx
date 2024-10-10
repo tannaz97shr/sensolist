@@ -16,6 +16,7 @@ interface BarChartProps {
   max: number;
   title: string;
   charactristics: string[];
+  simple?: boolean;
 }
 
 export default function CustomBarChart({
@@ -28,6 +29,7 @@ export default function CustomBarChart({
   yLabel,
   min,
   max,
+  simple,
 }: BarChartProps) {
   const [widgetData, setWidgetData] = useState<IWidgetData>();
   const [seconds, setSeconds] = useState<number>(60);
@@ -107,7 +109,13 @@ export default function CustomBarChart({
     }),
   };
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+    <div
+      className={` p-6 flex flex-col ${
+        simple
+          ? "min-h-[calc(100%-28px)] mt-6"
+          : "min-h-[calc(100%-140px)] mt-10"
+      }`}
+    >
       {!widgetData ? (
         loading && (
           <div className="flex h-full flex-1">
@@ -117,9 +125,11 @@ export default function CustomBarChart({
       ) : (
         <ReactEcharts option={option} />
       )}
-      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-        Last Update {seconds} seconds ago
-      </div>
+      {!simple && (
+        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+          Last Update {seconds} seconds ago
+        </div>
+      )}
     </div>
   );
 }

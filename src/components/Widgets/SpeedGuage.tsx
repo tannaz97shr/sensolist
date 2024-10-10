@@ -14,6 +14,7 @@ interface SpeedGuageProps {
     minimum: string;
     maximum: string;
   };
+  simple?: boolean;
 }
 
 export default function SpeedGuage({
@@ -21,6 +22,7 @@ export default function SpeedGuage({
   name,
   characteristics,
   range,
+  simple,
 }: SpeedGuageProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(60);
@@ -50,7 +52,13 @@ export default function SpeedGuage({
   }, [senderId, seconds, characteristics]);
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
+    <div
+      className={` p-6 flex flex-col ${
+        simple
+          ? "min-h-[calc(100%-28px)] mt-6"
+          : "min-h-[calc(100%-140px)] mt-10"
+      }`}
+    >
       {!widgetData ? (
         <Spinner className="mx-auto mt-10" />
       ) : (
@@ -62,6 +70,11 @@ export default function SpeedGuage({
             unit={widgetData.unit}
             character={widgetData.character}
           />
+        </div>
+      )}
+      {!simple && (
+        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+          Last Update {seconds} seconds ago
         </div>
       )}
     </div>

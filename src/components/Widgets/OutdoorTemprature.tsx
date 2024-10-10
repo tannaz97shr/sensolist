@@ -15,6 +15,7 @@ interface OutdoorTempratureProps {
     minimum: string;
     maximum: string;
   };
+  simple?: boolean;
 }
 
 export default function OutdoorTemprature({
@@ -22,6 +23,7 @@ export default function OutdoorTemprature({
   name,
   characteristics,
   range,
+  simple,
 }: OutdoorTempratureProps) {
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [percent, setPercent] = useState<number>();
@@ -137,7 +139,13 @@ export default function OutdoorTemprature({
   };
 
   return (
-    <div className=" bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)] flex flex-col">
+    <div
+      className={` p-6 flex flex-col ${
+        simple
+          ? "min-h-[calc(100%-28px)] mt-6"
+          : "min-h-[calc(100%-140px)] mt-10"
+      }`}
+    >
       {!widgetData ? (
         loading ? (
           <div className="flex h-full flex-1">
@@ -151,9 +159,11 @@ export default function OutdoorTemprature({
       ) : (
         percent && <ReactEcharts option={option} />
       )}
-      <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-        Last Update {seconds} seconds ago
-      </div>
+      {!simple && (
+        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
+          Last Update {seconds} seconds ago
+        </div>
+      )}
     </div>
   );
 }

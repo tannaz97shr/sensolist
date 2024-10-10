@@ -25,7 +25,6 @@ import OutdoorCo2 from "./OutdoorCo2";
 import OutdoorPm25 from "./OutdoorPm25";
 import OutdoorPressureCard from "./OutdoorPressureCard";
 import OutdoorTemprature from "./OutdoorTemprature";
-import PressureCard from "./PressureCard";
 import ProgressBar from "./ProgressBar";
 import RadialGuage from "./RadialGuage";
 import SpeedGuage from "./SpeedGuage";
@@ -78,12 +77,19 @@ export default function Widget({
       disableDragging={disableDragging}
       enableDragging={enableDragging}
     >
-      <div className="mb-4 dark:text-neutral-2 capitalize font-bold">
-        {widget.title}
-      </div>
-      <div className="mb-4 dark:text-neutral-2">
-        {widget.widgetName} - {widget.thingName}
-      </div>
+      {widget.simpleWidget ? (
+        <></>
+      ) : (
+        <>
+          <div className="mb-4 dark:text-neutral-2 capitalize font-bold">
+            {widget.title}
+          </div>
+          <div className="mb-4 dark:text-neutral-2">
+            {widget.widgetName} - {widget.thingName}
+          </div>
+        </>
+      )}
+
       {widgetName === "Line Chart" ? (
         <CustomLineChart
           name={widgetName || ""}
@@ -96,6 +102,7 @@ export default function Widget({
           min={widget["Y Axes"].min}
           max={widget["Y Axes"].max}
           charactristics={widget.characteristics}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Bar Chart" ? (
         <CustomBarChart
@@ -109,6 +116,7 @@ export default function Widget({
           min={widget["Y Axes"].min}
           max={widget["Y Axes"].max}
           charactristics={widget.characteristics}
+          simple={widget.simpleWidget}
         />
       ) : // widgetName === "Time Series Chart" ? (
       //   <TimeSeriesChart
@@ -130,6 +138,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Outdoor Temprature Card" ? (
         <OutdoorTemprature
@@ -137,6 +146,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Noise Level Card" ? (
         <NoiseLevel
@@ -144,6 +154,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Indoor CO2 Card" ? (
         <IndoorCo2
@@ -151,6 +162,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Indoor PM2.5 Card" ? (
         <IndoorPm25
@@ -158,6 +170,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Outdoor Humidity Card" ? (
         <HumidityCard
@@ -165,15 +178,15 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
-      ) : widgetName === "Pressure Card" ? (
-        <PressureCard name={widgetName || ""} senderId={widget.senderId} />
       ) : widgetName === "Outdoor CO2 Card" ? (
         <OutdoorCo2
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Outdoor PM2.5 Card" ? (
         <OutdoorPm25
@@ -181,6 +194,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Outdoor Pressure Card" ? (
         <OutdoorPressureCard
@@ -188,6 +202,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Indoor Humidity Card" ? (
         <IndoorHumidityCard
@@ -195,6 +210,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Indoor Pressure Card" ? (
         <IndoorPressureCard
@@ -202,16 +218,26 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "OpenStreet Map" ? (
-        <OpenStreetMap name={widgetName || ""} senderId={widget.senderId} />
+        <OpenStreetMap
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          simple={widget.simpleWidget}
+        />
       ) : widgetName === "Google Map" ? (
-        <GoogleMap name={widgetName || ""} senderId={widget.senderId} />
+        <GoogleMap
+          name={widgetName || ""}
+          senderId={widget.senderId}
+          simple={widget.simpleWidget}
+        />
       ) : widgetName === "Entities table" ? (
         <EntityTable
           characteristics={widget.characteristics}
           name={widgetName || ""}
           senderIdList={widget.thingList}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Progress bar" ? (
         <ProgressBar
@@ -219,12 +245,14 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Value Card" ? (
         <ValueCard
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Speed gauge" ? (
         <SpeedGuage
@@ -232,6 +260,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Temperature radial gauge" ? (
         <RadialGuage
@@ -239,6 +268,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Humidity Card" ? (
         <AirQualityHumidity
@@ -246,24 +276,28 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Simple PM2.5 chart card" ? (
         <AirQualityPM25
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "simple CO2 chart card" ? (
         <AirQualityCO2
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Simple PM10 chart card" ? (
         <AirQualityPM10
           name={widgetName || ""}
           senderId={widget.senderId}
           characteristics={widget.characteristics}
+          simple={widget.simpleWidget}
         />
       ) : widgetName === "Air quality index card" ? (
         <AirQualityIndex
@@ -271,6 +305,7 @@ export default function Widget({
           senderId={widget.senderId}
           characteristics={widget.characteristics}
           range={widget["range of changes"]}
+          simple={widget.simpleWidget}
         />
       ) : (
         <>

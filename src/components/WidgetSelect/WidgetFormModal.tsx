@@ -261,6 +261,7 @@ export default function WidgetFormModal({
                 fields: fields,
                 widgetImage: widgetImage,
                 defaultCharacters: defaultCharacters,
+                simpleWidget: simpleWidget,
               },
               index: editIndex,
             })
@@ -295,6 +296,7 @@ export default function WidgetFormModal({
                         fields: fields,
                         widgetImage: widgetImage,
                         defaultCharacters: defaultCharacters,
+                        simpleWidget: simpleWidget,
                       }
                     : wdg
                 )
@@ -339,6 +341,7 @@ export default function WidgetFormModal({
               fields: fields,
               widgetImage: widgetImage,
               defaultCharacters: defaultCharacters,
+              simpleWidget: simpleWidget,
             },
           })
         );
