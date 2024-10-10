@@ -25,7 +25,7 @@ export default function IndoorHumidityCard({
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
-  const [_percent, setPercent] = useState<number>();
+  const [percent, setPercent] = useState<number>();
 
   useEffect(() => {
     if (seconds === 10) {
@@ -54,7 +54,6 @@ export default function IndoorHumidityCard({
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
-  const percent = 30;
 
   useEffect(() => {
     if (widgetData) {
