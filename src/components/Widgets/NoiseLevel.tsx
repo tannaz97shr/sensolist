@@ -30,7 +30,7 @@ export default function NoiseLevel({
   const [percent, setPercent] = useState<number>();
 
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);

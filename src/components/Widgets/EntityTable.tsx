@@ -33,7 +33,7 @@ export default function EntityTable({
   } = useSelector((state: RootState) => state.thingsSlice);
 
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderIdList?.length) {
           setLoading(true);
