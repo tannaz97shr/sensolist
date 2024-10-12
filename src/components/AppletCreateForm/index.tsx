@@ -20,6 +20,7 @@ import ImagePicker from "../DashboardCreateForm/ImagePicker";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 import MultiSelect from "../UI/MultiSelect";
+import { useFetchUsersQuery } from "@/lib/features/api/usersSlice";
 
 export default function AppletCreateForm({
   onCancel,
@@ -47,24 +48,12 @@ export default function AppletCreateForm({
     getData();
   }, []);
 
-  const usersList: ISelectOption[] = [
-    {
-      title: "User 1",
-      value: "user1",
-    },
-    {
-      title: "User 2",
-      value: "user2",
-    },
-    {
-      title: "User 3",
-      value: "user3",
-    },
-    {
-      title: "User 4",
-      value: "user4",
-    },
-  ];
+  const { data } = useFetchUsersQuery();
+  const usersList = data?.list.map((user) => ({
+    title: user.username ?? `${user.firstname} ${user.lastname}` ?? user.id,
+    value: user.id,
+  }));
+
 
   const [values, setValues] = useState(
     edit
