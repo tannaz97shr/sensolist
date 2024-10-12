@@ -36,9 +36,7 @@ export default function WidgetCardContainer({
         handle={handle}
         key={widget.widget}
         className={`relative my-full-screen-component overflow-auto shadow dark:shadow-neutral-7  h-full ${
-          widget.simpleWidget
-            ? "p-0 bg-black-opacity-50 dark:bg-white-opacity-50"
-            : "p-4"
+          widget.simpleWidget ? "p-0" : "p-4"
         }`}
       >
         {editMode && (
