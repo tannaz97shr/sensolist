@@ -156,6 +156,14 @@ export default function DashboardWidgets({
       dispatch(removeDraftWidget({ index: i }));
     }
   };
+  const calcWidgetLayout = (simple: boolean, name: string, i: number) => {
+    if (simple) {
+      return name === "simple CO2 chart card"
+        ? { x: 4 * i, y: 0, w: 2, h: 8 }
+        : { x: 4 * i, y: 0, w: 4, h: 18 };
+    } else {
+    }
+  };
   return (
     <>
       <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
@@ -210,9 +218,11 @@ export default function DashboardWidgets({
                           key={i}
                           data-grid={
                             wdg.layout ||
-                            (wdg.simpleWidget
-                              ? { x: 4 * i, y: 0, w: 4, h: 12 }
-                              : { x: 4 * i, y: 0, w: 4, h: 18 })
+                            calcWidgetLayout(
+                              wdg.simpleWidget,
+                              wdg.widgetName || "",
+                              i
+                            )
                           }
                           onClick={(event: React.MouseEvent<HTMLElement>) => {
                             event.stopPropagation();
@@ -238,13 +248,11 @@ export default function DashboardWidgets({
                     return (
                       <div
                         key={i}
-                        data-grid={
-                          wdg.widgetName === "Line Chart"
-                            ? { x: 4 * i, y: 0, w: 4, h: 18 }
-                            : wdg.widgetName === "Bar Chart"
-                            ? { x: 4 * i, y: 0, w: 4, h: 18 }
-                            : { x: 4 * i, y: 0, w: 4, h: 16 }
-                        }
+                        data-grid={calcWidgetLayout(
+                          wdg.simpleWidget,
+                          wdg.widgetName || "",
+                          i
+                        )}
                       >
                         <Widget
                           onDelete={() => {
