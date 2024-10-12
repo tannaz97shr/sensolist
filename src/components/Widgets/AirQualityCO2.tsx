@@ -51,7 +51,7 @@ export default function AirQualityCO2({
     <WidgetDataContainer
       simple={simple}
       haveData={!!widgetData}
-      loading
+      loading={loading}
       seconds={seconds}
     >
       <div className="flex flex-col flex-1 items-center justify-center">

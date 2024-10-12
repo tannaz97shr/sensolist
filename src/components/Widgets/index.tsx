@@ -162,15 +162,27 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 2, h: 6 }
         : name === "Humidity Card"
         ? { x: 4 * i, y: 0, w: 3, h: 8 }
+        : name === "Air quality index card"
+        ? { x: 4 * i, y: 0, w: 3, h: 8 }
+        : name === "Simple PM10 chart card"
+        ? { x: 4 * i, y: 0, w: 2, h: 6 }
+        : name === "Simple PM2.5 chart card"
+        ? { x: 4 * i, y: 0, w: 2, h: 6 }
         : { x: 4 * i, y: 0, w: 4, h: 18 };
     } else {
       return name === "simple CO2 chart card"
         ? { x: 4 * i, y: 0, w: 3, h: 12 }
         : name === "Humidity Card"
         ? { x: 4 * i, y: 0, w: 3, h: 13 }
+        : name === "Air quality index card"
+        ? { x: 4 * i, y: 0, w: 3, h: 13 }
+        : name === "Simple PM10 chart card"
+        ? { x: 4 * i, y: 0, w: 3, h: 13 }
+        : name === "Simple PM2.5 chart card"
+        ? { x: 4 * i, y: 0, w: 3, h: 13 }
         : { x: 4 * i, y: 0, w: 4, h: 18 };
     }
-  }; //"Humidity Card"
+  }; //"Simple PM2.5 chart card"
   return (
     <>
       <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">

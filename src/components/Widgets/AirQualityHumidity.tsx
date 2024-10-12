@@ -146,7 +146,7 @@ export default function AirQualityhumidity({
     <WidgetDataContainer
       simple={simple}
       haveData={!!widgetData}
-      loading
+      loading={loading}
       seconds={seconds}
     >
       {percent && (

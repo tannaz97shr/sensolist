@@ -1,7 +1,7 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import { useEffect, useState } from "react";
-import Spinner from "../UI/Spinner";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface AirQualityPM25Props {
   senderId?: string;
@@ -48,36 +48,18 @@ export default function AirQualityPM25({
   }, [senderId, seconds]);
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading={loading}
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading ? (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        ) : (
-          <div className="flex h-full flex-1">
-            <span className="m-auto">No Data available!</span>
-          </div>
-        )
-      ) : (
-        <div className="flex flex-col flex-1 items-center justify-center">
-          <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold">
-            {widgetData.data[0]?.payload}
-          </span>
-          <span className=" text-neutral-6 text-lg">{widgetData.unit}</span>
-        </div>
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
-        </div>
-      )}
-    </div>
+      <div className="flex flex-col flex-1 items-center justify-center">
+        <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold">
+          {widgetData?.data[0]?.payload}
+        </span>
+        <span className=" text-neutral-6 text-lg">{widgetData?.unit}</span>
+      </div>
+    </WidgetDataContainer>
   );
 }
