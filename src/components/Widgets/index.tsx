@@ -160,13 +160,17 @@ export default function DashboardWidgets({
     if (simple) {
       return name === "simple CO2 chart card"
         ? { x: 4 * i, y: 0, w: 2, h: 6 }
+        : name === "Humidity Card"
+        ? { x: 4 * i, y: 0, w: 3, h: 8 }
         : { x: 4 * i, y: 0, w: 4, h: 18 };
     } else {
       return name === "simple CO2 chart card"
         ? { x: 4 * i, y: 0, w: 3, h: 12 }
+        : name === "Humidity Card"
+        ? { x: 4 * i, y: 0, w: 3, h: 13 }
         : { x: 4 * i, y: 0, w: 4, h: 18 };
     }
-  };
+  }; //"Humidity Card"
   return (
     <>
       <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
