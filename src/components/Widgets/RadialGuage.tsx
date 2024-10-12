@@ -29,7 +29,7 @@ export default function RadialGuage({
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
