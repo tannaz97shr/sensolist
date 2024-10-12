@@ -4,7 +4,7 @@ import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
-import Spinner from "../UI/Spinner";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface AirQualityhumidityProps {
   senderId?: string;
@@ -82,38 +82,38 @@ export default function AirQualityhumidity({
         },
         progress: {
           show: true,
-          width: 30,
+          width: 15, // Reduce this to make the gauge narrower
         },
         pointer: {
           show: false,
         },
         axisLine: {
           lineStyle: {
-            width: 30,
+            width: 15, // Reduce this to make the axis thinner
           },
         },
         axisTick: {
-          distance: -45,
+          distance: -25, // Bring ticks closer to the center
           splitNumber: 5,
           lineStyle: {
-            width: 2,
+            width: 1, // Reduce the width of ticks
             color: "#999",
           },
         },
         splitLine: {
-          distance: -52,
-          length: 14,
+          distance: -30, // Bring split lines closer
+          length: 10, // Shorten split lines
           lineStyle: {
-            width: 3,
+            width: 2, // Reduce the width of split lines
             color: "#999",
           },
         },
         axisLabel: {
-          distance: 0,
+          distance: -5, // Bring labels closer
           color: "#999",
-          fontSize: 14,
+          fontSize: 10, // Reduce the font size of the labels
           formatter: (value: number) => {
-            return Math.round(value); // This will round the value and remove decimals
+            return Math.round(value);
           },
         },
         anchor: {
@@ -125,10 +125,10 @@ export default function AirQualityhumidity({
         detail: {
           valueAnimation: true,
           width: "60%",
-          lineHeight: 40,
+          lineHeight: 30, // Reduce the line height
           borderRadius: 8,
           offsetCenter: [0, "-15%"],
-          fontSize: 30,
+          fontSize: 20, // Reduce the font size of the detail text
           fontWeight: "bolder",
           formatter: `${widgetData?.data[0].payload} ${widgetData?.unit}`,
           color: "inherit",
@@ -143,31 +143,20 @@ export default function AirQualityhumidity({
   };
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading ? (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        ) : (
-          <div className="flex h-full flex-1">
-            <span className="m-auto">No Data available!</span>
-          </div>
-        )
-      ) : (
-        percent && <ReactEcharts option={option} />
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
+      {percent && (
+        <div className="mx-auto">
+          <ReactEcharts
+            option={option}
+            style={{ width: "150px", height: "150px" }}
+          />
         </div>
       )}
-    </div>
+    </WidgetDataContainer>
   );
 }

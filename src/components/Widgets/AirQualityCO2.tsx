@@ -47,7 +47,6 @@ export default function AirQualityCO2({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
 
-  console.log("air pm 25 data", widgetData);
   return (
     <div
       className={` p-6 flex flex-col ${
