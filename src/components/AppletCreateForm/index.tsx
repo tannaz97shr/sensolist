@@ -5,6 +5,7 @@ import {
   getAppletImages,
   postAppletData,
 } from "@/ApiCall/applets";
+import { useFetchUsersQuery } from "@/lib/features/api/usersSlice";
 import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import {
   IApplet,
@@ -47,24 +48,11 @@ export default function AppletCreateForm({
     getData();
   }, []);
 
-  const usersList: ISelectOption[] = [
-    {
-      title: "User 1",
-      value: "user1",
-    },
-    {
-      title: "User 2",
-      value: "user2",
-    },
-    {
-      title: "User 3",
-      value: "user3",
-    },
-    {
-      title: "User 4",
-      value: "user4",
-    },
-  ];
+  const { data } = useFetchUsersQuery();
+  const usersList = data?.list.map((user) => ({
+    title: user.username ?? `${user.firstname} ${user.lastname}` ?? user.id,
+    value: user.id,
+  }));
 
   const [values, setValues] = useState(
     edit
@@ -228,7 +216,7 @@ export default function AppletCreateForm({
         />
 
         <MultiSelect
-          options={usersList}
+          options={usersList || []}
           selectedValues={selectedUsers}
           setSelectedValues={setSelectedUsers}
           label="Assign User"

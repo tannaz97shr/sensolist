@@ -28,8 +28,8 @@ export default async function Page() {
         </div>
         <SortBy />
       </div>
-      <div className="flex ">
-        <div className="mt-4 flex flex-col md:flex-row flex-wrap flex-1 h-fit">
+      <div className="flex pt-4">
+        <div className="flex flex-col md:flex-row flex-wrap flex-1 h-fit">
           {data.map((thing) => (
             <MyThingCard key={thing.id} thing={thing} />
           ))}
