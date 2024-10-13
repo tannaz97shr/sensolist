@@ -8,7 +8,7 @@ import Button from "../UI/Button";
 
 interface DashboardCreateButtonProps {
   dashboards: IDashboard[];
-  refreshData: () => Promise<void>;
+  refreshData: () => void;
 }
 
 export default function DashboardCreateButton({

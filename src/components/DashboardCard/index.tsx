@@ -15,7 +15,7 @@ import Loading from "../UI/Loading";
 interface DashboardCardProps {
   dashboard: IDashboard;
   editDashboard: (dash: IDashboard) => void;
-  refreshData: () => Promise<void>;
+  refreshData: () => void;
 }
 
 export default function DashboardCard({

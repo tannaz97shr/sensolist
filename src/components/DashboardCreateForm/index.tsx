@@ -34,7 +34,7 @@ export default function DashboardCreateForm({
   initialValues?: IDashboard | null;
   edit: IDashboard | null;
   open: boolean;
-  refreshData: () => Promise<void>;
+  refreshData: () => void;
 }) {
   const [selectImages, setSelectImages] = useState<IFile[]>();
   const [loading, setLoading] = useState<boolean>(false);
