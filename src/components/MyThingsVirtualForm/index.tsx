@@ -36,6 +36,7 @@ export default function MyThingsCreateVirtualForm({
   const [formState, setFormState] = useState<VirtualFormState>({
     characteristics: [],
     name: "",
+    image:""
   });
   const [currentStep, setCurrentStep] = useState(0);
   return (
