@@ -185,6 +185,8 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Indoor CO2 Card"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Value Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Outdoor CO2 Card"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Outdoor Pressure Card"
@@ -214,6 +216,8 @@ export default function DashboardWidgets({
       return name === "simple CO2 chart card"
         ? { x: 4 * i, y: 0, w: 6, h: 12 }
         : name === "Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Value Card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Air quality index card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
@@ -255,7 +259,7 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : { x: 4 * i, y: 0, w: 8, h: 18 };
     }
-  }; //   "Speed gauge"
+  }; //   "Value Card"
   return (
     <>
       <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
