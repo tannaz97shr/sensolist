@@ -3,8 +3,9 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import ReactEcharts, { EChartsOption } from "echarts-for-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import Spinner from "../UI/Spinner";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface IndoorCo2Props {
   senderId?: string;
@@ -72,7 +73,7 @@ export default function IndoorCo2({
       value: Number(percent?.toFixed(2)),
       name: "CO2",
       title: {
-        offsetCenter: ["0%", "20%"],
+        offsetCenter: ["0%", "40%"],
       },
       detail: {
         valueAnimation: true,
@@ -85,6 +86,7 @@ export default function IndoorCo2({
     series: [
       {
         type: "gauge",
+        radius: "75%",
         itemStyle: {
           color: "#004105",
         },
@@ -122,12 +124,12 @@ export default function IndoorCo2({
         },
         data: gaugeData,
         title: {
-          fontSize: 14,
+          fontSize: 12,
         },
         detail: {
-          width: 50,
-          height: 14,
-          fontSize: 14,
+          width: 40,
+          height: 20,
+          fontSize: 12,
           color: "inherit",
           borderColor: "inherit",
           borderRadius: 20,
@@ -139,31 +141,31 @@ export default function IndoorCo2({
   };
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading={loading}
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading ? (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        ) : (
-          <div className="flex h-full flex-1">
-            <span className="m-auto">No Data available!</span>
-          </div>
-        )
-      ) : (
-        percent && <ReactEcharts option={option} />
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
+      {simple && (
+        <div className=" flex items-center gap-2 ml-2">
+          <Image
+            width={32}
+            height={32}
+            alt="co2"
+            src={"/assets/widgets/co2.svg"}
+          />
+          <span className=" text-neutral-6 text-lg">
+            {widgetData?.character}
+          </span>
         </div>
       )}
-    </div>
+      {percent && (
+        <ReactEcharts
+          option={option}
+          style={{ width: "150px", height: "150px", margin: "auto" }}
+        />
+      )}
+    </WidgetDataContainer>
   );
 }

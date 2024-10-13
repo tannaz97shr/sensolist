@@ -4,7 +4,8 @@ import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import { useEffect, useState } from "react";
 
-import Spinner from "../UI/Spinner";
+import Image from "next/image";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface ValueCardProps {
   senderId?: string;
@@ -47,38 +48,31 @@ export default function ValueCard({
   }, [senderId, seconds, characteristics]);
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading={loading}
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading ? (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        ) : (
-          <div className="flex h-full flex-1">
-            <span className="m-auto">No Data available!</span>
-          </div>
-        )
-      ) : (
-        <div className="flex flex-col flex-1 items-center justify-center">
-          <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold capitalize">
-            {widgetData.character}
-          </span>
+      <div className="flex flex-col flex-1 items-center justify-center">
+        {simple && (
           <span className=" text-neutral-6 text-lg">
-            {widgetData.data[0]?.payload} {widgetData.unit}
+            {widgetData?.character}
           </span>
+        )}
+        <div className=" flex mb-2 items-center">
+          <Image
+            width={32}
+            height={32}
+            alt="co2"
+            src={"/assets/widgets/co2.svg"}
+          />
+          <span className="text-xl text-neutral-7 dark:text-neutral-3 font-bold mx-2">
+            {widgetData?.data[0]?.payload}
+          </span>
+          <span className=" text-neutral-6 text-lg">{widgetData?.unit}</span>
         </div>
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
-        </div>
-      )}
-    </div>
+      </div>
+    </WidgetDataContainer>
   );
 }

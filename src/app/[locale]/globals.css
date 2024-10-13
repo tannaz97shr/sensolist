@@ -389,3 +389,10 @@ body {
   width: 19px;
   height: 19px;
 }
+
+.widget-more-icon {
+  display: none;
+}
+.widget-card-container:hover .widget-more-icon {
+  display: flex;
+}

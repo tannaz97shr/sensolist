@@ -185,21 +185,39 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Indoor CO2 Card"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Value Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Outdoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Outdoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Indoor Humidity Card"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Indoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Outdoor PM2.5 Card"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Indoor Pressure Card"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Indoor Temprature Card"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Outdoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Temperature radial gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Speed gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Noise Level Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Progress bar"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : { x: 4 * i, y: 0, w: 8, h: 18 };
     } else {
       return name === "simple CO2 chart card"
         ? { x: 4 * i, y: 0, w: 6, h: 12 }
         : name === "Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Value Card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Air quality index card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
@@ -215,19 +233,33 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Indoor CO2 Card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Indoor Humidity Card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Indoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor PM2.5 Card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Indoor Pressure Card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Indoor Temprature Card"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Temperature radial gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Speed gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Noise Level Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Progress bar"
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : { x: 4 * i, y: 0, w: 8, h: 18 };
     }
-  }; //   "OpenStreet Map"
+  }; //   "Value Card"
   return (
     <>
       <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
