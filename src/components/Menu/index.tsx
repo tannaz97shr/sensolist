@@ -46,7 +46,7 @@ export default function Menu() {
         />
         <div
           className={`text-xs capitalize  text-secondary-main md:text-[10px] lg:text-xs 
-            lg:max-w-[80px] lg:truncate
+            lg:max-w-[80px] 
              md:text-neutral-7 dark:text-white ${
                pathname.includes("/userManager")
                  ? "flex md:text-secondary-main dark:md:text-secondary-main"
@@ -75,7 +75,7 @@ export default function Menu() {
         />
         <div
           className={`text-xs capitalize text-secondary-main md:text-[10px] lg:text-xs
-            lg:max-w-[80px] lg:truncate
+            lg:max-w-[80px] 
              md:text-neutral-7 dark:text-white ${
                pathname.includes("/myThings")
                  ? "flex md:text-secondary-main dark:md:text-secondary-main"
@@ -112,7 +112,7 @@ export default function Menu() {
         />
         <div
           className={`text-xs capitalize text-secondary-main md:text-[10px] lg:text-xs
-            lg:max-w-[80px] lg:truncate
+            lg:max-w-[80px] 
              md:text-neutral-7 dark:text-white ${
                pathname === `/${locale === "en" ? "" : locale}`
                  ? "flex md:text-secondary-main dark:md:text-secondary-main"
@@ -170,7 +170,7 @@ export default function Menu() {
         />
         <div
           className={`text-xs capitalize text-secondary-main md:text-[10px] lg:text-xs
-            lg:max-w-[80px] lg:truncate
+            lg:max-w-[80px] 
             md:text-neutral-7 dark:text-white ${
               pathname.includes("/applets")
                 ? "flex md:text-secondary-main dark:md:text-secondary-main"

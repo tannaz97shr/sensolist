@@ -29,7 +29,7 @@ export default function SearchBar() {
   }, [value, setSearchValue]);
   return (
     <div
-      className="static md:bg-transparent mr-auto lg:ml-4
+      className="static md:bg-transparent mr-auto
        w-full md:pb-0 left-0 top-[-16px] md:pt-0 rounded-b-xl px-0
     md:w-[300px]"
     >

@@ -23,7 +23,7 @@ export default function HomePinnedAppletes() {
   }, []);
   return (
     <div
-      className="flex flex-col w-full rounded-2xl bg-black-opacity-50 dark:bg-white-opacity-50
+      className="flex flex-col w-full rounded-2xl bg-black-opacity-50 dark:bg-primary-Shade-2
      p-4 overflow-x-auto h-[16rem]"
     >
       <div className="flex items-center">

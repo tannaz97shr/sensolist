@@ -14,7 +14,7 @@ export default function PinnedAppletCard({
   return (
     <Link
       href={`/applets/${id}`}
-      className="w-[130px] h-full flex flex-col rounded-xl my-auto overflow-hidden bg-neutral-2 dark:bg-white-opacity-100 bg-black-opacity-100 pb-2"
+      className="w-[130px] h-full flex flex-col rounded-xl my-auto overflow-hidden bg-neutral-2 dark:bg-primary-Shade-3 bg-black-opacity-100 pb-2"
     >
       <div
         className="relative w-full aspect-[4/3]"
