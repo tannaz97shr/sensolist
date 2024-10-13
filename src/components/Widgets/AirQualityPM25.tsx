@@ -55,7 +55,12 @@ export default function AirQualityPM25({
       seconds={seconds}
     >
       <div className="flex flex-col flex-1 items-center justify-center">
-        <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold">
+        {simple && (
+          <span className=" text-neutral-6 text-lg">
+            {widgetData?.character}
+          </span>
+        )}
+        <span className="text-xl text-neutral-7 dark:text-neutral-3 font-bold">
           {widgetData?.data[0]?.payload}
         </span>
         <span className=" text-neutral-6 text-lg">{widgetData?.unit}</span>
