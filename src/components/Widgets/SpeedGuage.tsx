@@ -67,7 +67,7 @@ export default function SpeedGuage({
             alt="speed"
             src={"/assets/widgets/speed.svg"}
           />
-          <span className=" text-neutral-6 text-lg">
+          <span className="text-neutral-7 dark:text-neutral-4 text-lg uppercase font-semibold">
             {widgetData?.character}
           </span>
         </div>

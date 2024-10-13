@@ -62,7 +62,7 @@ export default function IndoorHumidityCard({
     if (widgetData) {
       setPercent(
         ((Number(widgetData.data[0]?.payload) - Number(range?.minimum)) /
-          (Number(range.maximum) - Number(range.minimum))) *
+          (Number(range?.maximum) - Number(range?.minimum))) *
           100
       );
     }
@@ -160,7 +160,7 @@ export default function IndoorHumidityCard({
             alt="humidity"
             src={"/assets/widgets/humidity.svg"}
           />
-          <span className=" text-neutral-6 text-lg">
+          <span className="text-neutral-7 dark:text-neutral-4 text-lg uppercase font-semibold">
             {widgetData?.character}
           </span>
         </div>
