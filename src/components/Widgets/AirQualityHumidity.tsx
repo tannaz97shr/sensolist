@@ -3,6 +3,7 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import ReactEcharts from "echarts-for-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import WidgetDataContainer from "./WidgetDataContainer";
 
@@ -149,6 +150,19 @@ export default function AirQualityhumidity({
       loading={loading}
       seconds={seconds}
     >
+      {simple && (
+        <div className=" flex items-center gap-2 ml-2">
+          <Image
+            width={32}
+            height={32}
+            alt="co2"
+            src={"/assets/widgets/humidity.svg"}
+          />
+          <span className=" text-neutral-6 text-lg">
+            {widgetData?.character}
+          </span>
+        </div>
+      )}
       {percent && (
         <div className="mx-auto">
           <ReactEcharts

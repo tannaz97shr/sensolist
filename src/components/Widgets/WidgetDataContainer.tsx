@@ -17,9 +17,9 @@ export default function WidgetDataContainer({
 }: WidgetDataContainerProps) {
   return (
     <div
-      className={` p-6 flex flex-col ${
+      className={`flex flex-col ${
         simple
-          ? "min-h-[calc(100%-28px)] mt-6"
+          ? "min-h-[calc(100%-32px)] mt-8"
           : "min-h-[calc(100%-140px)] mt-10"
       }`}
     >

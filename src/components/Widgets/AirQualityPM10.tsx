@@ -1,5 +1,6 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import WidgetDataContainer from "./WidgetDataContainer";
 
@@ -55,10 +56,23 @@ export default function AirQualityPM10({
       seconds={seconds}
     >
       <div className="flex flex-col flex-1 items-center justify-center">
-        <span className="mb-2 text-xl text-neutral-7 dark:text-neutral-3 font-bold">
-          {widgetData?.data[0]?.payload}
-        </span>
-        <span className=" text-neutral-6 text-lg">{widgetData?.unit}</span>
+        {simple && (
+          <span className=" text-neutral-6 text-lg">
+            {widgetData?.character}
+          </span>
+        )}
+        <div className=" flex mb-2 items-center">
+          <Image
+            width={32}
+            height={32}
+            alt="co2"
+            src={"/assets/widgets/pm10.svg"}
+          />
+          <span className="text-xl text-neutral-7 dark:text-neutral-3 font-bold mx-2">
+            {widgetData?.data[0]?.payload}
+          </span>
+          <span className=" text-neutral-6 text-lg">{widgetData?.unit}</span>
+        </div>
       </div>
     </WidgetDataContainer>
   );

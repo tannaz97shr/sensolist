@@ -54,7 +54,7 @@ export const dashboardSlice = createSlice({
     },
     removeDraftWidget: (state, action: PayloadAction<{ index: number }>) => {
       state.draftWidgets = state.draftWidgets.filter(
-        (drft, i) => i !== action.payload.index
+        (_drft, i) => i !== action.payload.index
       );
     },
   },

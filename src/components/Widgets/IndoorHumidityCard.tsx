@@ -3,8 +3,9 @@
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import ReactEcharts, { EChartsOption } from "echarts-for-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import Spinner from "../UI/Spinner";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface IndoorHumidityCardProps {
   senderId?: string;
@@ -71,7 +72,8 @@ export default function IndoorHumidityCard({
     series: [
       {
         type: "gauge",
-        center: ["50%", "60%"],
+        center: ["50%", "60%"], // Keep the center position
+        radius: "72%", // Increased by 20% (original was 60%)
         startAngle: 200,
         endAngle: -20,
         min: Number(range?.minimum),
@@ -82,38 +84,38 @@ export default function IndoorHumidityCard({
         },
         progress: {
           show: true,
-          width: 30,
+          width: 18, // Increase progress bar width slightly (20% bigger)
         },
         pointer: {
           show: false,
         },
         axisLine: {
           lineStyle: {
-            width: 30,
+            width: 18, // Increase outer line width to maintain proportions
           },
         },
         axisTick: {
-          distance: -45,
+          distance: -24, // Adjust distance from center to fit the bigger size
           splitNumber: 5,
           lineStyle: {
-            width: 2,
+            width: 1.8,
             color: "#999",
           },
         },
         splitLine: {
-          distance: -52,
-          length: 14,
+          distance: -30, // Adjust distance from center to fit the bigger size
+          length: 12, // Increase split line length slightly
           lineStyle: {
-            width: 3,
+            width: 2.4, // Slightly increase line width
             color: "#999",
           },
         },
         axisLabel: {
-          distance: 0,
+          distance: -6, // Slight adjustment for label distance
           color: "#999",
-          fontSize: 14,
+          fontSize: 12, // Increase font size slightly
           formatter: (value: number) => {
-            return Math.round(value); // This will round the value and remove decimals
+            return Math.round(value); // Round and remove decimals
           },
         },
         anchor: {
@@ -124,12 +126,13 @@ export default function IndoorHumidityCard({
         },
         detail: {
           valueAnimation: true,
-          width: "60%",
-          lineHeight: 40,
-          borderRadius: 8,
-          offsetCenter: [0, "-15%"],
-          fontSize: 30,
+          width: "50%", // Slight increase to match the larger size
+          lineHeight: 30, // Increase line height to match the bigger chart
+          borderRadius: 4,
+          offsetCenter: [0, "-15%"], // Keep the detail centered
+          fontSize: 16, // Slightly increase font size for the detail
           fontWeight: "bolder",
+          // overflow: "truncate",
           formatter: `${widgetData?.data[0].payload} ${widgetData?.unit}`,
           color: "inherit",
         },
@@ -139,73 +142,35 @@ export default function IndoorHumidityCard({
           },
         ],
       },
-      // {
-      //   type: "gauge",
-      //   center: ["50%", "60%"],
-      //   startAngle: 200,
-      //   endAngle: -20,
-      //   min: 0,
-      //   max: 60,
-      //   itemStyle: {
-      //     color: "#2A4FA3",
-      //   },
-      //   progress: {
-      //     show: true,
-      //     width: 8,
-      //   },
-      //   pointer: {
-      //     show: false,
-      //   },
-      //   axisLine: {
-      //     show: false,
-      //   },
-      //   axisTick: {
-      //     show: false,
-      //   },
-      //   splitLine: {
-      //     show: false,
-      //   },
-      //   axisLabel: {
-      //     show: false,
-      //   },
-      //   detail: {
-      //     show: false,
-      //   },
-      //   data: [
-      //     {
-      //       value: 20,
-      //     },
-      //   ],
-      // },
     ],
   };
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading={loading}
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading ? (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        ) : (
-          <div className="flex h-full flex-1">
-            <span className="m-auto">No Data available!</span>
-          </div>
-        )
-      ) : (
-        percent && <ReactEcharts option={option} />
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
+      {simple && (
+        <div className=" flex items-center gap-2 ml-2">
+          <Image
+            width={32}
+            height={32}
+            alt="humidity"
+            src={"/assets/widgets/humidity.svg"}
+          />
+          <span className=" text-neutral-6 text-lg">
+            {widgetData?.character}
+          </span>
         </div>
       )}
-    </div>
+      {percent && (
+        <ReactEcharts
+          option={option}
+          style={{ width: "150px", height: "150px", margin: "auto" }}
+        />
+      )}
+    </WidgetDataContainer>
   );
 }

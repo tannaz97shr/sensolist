@@ -3,7 +3,7 @@ import { IWidgetData } from "@/types/general";
 import { useEffect, useState } from "react";
 
 import ReactEcharts, { EChartsOption } from "echarts-for-react";
-import Spinner from "../UI/Spinner";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface LineChartProps {
   senderId?: string;
@@ -100,7 +100,7 @@ export default function CustomLineChart({
           return {
             name: charData.character,
             type: "line",
-            stack: "Total",
+            // stack: "Total",
             data: charData.data.map((d) => Number(d.payload)),
           };
         })
@@ -108,27 +108,13 @@ export default function CustomLineChart({
   };
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading={loading}
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading && (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        )
-      ) : (
-        <ReactEcharts option={option} />
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
-        </div>
-      )}
-    </div>
+      <ReactEcharts option={option} />
+    </WidgetDataContainer>
   );
 }
