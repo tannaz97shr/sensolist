@@ -3,7 +3,7 @@ import { IWidgetData } from "@/types/general";
 import type { EChartsOption } from "echarts";
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
-import Spinner from "../UI/Spinner";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface BarChartProps {
   senderId?: string;
@@ -36,7 +36,7 @@ export default function CustomBarChart({
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
@@ -108,28 +108,15 @@ export default function CustomBarChart({
       return { type: "bar" };
     }),
   };
+
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading={loading}
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading && (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        )
-      ) : (
-        <ReactEcharts option={option} />
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
-        </div>
-      )}
-    </div>
+      <ReactEcharts option={option} />
+    </WidgetDataContainer>
   );
 }

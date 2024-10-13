@@ -57,37 +57,44 @@ export function FormStepOne(props: FormStepProps) {
     );
   }, [selectedCharactristic, setValue]);
 
-  const images: IFile[] = [
-    {
-      fileId: "66bbb7af6437e422855d8dc9",
-      url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7af6437e422855d8dc9",
-      mime: "",
-    },
-    {
-      fileId: "66bbb7b16437e422855d8dcc",
-      url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7b16437e422855d8dcc",
-      mime: "",
-    },
-    {
-      fileId: "66bbb7b26437e422855d8dcf",
-      url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7b26437e422855d8dcf",
-      mime: "",
-    },
-    {
-      fileId: "66bbb7b26437e422855d8dd3",
-      url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7b26437e422855d8dd3",
-      mime: "",
-    },
-  ];
+  // const images: IFile[] = [
+  //   {
+  //     fileId: "66bbb7af6437e422855d8dc9",
+  //     url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7af6437e422855d8dc9",
+  //     mime: "",
+  //   },
+  //   {
+  //     fileId: "66bbb7b16437e422855d8dcc",
+  //     url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7b16437e422855d8dcc",
+  //     mime: "",
+  //   },
+  //   {
+  //     fileId: "66bbb7b26437e422855d8dcf",
+  //     url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7b26437e422855d8dcf",
+  //     mime: "",
+  //   },
+  //   {
+  //     fileId: "66bbb7b26437e422855d8dd3",
+  //     url: "https://sensolist-backend.vercel.app/api/v3/files/66bbb7b26437e422855d8dd3",
+  //     mime: "",
+  //   },
+  // ];
 
-  const [selectedImage, setSelectedImage] = useState(
-    props.state.image?.split("/").at(-1) ??
-      props.state.image ??
-      images[0].fileId
-  );
+  // const [selectedImage, setSelectedImage] = useState(
+  //   props.state.image?.split("/").at(-1) ??
+  //     props.state.image ??
+  //     images[0].fileId
+  // );
   const [selectImages, setSelectImages] = useState<IFile[]>();
+  const [selectedImage, setSelectedImage] = useState(
+    // initialValues?.imageURL
+    //   ? initialValues?.imageURL
+    selectImages?.length ? selectImages[0].fileId : undefined
+  );
+
   const [isLoading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const getData = async () => {
       setLoading(true);
@@ -106,6 +113,7 @@ export function FormStepOne(props: FormStepProps) {
       characteristics: data.characteristics.map((char) => {
         return { ...char, active: true, dataModels: [] };
       }),
+      image:selectedImage
     });
     props.nextStep?.();
   }
@@ -137,22 +145,20 @@ export function FormStepOne(props: FormStepProps) {
         <div className="mt-6 dark:text-white">Choose an image:</div>
         {selectImages && (
           <div className="relative flex flex-wrap gap-4 mt-3">
-            {selectImages.map((img) => {
-              return (
-                <div
-                  onClick={() => {
-                    setSelectedImage(img.fileId);
-                  }}
-                  className={`relative w-[57px] h-[57px] cursor-pointer 
+            {selectImages.map((img) => (
+              <div
+                onClick={() => {
+                  setSelectedImage(img.fileId);
+                }}
+                className={`relative w-[57px] h-[57px] cursor-pointer 
               bg-neutral-2 rounded-md ${
                 selectedImage === img.fileId && "border-2 border-secondary-main"
               }`}
-                  key={img.fileId}
-                >
-                  <Image alt="image" fill src={img.url} />
-                </div>
-              );
-            })}
+                key={img.fileId}
+              >
+                <Image alt="image" fill src={img.url} />
+              </div>
+            ))}
             <ImagePicker
               selectedImage={selectedImage}
               register={register}

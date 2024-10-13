@@ -42,7 +42,7 @@ export default function HomeMyThings() {
           <Loading />
         ) : things?.length ? (
           <>
-            {things?.map((thing) => (
+            {things.slice(0, 6).map((thing) => (
               <MyThings
                 id={thing.id}
                 key={thing.id}
@@ -50,11 +50,6 @@ export default function HomeMyThings() {
                 image={thing.imageURL}
               />
             ))}
-            <MyThings
-              id={"0"}
-              name={"Product's name"}
-              image={"/assets/thing.jpeg"}
-            />
             <Link
               href="/myThings"
               className=" flex flex-col justify-center items-center ml-auto"

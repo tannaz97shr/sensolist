@@ -5,8 +5,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import Spinner from "../UI/Spinner";
 import RecenterMap from "../WidgetMapHelper";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface GoogleMapProps {
   senderId?: string;
@@ -23,7 +23,7 @@ export default function GoogleMap({ senderId, name, simple }: GoogleMapProps) {
   const [loading, setLoading] = useState<boolean>(false);
   let loctionIcon = L.icon({ iconUrl: "/assets/location.png" });
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
@@ -59,24 +59,13 @@ export default function GoogleMap({ senderId, name, simple }: GoogleMapProps) {
   }, [senderId, seconds]);
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData}
+      loading={loading}
+      seconds={seconds}
     >
-      {!widgetData ? (
-        loading ? (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        ) : (
-          <div className="flex h-full flex-1">
-            <span className="m-auto">No Data available!</span>
-          </div>
-        )
-      ) : (
+      {widgetData && (
         <MapContainer
           className=" w-full overflow-hidden z-0 flex-1"
           center={widgetData}
@@ -92,11 +81,6 @@ export default function GoogleMap({ senderId, name, simple }: GoogleMapProps) {
           <RecenterMap lat={widgetData.lat} lng={widgetData.lng} />
         </MapContainer>
       )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
-        </div>
-      )}
-    </div>
+    </WidgetDataContainer>
   );
 }

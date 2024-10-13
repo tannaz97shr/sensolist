@@ -148,7 +148,7 @@ export default function Menu() {
                  : "hidden md:flex"
              }`}
         >
-          {t("dashboard")}
+          {t("dashboards")}
         </div>
       </button>
       <button

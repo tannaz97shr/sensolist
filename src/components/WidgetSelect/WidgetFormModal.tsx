@@ -128,7 +128,7 @@ export default function WidgetFormModal({
           value: char,
         };
       })
-    : selectedThing?.characteristics.length
+    : selectedThing?.characteristics?.length
     ? selectedThing.characteristics.map((char) => {
         return {
           title: char,

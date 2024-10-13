@@ -9,7 +9,7 @@ import DashboardEmptyState from "../DashboardEmptyState";
 
 interface DashboardContentProps {
   dashboards: IDashboard[];
-  refreshData: () => Promise<void>;
+  refreshData: () => void;
 }
 
 export default function DashboardContent({

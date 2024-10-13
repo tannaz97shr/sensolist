@@ -9,7 +9,7 @@ interface DashboardCreateModalProps {
   closeEditModal: () => void;
   editDashboard: (d: IDashboard) => void;
   dashboardEdit: IDashboard | null;
-  refreshData: () => Promise<void>;
+  refreshData: () => void;
 }
 
 export default function DashboardCreateModal({

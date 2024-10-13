@@ -5,6 +5,7 @@ import {
   getDashboardImages,
   postDashboardData,
 } from "@/ApiCall/dashboards";
+import { useFetchUsersQuery } from "@/lib/features/api/usersSlice";
 import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import {
   ICreateDashboardInputs,
@@ -21,7 +22,6 @@ import Input from "../UI/Input";
 import Loading from "../UI/Loading";
 import MultiSelect from "../UI/MultiSelect";
 import ImagePicker from "./ImagePicker";
-import { useFetchUsersQuery } from "@/lib/features/api/usersSlice";
 
 export default function DashboardCreateForm({
   onCancel,
@@ -34,7 +34,7 @@ export default function DashboardCreateForm({
   initialValues?: IDashboard | null;
   edit: IDashboard | null;
   open: boolean;
-  refreshData: () => Promise<void>;
+  refreshData: () => void;
 }) {
   const [selectImages, setSelectImages] = useState<IFile[]>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -62,7 +62,7 @@ export default function DashboardCreateForm({
           description: edit.description,
           image: edit.imageURL || "",
         }
-      : undefined,
+      : undefined
   );
 
   const {
@@ -91,7 +91,7 @@ export default function DashboardCreateForm({
             description: edit.description,
             image: edit.imageURL || "",
           }
-        : undefined,
+        : undefined
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, edit]);
@@ -100,18 +100,18 @@ export default function DashboardCreateForm({
 
   const [selectedImage, setSelectedImage] = useState(
     initialValues?.imageURL
-      ? (initialValues?.imageURL.split("/").at(-1) ?? initialValues?.imageURL)
+      ? initialValues?.imageURL.split("/").at(-1) ?? initialValues?.imageURL
       : selectImages?.length
-        ? selectImages[0].fileId
-        : undefined,
+      ? selectImages[0].fileId
+      : undefined
   );
   useEffect(() => {
     setSelectedImage(
       initialValues?.imageURL
-        ? (initialValues?.imageURL.split("/").at(-1) ?? initialValues?.imageURL)
+        ? initialValues?.imageURL.split("/").at(-1) ?? initialValues?.imageURL
         : selectImages?.length
-          ? selectImages[0].fileId
-          : "",
+        ? selectImages[0].fileId
+        : ""
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValues?.imageURL, selectImages, open]);
@@ -123,9 +123,8 @@ export default function DashboardCreateForm({
       setSelectedUsers(
         initialValues?.assignedUsers.map((user) => ({
           value: user.id,
-          title:
-            `${user.firstname} ${user.lastname}` ?? user.username ?? user.id,
-        })),
+          title: `${user.firstname} ${user.lastname}`,
+        }))
       );
     } else {
       console.log("initialValues", initialValues);
@@ -140,17 +139,17 @@ export default function DashboardCreateForm({
         data.name,
         data.description,
         selectedUsers.map((option) => option.value),
-        selectedImage || "",
+        selectedImage || ""
       );
       setFormLoading(false);
 
       if (res.statusCode > 199 && res.statusCode < 300) {
         dispatch(
-          createAlert({ message: "dashboard edited.", type: "success" }),
+          createAlert({ message: "dashboard edited.", type: "success" })
         );
       } else {
         dispatch(
-          createAlert({ message: "dashboard edit failed", type: "error" }),
+          createAlert({ message: "dashboard edit failed", type: "error" })
         );
       }
     } else {
@@ -159,14 +158,14 @@ export default function DashboardCreateForm({
         data.name,
         data.description,
         selectedUsers.map((option) => option.value),
-        selectedImage || "",
+        selectedImage || ""
       );
       setFormLoading(false);
       if (res.statusCode > 199 && res.statusCode < 300) {
         dispatch(createAlert({ message: "dashboard added.", type: "success" }));
       } else {
         dispatch(
-          createAlert({ message: "dashboard save failed", type: "error" }),
+          createAlert({ message: "dashboard save failed", type: "error" })
         );
       }
     }

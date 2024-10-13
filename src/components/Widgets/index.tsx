@@ -144,18 +144,122 @@ export default function DashboardWidgets({
   };
 
   const onDelete = async (i: number) => {
+    console.log(" on delete index", i);
     if (selectedDashboard?.widgets) {
       if (i < selectedDashboard?.widgets.length) {
         await onDeleteSaved(i);
       } else {
         dispatch(
-          removeDraftWidget({ index: i - selectedDashboard?.widgets.length })
+          removeDraftWidget({
+            index: i - selectedDashboard?.widgets.length,
+          })
         );
       }
     } else {
       dispatch(removeDraftWidget({ index: i }));
     }
   };
+  const calcWidgetLayout = (simple: boolean, name: string, i: number) => {
+    if (simple) {
+      return name === "simple CO2 chart card"
+        ? { x: 4 * i, y: 0, w: 4, h: 5 }
+        : name === "Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Air quality index card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Simple PM10 chart card"
+        ? { x: 4 * i, y: 0, w: 4, h: 5 }
+        : name === "Simple PM2.5 chart card"
+        ? { x: 4 * i, y: 0, w: 4, h: 5 }
+        : name === "Bar Chart"
+        ? { x: 4 * i, y: 0, w: 8, h: 12 }
+        : name === "Line Chart"
+        ? { x: 4 * i, y: 0, w: 8, h: 12 }
+        : name === "Entities table"
+        ? { x: 4 * i, y: 0, w: 8, h: 12 }
+        : name === "Google Map"
+        ? { x: 4 * i, y: 0, w: 6, h: 10 }
+        : name === "OpenStreet Map"
+        ? { x: 4 * i, y: 0, w: 6, h: 10 }
+        : name === "Outdoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Value Card"
+        ? { x: 4 * i, y: 0, w: 4, h: 5 }
+        : name === "Outdoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Outdoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Outdoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Outdoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Temperature radial gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Speed gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Noise Level Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Progress bar"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : { x: 4 * i, y: 0, w: 8, h: 18 };
+    } else {
+      return name === "simple CO2 chart card"
+        ? { x: 4 * i, y: 0, w: 6, h: 12 }
+        : name === "Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Value Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Air quality index card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Simple PM10 chart card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Simple PM2.5 chart card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Google Map"
+        ? { x: 4 * i, y: 0, w: 6, h: 12 }
+        : name === "OpenStreet Map"
+        ? { x: 4 * i, y: 0, w: 6, h: 12 }
+        : name === "Outdoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Outdoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Temperature radial gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Speed gauge"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Noise Level Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Progress bar"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : { x: 4 * i, y: 0, w: 8, h: 18 };
+    }
+  }; //   "Value Card"
   return (
     <>
       <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
@@ -191,8 +295,8 @@ export default function DashboardWidgets({
           {(selectedDashboard?.widgets?.length || 0) +
           (draftWidgets.length || 0) ? (
             <GridLayout
-              className="layout bg-error"
-              cols={12}
+              className="layout"
+              cols={24}
               rowHeight={20}
               width={1200}
               onLayoutChange={(newLayout: Layout[]) => {
@@ -210,9 +314,11 @@ export default function DashboardWidgets({
                           key={i}
                           data-grid={
                             wdg.layout ||
-                            (wdg.simpleWidget
-                              ? { x: 4 * i, y: 0, w: 4, h: 12 }
-                              : { x: 4 * i, y: 0, w: 4, h: 18 })
+                            calcWidgetLayout(
+                              wdg.simpleWidget,
+                              wdg.widgetName || "",
+                              i
+                            )
                           }
                           onClick={(event: React.MouseEvent<HTMLElement>) => {
                             event.stopPropagation();
@@ -238,13 +344,11 @@ export default function DashboardWidgets({
                     return (
                       <div
                         key={i}
-                        data-grid={
-                          wdg.widgetName === "Line Chart"
-                            ? { x: 4 * i, y: 0, w: 4, h: 18 }
-                            : wdg.widgetName === "Bar Chart"
-                            ? { x: 4 * i, y: 0, w: 4, h: 18 }
-                            : { x: 4 * i, y: 0, w: 4, h: 16 }
-                        }
+                        data-grid={calcWidgetLayout(
+                          wdg.simpleWidget,
+                          wdg.widgetName || "",
+                          i
+                        )}
                       >
                         <Widget
                           onDelete={() => {

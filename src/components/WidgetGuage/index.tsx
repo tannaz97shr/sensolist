@@ -19,7 +19,7 @@ export default function WidgetGuage({
     series: [
       {
         type: "gauge",
-        center: ["50%", "60%"],
+        center: ["50%", "60%"], // Keep center, since it aligns the gauge in the middle
         startAngle: 200,
         endAngle: -20,
         min: min,
@@ -29,39 +29,37 @@ export default function WidgetGuage({
         },
         progress: {
           show: true,
-          width: 30,
+          width: 22.5, // Reduced width (30 * 0.75) for a 25% smaller gauge
         },
         pointer: {
           show: false,
         },
         axisLine: {
           lineStyle: {
-            width: 30,
+            width: 22.5, // Reduced width (30 * 0.75) for a smaller appearance
           },
         },
         axisTick: {
-          distance: -45,
+          distance: -33.75, // Reduced distance (-45 * 0.75)
           splitNumber: 5,
           lineStyle: {
-            width: 2,
+            width: 1.5, // Reduced width (2 * 0.75)
             color: "#999",
           },
         },
         splitLine: {
-          distance: -52,
-          length: 14,
+          distance: -39, // Reduced distance (-52 * 0.75)
+          length: 10.5, // Reduced length (14 * 0.75)
           lineStyle: {
-            width: 3,
+            width: 2.25, // Reduced width (3 * 0.75)
             color: "#999",
           },
         },
         axisLabel: {
           distance: 0,
           color: "#999",
-          fontSize: 14,
-          formatter: (value: number) => {
-            return Math.round(value); // This will round the value and remove decimals
-          },
+          fontSize: 10.5, // Reduced font size (14 * 0.75)
+          formatter: (value: number) => Math.round(value), // No change needed here
         },
         anchor: {
           show: false,
@@ -71,11 +69,11 @@ export default function WidgetGuage({
         },
         detail: {
           valueAnimation: true,
-          width: "50%",
-          lineHeight: 40,
-          borderRadius: 8,
+          width: "37.5%", // Reduced width ("50%" * 0.75)
+          lineHeight: 30, // Reduced line height (40 * 0.75)
+          borderRadius: 6, // Reduced radius (8 * 0.75)
           offsetCenter: [0, "-15%"],
-          fontSize: 32,
+          fontSize: 24, // Reduced font size (32 * 0.75)
           fontWeight: "bolder",
           formatter: `{value} ${unit}`,
           color: "inherit",
@@ -98,7 +96,7 @@ export default function WidgetGuage({
         },
         progress: {
           show: true,
-          width: 8,
+          width: 6, // Reduced width (8 * 0.75)
         },
         pointer: {
           show: false,
@@ -127,5 +125,6 @@ export default function WidgetGuage({
       },
     ],
   };
+
   return <ReactEcharts option={option} />;
 }

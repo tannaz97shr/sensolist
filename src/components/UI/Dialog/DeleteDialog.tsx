@@ -16,8 +16,8 @@ export default function DeleteDialog({
   onDelete,
 }: DeleteDialogProps) {
   return (
-    <Dialog open={open} onClose={onClose}>
-      <Danger className=" text-error mb-4 size-8" />
+    <Dialog open={open} onClose={onClose} >
+      <Danger className=" text-error mb-4 size-8 z-50" />
       <div className=" text-lg font-medium mb-2 dark:text-white">
         Are you sure?
       </div>
