@@ -129,11 +129,23 @@ export default function IndoorHumidityCard({
           width: "50%", // Slight increase to match the larger size
           lineHeight: 30, // Increase line height to match the bigger chart
           borderRadius: 4,
-          offsetCenter: [0, "-15%"], // Keep the detail centered
+          offsetCenter: [0, "0"], // Keep the detail centered
           fontSize: 16, // Slightly increase font size for the detail
           fontWeight: "bolder",
           // overflow: "truncate",
-          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
+          rich: {
+            largerText: {
+              fontSize: 16, // Larger size for the first line
+            },
+            smallerText: {
+              fontSize: 12, // Smaller size for the second line
+            },
+          },
+          formatter: () => {
+            const value = widgetData?.data[0]?.payload;
+            const unit = widgetData?.unit;
+            return `{largerText|${value}}\n{smallerText|${unit}}`;
+          },
           color: "inherit",
         },
         data: [

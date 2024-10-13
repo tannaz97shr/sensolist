@@ -130,7 +130,7 @@ export default function OutdoorPm25({
         detail: {
           width: 50,
           height: 12,
-          fontSize: 12,
+          fontSize: 14,
           color: "inherit",
           borderColor: "inherit",
           borderRadius: 20,

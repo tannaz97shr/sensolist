@@ -87,7 +87,12 @@ export default function ProgressBar({
                 <span>{range.minimum}</span>
                 <span>{range.maximum}</span>
               </div>
-              <Progress progress={percent} size={"lg"} color="dark" />
+              <Progress
+                // style={{ backgroundColor: "#FFA500" }}
+                progress={percent}
+                size={"lg"}
+                color="yellow"
+              />
             </div>
           </>
         ))}

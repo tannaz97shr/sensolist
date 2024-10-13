@@ -131,7 +131,7 @@ export default function IndoorPm25({
         detail: {
           width: 50, // Reduced width of the detail area
           height: 12, // Reduced height of the detail area
-          fontSize: 12, // Reduced font size of the detail
+          fontSize: 14, // Reduced font size of the detail
           color: "inherit",
           borderColor: "inherit",
           borderRadius: 20,

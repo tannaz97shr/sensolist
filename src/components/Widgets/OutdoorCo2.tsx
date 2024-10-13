@@ -88,7 +88,7 @@ export default function IndoorCo2({
         type: "gauge",
         radius: "75%",
         itemStyle: {
-          color: "#004105",
+          color: "#38cb44",
         },
         startAngle: 90,
         endAngle: -270,
@@ -129,7 +129,7 @@ export default function IndoorCo2({
         detail: {
           width: 40,
           height: 20,
-          fontSize: 12,
+          fontSize: 14,
           color: "inherit",
           borderColor: "inherit",
           borderRadius: 20,

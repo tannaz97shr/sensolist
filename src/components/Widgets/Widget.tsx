@@ -84,9 +84,7 @@ export default function Widget({
           <div className="mb-4 dark:text-neutral-2 capitalize font-bold">
             {widget.title}
           </div>
-          <div className="mb-4 dark:text-neutral-2">
-            {widget.widgetName} - {widget.thingName}
-          </div>
+          <div className="mb-4 dark:text-neutral-2">{widget.thingName}</div>
         </>
       )}
 
