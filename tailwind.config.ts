@@ -16,6 +16,7 @@ const config: Config = {
       primary: "#0F172A",
       "primary-Shade-1": "#000911",
       "primary-Shade-2": "#001426",
+      "primary-Shade-3": "#0c263c",
       "primary-tint-1": "#192F44",
       "primary-tint-2": "#334759",
       "primary-tint-3": "#4C5E6E",

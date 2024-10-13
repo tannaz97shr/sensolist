@@ -72,7 +72,7 @@ export default function FilterComponent() {
         }}
       />
       <div
-        className={`flex-col absolute lg:static shadow-300 lg:max-w-[400px] lg:mr-4
+        className={`flex-col absolute lg:static shadow-300 lg:max-w-[400px]
         w-[80%] max-w-[250px] bg-white mt-12 md:mt-12 px-6 lg:right-0 top-2
          lg:w-[264px] lg:h-fit lg:min-h-[480px] rounded-xl lg:dark:shadow-white-opacity-200 lg:shadow lg:mt-0
          dark:bg-black flex transition-all duration-500

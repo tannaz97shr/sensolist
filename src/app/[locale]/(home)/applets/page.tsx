@@ -24,10 +24,10 @@ export default function Page() {
 
   return (
     <div className=" flex flex-col">
-      <div className="md:relative flex flex-row-reverse justify-end gap-4 px-4">
-        <AppletCreateButton applets={applets || []} refreshData={getData} />
-        <SortBy />
+      <div className="md:relative flex flex-row justify-end gap-4 px-4">
         <SearchBar />
+        <SortBy />
+        <AppletCreateButton applets={applets || []} refreshData={getData} />
       </div>
       {loading ? (
         <Loading />
