@@ -1,34 +1,37 @@
 "use client";
 
-import { getAllDashboard, searchDashboard } from "@/ApiCall/dashboards";
 import DashboardContent from "@/components/DashboardContent";
 import DashboardCreateButton from "@/components/DashboardCreateButton";
 import SearchBar from "@/components/SearchBar";
 import SortBy from "@/components/SortBy";
 import Loading from "@/components/UI/Loading";
-import { IDashboard } from "@/types/general";
+import {
+  fetchDashboards,
+  searchDashboards,
+} from "@/lib/features/dashboard/dashboardSlice";
+import { AppDispatch, RootState } from "@/lib/store";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Page() {
-  const [dashboards, setDashboards] = useState<IDashboard[]>();
-  const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>(); // if using custom hook, otherwise use useDispatch
+  const { dashboards, loading } = useSelector(
+    (state: RootState) => state.dashboardSlice
+  );
+
   const params = useSearchParams();
-  const getData = useCallback(async () => {
+
+  const getData = useCallback(() => {
     const search = params.get("search");
     const sort = params.get("sort");
-
-    setLoading(true);
-    let fetchFn: typeof getAllDashboard;
-    if (sort || search) {
-      fetchFn = () => searchDashboard(search, sort);
+    if (search || sort) {
+      dispatch(searchDashboards({ search, sort })); // Dispatch the searchDashboards thunk
     } else {
-      fetchFn = getAllDashboard;
+      dispatch(fetchDashboards()); // Dispatch the fetchDashboards thunk
     }
-    const res = await fetchFn();
-    setLoading(false);
-    setDashboards(res.list);
-  }, [params]);
+  }, [params, dispatch]);
+
   useEffect(() => {
     getData();
   }, [getData]);
