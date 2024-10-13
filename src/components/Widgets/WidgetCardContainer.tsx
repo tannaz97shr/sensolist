@@ -36,13 +36,11 @@ export default function WidgetCardContainer({
         handle={handle}
         key={widget.widget}
         className={`relative my-full-screen-component overflow-auto shadow dark:shadow-neutral-7  h-full ${
-          widget.simpleWidget
-            ? "p-0 bg-black-opacity-50 dark:bg-white-opacity-50"
-            : "p-4"
+          widget.simpleWidget ? "p-0" : "p-4"
         }`}
       >
         {editMode && (
-          <div className=" absolute w-full flex items-center justify-end right-4">
+          <div className=" absolute w-full flex items-center justify-end right-4 dark:text-neutral-3 top-2">
             <button
               onMouseDown={disableDragging}
               onMouseUp={enableDragging}
@@ -50,14 +48,14 @@ export default function WidgetCardContainer({
               onClick={onEditSelect}
               // className="mr-2"
             >
-              <Edit className=" size-5 dark:text-white" />
+              <Edit className=" size-5" />
             </button>
             <button
               onMouseDown={disableDragging}
               onMouseUp={enableDragging}
               onClick={onDelete}
             >
-              <Trash className=" size-5 dark:text-white" />
+              <Trash className=" size-5" />
             </button>
             <button
               onMouseDown={disableDragging}
@@ -67,7 +65,7 @@ export default function WidgetCardContainer({
               <Image
                 alt="fullscreen"
                 src={"/assets/fullscreen.svg"}
-                className=" size-5 dark:text-white"
+                className=" size-5"
                 width={16}
                 height={16}
               />

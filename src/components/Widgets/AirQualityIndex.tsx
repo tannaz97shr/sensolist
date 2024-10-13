@@ -4,7 +4,7 @@ import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import ReactEcharts from "echarts-for-react";
 import { useEffect, useState } from "react";
-import Spinner from "../UI/Spinner";
+import WidgetDataContainer from "./WidgetDataContainer";
 
 interface IndoorHumidityCardProps {
   senderId?: string;
@@ -30,7 +30,7 @@ export default function IndoorHumidityCard({
   const [percent, setPercent] = useState<number>();
 
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
@@ -74,13 +74,13 @@ export default function IndoorHumidityCard({
         startAngle: 180,
         endAngle: 0,
         center: ["50%", "75%"],
-        radius: "90%",
+        radius: "75%", // Reduce the radius to make the gauge smaller
         min: Number(range?.minimum),
         max: Number(range?.maximum),
         splitNumber: 8,
         axisLine: {
           lineStyle: {
-            width: 6,
+            width: 4, // Make the axis line thinner
             color: [
               [0.25, "#FF6E76"],
               [0.5, "#FDDD60"],
@@ -91,31 +91,31 @@ export default function IndoorHumidityCard({
         },
         pointer: {
           icon: "path://M12.8,0.7l12,40.1H0.7L12.8,0.7z",
-          length: "12%",
-          width: 20,
-          offsetCenter: [0, "-60%"],
+          length: "8%", // Shorten the pointer
+          width: 10, // Make the pointer narrower
+          offsetCenter: [0, "-50%"], // Adjust the position
           itemStyle: {
             color: "auto",
           },
         },
         axisTick: {
-          length: 12,
+          length: 6, // Shorten axis ticks
           lineStyle: {
             color: "auto",
-            width: 2,
+            width: 1, // Make ticks narrower
           },
         },
         splitLine: {
-          length: 20,
+          length: 10, // Shorten split lines
           lineStyle: {
             color: "auto",
-            width: 5,
+            width: 3, // Make split lines narrower
           },
         },
         axisLabel: {
           color: "#464646",
-          fontSize: 20,
-          distance: -60,
+          fontSize: 12, // Reduce font size of labels
+          distance: -40, // Bring labels closer to the axis
           rotate: "tangential",
           formatter: function (_value: any) {
             return "";
@@ -123,11 +123,11 @@ export default function IndoorHumidityCard({
         },
         title: {
           offsetCenter: [0, "-10%"],
-          fontSize: 20,
+          fontSize: 12, // Reduce the title font size
         },
         detail: {
-          fontSize: 20,
-          offsetCenter: [0, "-35%"],
+          fontSize: 12, // Reduce the detail font size
+          offsetCenter: [0, "-30%"], // Adjust position of the detail
           valueAnimation: true,
           formatter: `${widgetData?.character} ${widgetData?.unit}`,
           color: "inherit",
@@ -143,31 +143,20 @@ export default function IndoorHumidityCard({
   };
 
   return (
-    <div
-      className={` p-6 flex flex-col ${
-        simple
-          ? "min-h-[calc(100%-28px)] mt-6"
-          : "min-h-[calc(100%-140px)] mt-10"
-      }`}
+    <WidgetDataContainer
+      simple={simple}
+      haveData={!!widgetData?.data.length}
+      loading={loading}
+      seconds={seconds}
     >
-      {false ? (
-        loading ? (
-          <div className="flex h-full flex-1">
-            <Spinner className="m-auto" />
-          </div>
-        ) : (
-          <div className="flex h-full flex-1">
-            <span className="m-auto">No Data available!</span>
-          </div>
-        )
-      ) : (
-        percent && <ReactEcharts option={option} />
-      )}
-      {!simple && (
-        <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
+      {percent && (
+        <div className="mx-auto">
+          <ReactEcharts
+            option={option}
+            style={{ width: "150px", height: "150px" }}
+          />
         </div>
       )}
-    </div>
+    </WidgetDataContainer>
   );
 }

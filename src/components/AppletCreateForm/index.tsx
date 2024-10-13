@@ -5,6 +5,7 @@ import {
   getAppletImages,
   postAppletData,
 } from "@/ApiCall/applets";
+import { useFetchUsersQuery } from "@/lib/features/api/usersSlice";
 import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import {
   IApplet,
@@ -20,7 +21,6 @@ import ImagePicker from "../DashboardCreateForm/ImagePicker";
 import Button from "../UI/Button";
 import Input from "../UI/Input";
 import MultiSelect from "../UI/MultiSelect";
-import { useFetchUsersQuery } from "@/lib/features/api/usersSlice";
 
 export default function AppletCreateForm({
   onCancel,
@@ -53,7 +53,6 @@ export default function AppletCreateForm({
     title: user.username ?? `${user.firstname} ${user.lastname}` ?? user.id,
     value: user.id,
   }));
-
 
   const [values, setValues] = useState(
     edit
@@ -217,7 +216,7 @@ export default function AppletCreateForm({
         />
 
         <MultiSelect
-          options={usersList}
+          options={usersList || []}
           selectedValues={selectedUsers}
           setSelectedValues={setSelectedUsers}
           label="Assign User"

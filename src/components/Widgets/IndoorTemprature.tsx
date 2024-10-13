@@ -2,8 +2,7 @@
 
 import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
-import { EChartsOption } from "echarts";
-import ReactEcharts from "echarts-for-react";
+import ReactEcharts, { EChartsOption } from "echarts-for-react";
 import { useEffect, useState } from "react";
 import Spinner from "../UI/Spinner";
 
@@ -25,13 +24,15 @@ export default function IndoorTemprature({
   range,
   simple,
 }: IndoorTempratureProps) {
+  const [sensorData, setSensorData] = useState<any[]>([]);
+
   const [widgetData, setWidgetData] = useState<ICharatersData | null>();
   const [seconds, setSeconds] = useState<number>(60);
   const [loading, setLoading] = useState<boolean>(false);
   const [percent, setPercent] = useState<number>();
 
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);

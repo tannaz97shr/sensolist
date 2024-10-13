@@ -36,7 +36,7 @@ export default function CustomBarChart({
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (seconds === 10) {
+    if (seconds === 60) {
       const getData = async () => {
         if (senderId) {
           setLoading(true);
