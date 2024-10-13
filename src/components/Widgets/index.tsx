@@ -173,10 +173,28 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 4, h: 6 }
         : name === "Bar Chart"
         ? { x: 4 * i, y: 0, w: 8, h: 12 }
+        : name === "Line Chart"
+        ? { x: 4 * i, y: 0, w: 8, h: 12 }
         : name === "Entities table"
         ? { x: 4 * i, y: 0, w: 8, h: 12 }
         : name === "Google Map"
         ? { x: 4 * i, y: 0, w: 6, h: 10 }
+        : name === "OpenStreet Map"
+        ? { x: 4 * i, y: 0, w: 6, h: 10 }
+        : name === "Outdoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Indoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
+        : name === "Noise Level Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : { x: 4 * i, y: 0, w: 8, h: 18 };
     } else {
       return name === "simple CO2 chart card"
@@ -191,9 +209,25 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : name === "Google Map"
         ? { x: 4 * i, y: 0, w: 6, h: 12 }
+        : name === "OpenStreet Map"
+        ? { x: 4 * i, y: 0, w: 6, h: 12 }
+        : name === "Outdoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor CO2 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor Humidity Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor PM2.5 Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor Pressure Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Indoor Temprature Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
+        : name === "Noise Level Card"
+        ? { x: 4 * i, y: 0, w: 6, h: 13 }
         : { x: 4 * i, y: 0, w: 8, h: 18 };
     }
-  }; //"Google Map"
+  }; //   "OpenStreet Map"
   return (
     <>
       <div className="flex flex-col h-full flex-1 relative overflow-hidden rounded-xl shadow shadow-neutral-5">
