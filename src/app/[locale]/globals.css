@@ -356,3 +356,36 @@ body {
   border-right: 2px solid white !important;
   border-bottom: 2px solid white !important;
 }
+
+.dark .react-datetime-picker__inputGroup {
+  color: #dcdcdc;
+}
+
+.dark .react-datetime-picker__button {
+  color: #dcdcdc;
+}
+.dark .react-datetime-picker__clear-button {
+  /* You can add your custom button styles here */
+  background-color: transparent; /* Example */
+  border: none;
+  cursor: pointer;
+}
+
+.dark .react-datetime-picker__clear-button__icon {
+  stroke: #dcdcdc; /* Change this to any color you like */
+  width: 19px;
+  height: 19px;
+}
+
+.dark .react-datetime-picker__clear-button {
+  /* You can add your custom button styles here */
+  background-color: transparent; /* Example */
+  border: none;
+  cursor: pointer;
+}
+
+.dark .react-datetime-picker__calendar-button__icon {
+  stroke: #dcdcdc; /* Change this to any color you like */
+  width: 19px;
+  height: 19px;
+}
