@@ -16,7 +16,7 @@ export default function MyThings({ image, name, id }: MyThingsProps) {
         className="relative w-full aspect-[4/3]"
         style={{
           backgroundImage: `url(${image || "/assets/thing.jpeg"})`,
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
         }}
