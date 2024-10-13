@@ -38,7 +38,7 @@ export default function WidgetDataContainer({
       )}
       {!simple && (
         <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
+          Last Update {60 - seconds} seconds ago
         </div>
       )}
     </div>
