@@ -39,8 +39,8 @@ export default function GoogleMap({ senderId, name, simple }: GoogleMapProps) {
             setWidgetData(
               response.charactersData?.length < 3
                 ? {
-                    lng: Number(response.charactersData[0].data[0].payload),
-                    lat: Number(response.charactersData[1].data[0].payload),
+                    lng: Number(response.charactersData[0].data[0]?.payload),
+                    lat: Number(response.charactersData[1].data[0]?.payload),
                   }
                 : null
             );

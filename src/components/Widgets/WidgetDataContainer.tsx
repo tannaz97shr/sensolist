@@ -18,7 +18,7 @@ export default function WidgetDataContainer({
   return (
     <div
       className={`flex flex-col ${
-        simple ? "min-h-full" : "min-h-[calc(100%-140px)] mt-10"
+        simple ? "min-h-full p-2" : "min-h-[calc(100%-140px)] mt-10"
       }`}
     >
       {!haveData ? (
