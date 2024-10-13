@@ -61,7 +61,7 @@ export default function AirQualityhumidity({
   useEffect(() => {
     if (widgetData) {
       setPercent(
-        ((Number(widgetData.data[0]?.payload) - Number(range.minimum)) /
+        ((Number(widgetData.data[0]?.payload) - Number(range?.minimum)) /
           (Number(range.maximum) - Number(range.minimum))) *
           100
       );
