@@ -20,15 +20,15 @@ export default async function Page() {
   console.log("data things", data);
   return (
     <div className=" flex flex-col">
-      <div className="md:relative flex lg:flex-row-reverse justify-end items-center lg:items-baseline md:pr-8 px-4 md:pl-0">
-        <MyThingsCreateVirtualButton className="px-2" />
+      <div className="md:relative flex flex-row justify-end gap-4 px-6">
         <SearchBar />
+        <SortBy />
+        <MyThingsCreateVirtualButton className="px-2" />
         <div className="lg:hidden">
           <FilterComponent />
         </div>
-        <SortBy />
       </div>
-      <div className="flex pt-4">
+      <div className="flex p-6">
         <div className="flex flex-col md:flex-row flex-wrap flex-1 h-fit">
           {data.map((thing) => (
             <MyThingCard key={thing.id} thing={thing} />

@@ -74,7 +74,7 @@ export default function AppletCard({
         className={`flex bg-exteremly-light-blue dark:bg-primary 
         w-full md:w-[calc(50%-10px)] lg:w-[calc(33%-10px)] xl:w-[calc(25%-20px)] 2xl:w-[calc(20%-20px)]
         max-w-[320px] mx-auto md:mx-[unset]
-    items-center p-2 rounded-2xl mb-4 ${applet.pinned ? "order-0" : "order-2"}`}
+    items-center p-4 rounded-2xl mb-4 ${applet.pinned ? "order-0" : "order-2"}`}
       >
         <Link
           className="flex w-[96%] items-center"

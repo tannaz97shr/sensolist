@@ -9,9 +9,15 @@ export default function Footer() {
         dark:to-[#192F44] dark:from-[#11406C]
       "
       ></div>
-      <div className="m-auto text-sm">
-        {" "}
-        © 2024 sensolist.com ,all rights reserved
+      <div className="m-auto text-xs sm:text-sm flex justify-center items-center space-x-4 pt-2">
+        <span>© 2024 Sensolist.com, All rights reserved.</span>
+        <a href="/privacy" className="hover:underline">
+          Privacy Policy
+        </a>
+        <span>|</span>
+        <a href="/terms" className="hover:underline">
+          Terms of Service
+        </a>
       </div>
     </div>
   );
