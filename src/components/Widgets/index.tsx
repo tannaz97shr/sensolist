@@ -9,7 +9,7 @@ import {
 import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import { RootState } from "@/lib/store";
 import { IDashboardDetails } from "@/types/general";
-import { Add } from "iconsax-react";
+import { Add, Edit2 } from "iconsax-react";
 import { useEffect, useState } from "react";
 import GridLayout, {
   Layout,
@@ -367,17 +367,34 @@ export default function DashboardWidgets({
                     );
                   })}
             </GridLayout>
+          ) : editMode ? (
+            <Button
+              onClick={() => {
+                setIsSelectOpen(true);
+              }}
+              className="px-4 m-auto mt-32"
+            >
+              <Add className="mr-2" /> Add widget
+            </Button>
           ) : (
-            editMode && (
+            <div className=" items-center m-auto flex flex-col">
+              <div className="dark:text-neutral-2 text-lg mb-4">
+                No widgets created yet!
+              </div>
+              <div className="dark:text-neutral-4 mb-4">
+                To start creating widgets, please enable edit mode.
+              </div>
               <Button
                 onClick={() => {
-                  setIsSelectOpen(true);
+                  setEditMode(true);
                 }}
-                className="px-4 m-auto mt-32"
+                className="px-2 py-1 h-[40px] flex-shrink-0"
+                variant="secondary"
               >
-                <Add className="mr-2" /> Add widget
+                <Edit2 className="mr-1" />
+                enable edit mode
               </Button>
-            )
+            </div>
           )}
         </div>
       </div>
