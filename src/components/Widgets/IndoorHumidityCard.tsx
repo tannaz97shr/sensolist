@@ -133,7 +133,7 @@ export default function IndoorHumidityCard({
           fontSize: 16, // Slightly increase font size for the detail
           fontWeight: "bolder",
           // overflow: "truncate",
-          formatter: `${widgetData?.data[0].payload} ${widgetData?.unit}`,
+          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
           color: "inherit",
         },
         data: [

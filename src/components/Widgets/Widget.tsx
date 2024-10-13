@@ -309,7 +309,7 @@ export default function Widget({
         />
       ) : (
         <>
-          <div className="relative bg-black-opacity-50 dark:bg-white-opacity-50 mt-10 p-6 min-h-[calc(100%-140px)]">
+          <div className="relative h-full">
             {widget.widgetImage && (
               <Image fill src={widget.widgetImage} alt="widget name" />
             )}

@@ -131,7 +131,7 @@ export default function AirQualityhumidity({
           offsetCenter: [0, "-15%"],
           fontSize: 20, // Reduce the font size of the detail text
           fontWeight: "bolder",
-          formatter: `${widgetData?.data[0].payload} ${widgetData?.unit}`,
+          formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
           color: "inherit",
         },
         data: [

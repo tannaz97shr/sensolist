@@ -65,7 +65,7 @@ export default function WidgetCardContainer({
       >
         {editMode && (
           <button
-            className=" absolute right-2 dark:text-neutral-4 widget-more-icon"
+            className=" absolute right-2 dark:text-neutral-4 widget-more-icon z-20"
             onMouseDown={disableDragging}
             onMouseUp={enableDragging}
             onClick={() => {
@@ -78,7 +78,7 @@ export default function WidgetCardContainer({
         {popupOpen && (
           <div
             ref={popupRef}
-            className=" absolute w-fit p-2 rounded-lg bg-primary-tint-2 flex items-center justify-end right-4 dark:text-neutral-3 top-2"
+            className=" absolute w-fit p-2 rounded-lg bg-primary-tint-2 flex items-center justify-end right-4 dark:text-neutral-3 top-2 z-20"
           >
             <button
               onMouseDown={disableDragging}

@@ -71,10 +71,10 @@ export default function IndoorCo2({
   const gaugeData = [
     {
       value: Number(percent?.toFixed(2)),
-      name: "CO2",
-      title: {
-        offsetCenter: ["0%", "40%"],
-      },
+      // name: "CO2",
+      // title: {
+      //   offsetCenter: ["0%", "40%"],
+      // },
       detail: {
         valueAnimation: true,
         offsetCenter: ["0%", "0%"],
@@ -133,7 +133,7 @@ export default function IndoorCo2({
           color: "inherit",
           borderColor: "inherit",
           borderRadius: 20,
-          borderWidth: 1,
+          borderWidth: 0,
           formatter: `${widgetData?.data[0]?.payload} ${widgetData?.unit}`,
         },
       },

@@ -18,7 +18,7 @@ export default function WidgetDataContainer({
   return (
     <div
       className={`flex flex-col ${
-        simple ? "min-h-full" : "min-h-[calc(100%-140px)] mt-10"
+        simple ? "min-h-full p-2" : "min-h-[calc(100%-140px)] mt-10"
       }`}
     >
       {!haveData ? (
@@ -38,7 +38,7 @@ export default function WidgetDataContainer({
       )}
       {!simple && (
         <div className=" text-neutral-7 dark:text-neutral-6 mx-auto w-fit mt-6 text-xs">
-          Last Update {seconds} seconds ago
+          Last Update {60 - seconds} seconds ago
         </div>
       )}
     </div>
