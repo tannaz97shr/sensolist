@@ -4,6 +4,7 @@ import { createThingViaForm } from "@/ApiCall/things";
 import { createAlert } from "@/lib/features/notification/notificatioSlice";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";  
 import { FormControls, FormStepProps, VirtualFormState } from ".";
 import { CharacteristicToggle } from "./characteristics-toggle";
 
@@ -12,6 +13,7 @@ export function FormStepThree(props: FormStepProps) {
     values: props.state,
   });
   const dispatch = useDispatch();
+  const router = useRouter();  
 
   async function onSubmit(data: VirtualFormState) {
     console.log("three data", data);
@@ -26,8 +28,7 @@ export function FormStepThree(props: FormStepProps) {
       dispatch(
         createAlert({
           message:
-            result.message ??
-            "Something went wrong while creating virtual thing",
+            result.message ?? "Something went wrong while creating virtual thing",
           type: "error",
         })
       );
@@ -36,12 +37,11 @@ export function FormStepThree(props: FormStepProps) {
       if (result.message) {
         dispatch(
           createAlert({
-            message:
-              result.message ??
-              "Something went wrong while creating virtual thing",
+            message: result.message ?? "Virtual thing created successfully!",
             type: "success",
           })
         );
+        router.push("/myThings"); 
       }
     }
     props.onClose?.();
