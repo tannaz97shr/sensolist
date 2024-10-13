@@ -35,7 +35,7 @@ export default function WidgetCardContainer({
       <FullScreen
         handle={handle}
         key={widget.widget}
-        className={`relative my-full-screen-component rounded-lg overflow-auto shadow dark:shadow-neutral-7  h-full ${
+        className={`relative my-full-screen-component rounded-lg overflow-auto shadow dark:shadow-neutral-7 dark:bg-primary-Shade-2  h-full ${
           widget.simpleWidget ? "p-0 " : "p-4"
         }`}
       >
