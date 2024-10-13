@@ -211,7 +211,7 @@ export default function DashboardWidgets({
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
         : name === "Progress bar"
         ? { x: 4 * i, y: 0, w: 6, h: 8 }
-        : { x: 4 * i, y: 0, w: 8, h: 10 };
+        : { x: 4 * i, y: 0, w: 6, h: 8 };
     } else {
       return name === "simple CO2 chart card"
         ? { x: 4 * i, y: 0, w: 6, h: 12 }
