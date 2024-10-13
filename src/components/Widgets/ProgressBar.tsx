@@ -78,13 +78,18 @@ export default function ProgressBar({
             <div>out of range</div>
           </div>
         ) : (
-          <div className=" flex-1 flex flex-col justify-center">
-            <div className="mt-10 flex justify-between dark:text-white">
-              <span>{range.minimum}</span>
-              <span>{range.maximum}</span>
+          <>
+            <div className=" dark:text-neutral-3 uppercase text-lg w-fit mx-auto mt-6">
+              {widgetData?.character}
             </div>
-            <Progress progress={percent} size={"lg"} color="dark" />
-          </div>
+            <div className=" flex-1 flex flex-col justify-center px-4">
+              <div className="mt-10 flex justify-between dark:text-white">
+                <span>{range.minimum}</span>
+                <span>{range.maximum}</span>
+              </div>
+              <Progress progress={percent} size={"lg"} color="dark" />
+            </div>
+          </>
         ))}
     </WidgetDataContainer>
   );
