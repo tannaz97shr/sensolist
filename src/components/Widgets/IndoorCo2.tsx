@@ -129,7 +129,7 @@ export default function IndoorCo2({
         detail: {
           width: 40, // Increase the detail width
           height: 20, // Increase the detail height
-          fontSize: 12, // Increase the font size of the central value
+          fontSize: 14, // Increase the font size of the central value
           color: "inherit",
           borderColor: "inherit",
           borderRadius: 25, // Increase border radius for bigger size
