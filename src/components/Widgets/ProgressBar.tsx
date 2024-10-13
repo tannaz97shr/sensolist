@@ -58,7 +58,7 @@ export default function ProgressBar({
       setPercent(
         widgetData.data[0]
           ? ((Number(widgetData.data[0]?.payload) - Number(range?.minimum)) /
-              (Number(range.maximum) - Number(range.minimum))) *
+              (Number(range?.maximum) - Number(range?.minimum))) *
               100
           : undefined
       );

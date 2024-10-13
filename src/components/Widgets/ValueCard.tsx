@@ -4,7 +4,6 @@ import { getWidgetData } from "@/ApiCall/widgets";
 import { ICharatersData } from "@/types/general";
 import { useEffect, useState } from "react";
 
-import Image from "next/image";
 import WidgetDataContainer from "./WidgetDataContainer";
 
 interface ValueCardProps {
@@ -56,21 +55,17 @@ export default function ValueCard({
     >
       <div className="flex flex-col flex-1 items-center justify-center">
         {simple && (
-          <span className=" text-neutral-6 text-lg">
+          <span className=" text-neutral-7 dark:text-neutral-4 text-lg mb-4 uppercase font-semibold">
             {widgetData?.character}
           </span>
         )}
         <div className=" flex mb-2 items-center">
-          <Image
-            width={32}
-            height={32}
-            alt="co2"
-            src={"/assets/widgets/co2.svg"}
-          />
-          <span className="text-xl text-neutral-7 dark:text-neutral-3 font-bold mx-2">
+          <span className="text-xl text-neutral-7 dark:text-neutral-3 font-bold mr-2 ml-4">
             {widgetData?.data[0]?.payload}
           </span>
-          <span className=" text-neutral-6 text-lg">{widgetData?.unit}</span>
+          <span className="text-neutral-6 dark:text-neutral-4 text-lg">
+            {widgetData?.unit}
+          </span>
         </div>
       </div>
     </WidgetDataContainer>
