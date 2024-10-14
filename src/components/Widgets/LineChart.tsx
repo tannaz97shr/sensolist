@@ -56,17 +56,15 @@ export default function CustomLineChart({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [senderId, seconds]);
 
-  console.log(
-    "line chart widget data",
-    widgetData?.charactersData?.map((char) => char.character)
-  );
-
   const option: EChartsOption = {
     tooltip: {
       trigger: "axis",
     },
     legend: {
       data: widgetData?.charactersData?.map((char) => char.character),
+      textStyle: {
+        color: "#b4b4b4",
+      },
     },
     grid: {
       left: "3%",
