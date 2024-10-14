@@ -88,7 +88,11 @@ export default function CustomBarChart({
   const convertedData = transformData(widgetData);
 
   const option: EChartsOption = {
-    legend: {},
+    legend: {
+      textStyle: {
+        color: "#b4b4b4",
+      },
+    },
     tooltip: {},
     dataset: {
       source: convertedData,
