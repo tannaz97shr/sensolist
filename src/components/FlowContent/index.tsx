@@ -146,6 +146,7 @@ export default function FlowContent({
     //   })
     // );
     setNodes(mapNodes(reduxNodes));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduxNodes]);
 
   useEffect(() => {
@@ -165,6 +166,7 @@ export default function FlowContent({
   useEffect(() => {
     setInitialNodes(JSON.parse(JSON.stringify(nodes))); // Deep clone to avoid reference issues
     setInitialEdges(JSON.parse(JSON.stringify(edges)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Function to compare current state with the initial state
@@ -277,6 +279,7 @@ export default function FlowContent({
             setEditMode(false);
           }}
           onSave={async () => {
+            console.log("on save", nodes);
             setSaveLoading(true);
             const res = await storeNodesConfig({
               appletId: appletId,
@@ -284,6 +287,7 @@ export default function FlowContent({
                 return {
                   config: nd.data.config || {},
                   nodeName: nd.data.name,
+                  groupName: nd.type,
                   nodeIndex: Number(nd.id),
                   centerX: nd.position.x,
                   centerY: nd.position.y,

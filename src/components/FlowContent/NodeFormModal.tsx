@@ -9,6 +9,7 @@ import {
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import Button from "../UI/Button";
 import Input from "../UI/Input";
 import Modal from "../UI/Modal";
 import SelectInput from "../UI/SelectInput";
@@ -101,6 +102,7 @@ export default function NodeFormModal({
             />
           ) : (
             <Input
+              className="mt-6"
               register={register}
               required
               label={field.title}
@@ -114,6 +116,22 @@ export default function NodeFormModal({
             />
           );
         })}
+        <div className="flex items-center gap-4 mt-8">
+          <Button
+            onClick={(event: React.MouseEvent<HTMLElement>) => {
+              event.preventDefault();
+              reset();
+              onClose();
+            }}
+            className="w-[36%]"
+            variant="secondary"
+          >
+            Cancel
+          </Button>
+          <Button className="w-[64%]" type="submit">
+            {edit ? "Edit" : "Create"}
+          </Button>
+        </div>
       </form>
     </Modal>
   );
