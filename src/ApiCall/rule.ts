@@ -41,7 +41,7 @@ export const sendRuleData = async (
 export const storeNodesConfig = async (
   nodeConfig: IStoreNodesBody
 ): Promise<IResponse> => {
-  console.log("on store");
+  console.log("on store", nodeConfig);
   try {
     const session = await getSession();
     const res = await fetch(

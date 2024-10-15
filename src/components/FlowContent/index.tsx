@@ -279,7 +279,6 @@ export default function FlowContent({
             setEditMode(false);
           }}
           onSave={async () => {
-            console.log("on save", nodes);
             setSaveLoading(true);
             const res = await storeNodesConfig({
               appletId: appletId,
