@@ -106,7 +106,9 @@ export default function NodeFormModal({
               register={register}
               required
               label={field.title}
-              type={field.type === "Number" ? "number" : "text"}
+              type={
+                field.type?.toLocaleLowerCase() === "number" ? "number" : "text"
+              }
               name={field.name}
               error={
                 errors[field.name]?.type === "required"
