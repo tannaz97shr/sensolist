@@ -559,6 +559,7 @@ export interface IStoreNodesBody {
   nodesConfig: {
     config: INodeFormData;
     nodeName: string;
+    groupName: string;
     nodeIndex: number;
     centerX: number;
     centerY: number;
